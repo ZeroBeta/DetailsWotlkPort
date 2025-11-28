@@ -205,15 +205,15 @@ local addonName, Details222 = ...
 				["height"] = 21,
 				["texture_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar4",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small",
-				["textR_bracket"] = "(",
-				["textR_enable_custom_text"] = false,
+				["textR_bracket"] = "[",
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_color"] = {
 					0, -- [1]
 					0, -- [2]
 					0, -- [3]
 				},
 				["textL_show_number"] = true,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "Details Serenity",
 				["models"] = {
 					["upper_model"] = "Spells\\AcidBreath_SuperGreen.M2",
@@ -250,7 +250,7 @@ local addonName, Details222 = ...
 					["size"] = 6,
 				},
 				["fast_ps_update"] = false,
-				["textR_separator"] = ",",
+				["textR_separator"] = "|",
 				["textL_class_colors"] = false,
 			},
 			["show_statusbar"] = false,
@@ -455,7 +455,7 @@ local addonName, Details222 = ...
 				["textR_show_data"] = {
 					true, -- [1]
 					true, -- [2]
-					false, -- [3]
+					true, -- [3]
 				},
 				["textL_enable_custom_text"] = false,
 				["fixed_text_color"] = {
@@ -476,15 +476,15 @@ local addonName, Details222 = ...
 				["height"] = 21,
 				["texture_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar_textures\\bar_best.png",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small",
-				["textR_bracket"] = "(",
-				["textR_enable_custom_text"] = false,
+				["textR_bracket"] = "[",
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_color"] = {
 					0, -- [1]
 					0, -- [2]
 					0, -- [3]
 				},
 				["textL_show_number"] = true,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "You Are the Best!",
 				["use_spec_icons"] = true,
 				["textR_class_colors"] = false,
@@ -511,7 +511,7 @@ local addonName, Details222 = ...
 					["upper_enabled"] = false,
 				},
 				["fast_ps_update"] = false,
-				["textR_separator"] = "NONE",
+				["textR_separator"] = "|",
 				["backdrop"] = {
 					["enabled"] = false,
 					["size"] = 12,
@@ -623,15 +623,15 @@ local addonName, Details222 = ...
 				["height"] = 21,
 				["texture_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar_serenity",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small",
-				["textR_bracket"] = "(",
-				["textR_enable_custom_text"] = false,
+				["textR_bracket"] = "[",
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_color"] = {
 					0, -- [1]
 					0, -- [2]
 					0, -- [3]
 				},
 				["textL_show_number"] = true,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "Details Serenity",
 				["models"] = {
 					["upper_model"] = "Spells\\AcidBreath_SuperGreen.M2",
@@ -668,7 +668,7 @@ local addonName, Details222 = ...
 					["size"] = 12,
 				},
 				["fast_ps_update"] = false,
-				["textR_separator"] = ",",
+				["textR_separator"] = "|",
 				["textL_class_colors"] = false,
 			},
 			["micro_displays_side"] = 2,
@@ -942,13 +942,13 @@ local addonName, Details222 = ...
 					0, -- [3]
 					1, -- [4]
 				},
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "DGround",
 				["texture_highlight"] = "Interface\\FriendsFrame\\UI-FriendsList-Highlight",
 				["textR_show_data"] = {
 					true, -- [1]
 					true, -- [2]
-					false, -- [3]
+					true, -- [3]
 				},
 				["textL_class_colors"] = false,
 				["textR_class_colors"] = false,
@@ -961,13 +961,13 @@ local addonName, Details222 = ...
 				["texture_background"] = "Details D'ictum",
 				["alpha"] = 1,
 				["no_icon"] = false,
-				["textR_enable_custom_text"] = false,
+				["textR_enable_custom_text"] = true,
 				["percent_type"] = 1,
 				["font_face"] = "Accidental Presidency",
 				["texture_class_colors"] = true,
 				["texture_background_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar4",
 				["fast_ps_update"] = false,
-				["textR_separator"] = "NONE",
+				["textR_separator"] = "|",
 				["texture_custom_file"] = "Interface\\",
 			},
 			["bg_alpha"] = 0.0216164588928223,
@@ -1246,8 +1246,8 @@ local addonName, Details222 = ...
 				["textL_show_number"] = true,
 				["texture"] = "Skyline",
 				["texture_background_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar4",
-				["textR_enable_custom_text"] = false,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_enable_custom_text"] = true,
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["textL_enable_custom_text"] = false,
 				["fixed_text_color"] = {
 					1,
@@ -1472,14 +1472,14 @@ local addonName, Details222 = ...
 				["texture_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar4",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small",
 				["textR_bracket"] = "[",
-				["textR_enable_custom_text"] = false,
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_color"] = {
 					0, -- [1]
 					0, -- [2]
 					0, -- [3]
 				},
 				["textL_show_number"] = true,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "Skyline",
 				["use_spec_icons"] = true,
 				["textR_class_colors"] = false,
@@ -1657,8 +1657,8 @@ local addonName, Details222 = ...
 				["texture_background_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\BantoBar",
 				["start_after_icon"] = true,
 				["texture_highlight"] = "Interface\\FriendsFrame\\UI-FriendsList-Highlight",
-				["textR_enable_custom_text"] = false,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_enable_custom_text"] = true,
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["percent_type"] = 1,
 				["fixed_text_color"] = {0.905882352941177,0.905882352941177,0.905882352941177,1},
 				["space"] = {
@@ -1906,7 +1906,7 @@ local addonName, Details222 = ...
 				["icon_grayscale"] = false,
 				["textL_custom_text"] = "{data1}. {data3}{data2}",
 				["textR_bracket"] = "[",
-				["textR_enable_custom_text"] = false,
+				["textR_enable_custom_text"] = true,
 				["percent_type"] = 1,
 				["fixed_texture_color"] = {
 					0, -- [1]
@@ -1916,7 +1916,7 @@ local addonName, Details222 = ...
 				["textL_show_number"] = true,
 				["texture_custom"] = "",
 				["texture_highlight"] = "Interface\\FriendsFrame\\UI-FriendsList-Highlight",
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "Details2020",
 				["start_after_icon"] = true,
 				["texture_background_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar_background",
@@ -1946,10 +1946,10 @@ local addonName, Details222 = ...
 				["textR_show_data"] = {
 					true, -- [1]
 					true, -- [2]
-					false, -- [3]
+					true, -- [3]
 				},
 				["fast_ps_update"] = false,
-				["textR_separator"] = ",",
+				["textR_separator"] = "|",
 				["texture_custom_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar_textures\\texture2020.blp",
 			},
 			["switch_tank"] = false,
@@ -2247,7 +2247,7 @@ local addonName, Details222 = ...
 			},
 			["switch_all_roles_after_wipe"] = false,
 			["ignore_mass_showhide"] = false,
-			["use_multi_fontstrings"] = true,
+			["use_multi_fontstrings"] = false,
 			["row_show_animation"] = {
 				["anim"] = "Fade",
 				["options"] = {
@@ -2436,7 +2436,7 @@ local addonName, Details222 = ...
 				["textR_show_data"] = {
 					true, -- [1]
 					true, -- [2]
-					false, -- [3]
+					true, -- [3]
 				},
 				["textL_enable_custom_text"] = false,
 				["fixed_text_color"] = {
@@ -2457,7 +2457,7 @@ local addonName, Details222 = ...
 				["height"] = 21,
 				["texture_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\bar_background",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small_alpha",
-				["textR_bracket"] = "(",
+				["textR_bracket"] = "[",
 				["texture_custom"] = "",
 				["fixed_texture_color"] = {
 					0.498039215686275, -- [1]
@@ -2467,7 +2467,7 @@ local addonName, Details222 = ...
 				},
 				["textL_show_number"] = true,
 				["use_spec_icons"] = true,
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["texture"] = "DGround",
 				["models"] = {
 					["upper_model"] = "Spells\\AcidBreath_SuperGreen.M2",
@@ -2479,7 +2479,7 @@ local addonName, Details222 = ...
 				},
 				["texture_custom_file"] = "Interface\\",
 				["percent_type"] = 1,
-				["textR_enable_custom_text"] = false,
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_background_color"] = {
 					0.188235294117647, -- [1]
 					0.188235294117647, -- [2]
@@ -2495,7 +2495,7 @@ local addonName, Details222 = ...
 				["texture_class_colors"] = false,
 				["textL_class_colors"] = false,
 				["fast_ps_update"] = false,
-				["textR_separator"] = "NONE",
+				["textR_separator"] = "|",
 				["backdrop"] = {
 					["enabled"] = false,
 					["texture"] = "Details BarBorder 2",
@@ -2664,8 +2664,8 @@ local addonName, Details222 = ...
 				["height"] = 21,
 				["texture_file"] = "Interface\\RaidFrame\\Raid-Bar-Hp-Fill",
 				["icon_file"] = "Interface\\AddOns\\DetailsWotlkPort\\images\\classes_small",
-				["textR_bracket"] = "(",
-				["textR_enable_custom_text"] = false,
+				["textR_bracket"] = "[",
+				["textR_enable_custom_text"] = true,
 				["fixed_texture_color"] = {
 					0, -- [1]
 					0, -- [2]
@@ -2673,7 +2673,7 @@ local addonName, Details222 = ...
 				},
 				["textL_show_number"] = true,
 				["textL_custom_text"] = "{data1}. {data3}{data2}",
-				["textR_custom_text"] = "{data1} ({data2}, {data3}%)",
+				["textR_custom_text"] = "{data1} ({data2}, {data3})",
 				["fixed_texture_background_color"] = {
 					0, -- [1]
 					0, -- [2]
@@ -2701,7 +2701,7 @@ local addonName, Details222 = ...
 				["texture_class_colors"] = true,
 				["percent_type"] = 1,
 				["fast_ps_update"] = false,
-				["textR_separator"] = ",",
+				["textR_separator"] = "|",
 				["use_spec_icons"] = true,
 			},
 			["plugins_grow_direction"] = 1,
@@ -2807,5 +2807,3 @@ local addonName, Details222 = ...
 		}
 
 	})
-
-

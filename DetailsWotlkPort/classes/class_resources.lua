@@ -235,7 +235,7 @@ function atributo_energy:AtualizarResources (whichRowLine, colocacao, instancia)
 
 	local rightText = formated_resource .. bars_brackets[1] .. formated_rps .. " r/s" .. bars_separator .. porcentagem .. bars_brackets[2]
 	if (UsingCustomRightText) then
-		esta_barra.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_resource, formated_rps, porcentagem, self, instancia.showing, instancia, rightText))
+		instancia:SetCustomRightText(esta_barra, _string_replace (instancia.row_info.textR_custom_text, formated_resource, formated_rps, porcentagem, self, instancia.showing, instancia, rightText))
 	else
 		if (instancia.use_multi_fontstrings) then
 			instancia:SetInLineTexts(esta_barra, formated_resource, formated_rps .. " r/s", porcentagem .. "%")
@@ -686,7 +686,7 @@ function atributo_energy:RefreshLine(instancia, barras_container, whichRowLine, 
 
 	local rightText = formated_energy .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 	if (UsingCustomRightText) then
-		esta_barra.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_energy, "", porcentagem, self, instancia.showing, instancia, rightText))
+		instancia:SetCustomRightText(esta_barra, _string_replace (instancia.row_info.textR_custom_text, formated_energy, "", porcentagem, self, instancia.showing, instancia, rightText))
 	else
 		if (instancia.use_multi_fontstrings) then
 			instancia:SetInLineTexts(esta_barra, "", formated_energy, porcentagem)

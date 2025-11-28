@@ -1036,7 +1036,7 @@ function atributo_misc:RefreshLine(instancia, barras_container, whichRowLine, lu
 
 	local rightText = meu_total .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 	if (UsingCustomRightText) then
-		esta_barra.lineText4:SetText(_string_replace(instancia.row_info.textR_custom_text, meu_total, "", porcentagem, self, instancia.showing, instancia, rightText))
+		instancia:SetCustomRightText(esta_barra, _string_replace(instancia.row_info.textR_custom_text, meu_total, "", porcentagem, self, instancia.showing, instancia, rightText))
 	else
 		if (instancia.use_multi_fontstrings) then
 			instancia:SetInLineTexts(esta_barra, "", meu_total, porcentagem)

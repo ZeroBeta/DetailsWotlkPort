@@ -221,15 +221,15 @@ _detalhes.instance_defaults = {
 	--row animation when show
 		row_show_animation = {anim = "Fade", options = {}},
 
-		rounded_corner_enabled = false,
+	rounded_corner_enabled = false,
 
-		--use one fontstring for each value in the lines, e.g. one fontstring to damage done, another fontstring to dps and another to percent amount
-		use_multi_fontstrings = true,
-		use_auto_align_multi_fontstrings = true,
-		fontstrings_text_limit_offset = -10,
-		fontstrings_text4_anchor = 0,
-		fontstrings_text3_anchor = 38,
-		fontstrings_text2_anchor = 73,
+	--use one fontstring for each value in the lines, e.g. one fontstring to damage done, another fontstring to dps and another to percent amount
+	use_multi_fontstrings = false,
+	use_auto_align_multi_fontstrings = true,
+	fontstrings_text_limit_offset = -10,
+	fontstrings_text4_anchor = 0,
+	fontstrings_text3_anchor = 38,
+	fontstrings_text2_anchor = 73,
 
 	--title bar
 		titlebar_shown = false,
@@ -263,8 +263,8 @@ _detalhes.instance_defaults = {
 				textL_enable_custom_text = false,
 				textL_custom_text = "{data1}. {data3}{data2}",
 			--right text customization
-				textR_enable_custom_text = false,
-				textR_custom_text = "{data1} ({data2}, {data3}%)",
+				textR_enable_custom_text = true,
+				textR_custom_text = "{data1} ({data2}, {data3})",
 			--right text show which infos
 				textR_show_data = {true, true, true},
 				textR_bracket = "[",

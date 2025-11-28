@@ -1,0 +1,7 @@
+#
+# Ignore everything except Details* addons and this .gitignore file.
+#
+*
+!.gitignore
+!DetailsWotlkPort*/
+!DetailsWotlkPort*/**

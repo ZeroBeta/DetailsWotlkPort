@@ -19,13 +19,43 @@ local minor = 90000 + tonumber(("$Revision: 62 $"):match("(%d+)"))
 --doesn't get modified with a newer revision (this one)
 local TextureDirectory
 do
-	local path = string.match(debugstack(1, 1, 0), "AddOns[\\/](.+)LibGraph%-2%.0%.lua")
+	local function findPath()
+		local pattern = "AddOns[\\/](.-)LibGraph%-2%.0[^\\n]*%.lua"
 
-	if path then
-		TextureDirectory = path
-	else
-		error(major.." cannot determine the folder it is located in because the path is too long and got truncated in the debugstack(1, 1, 0) function call")
+		for level = 1, 5 do
+			local stackLine = debugstack(level, 1, 0)
+			if type(stackLine) == "string" then
+				local captured = stackLine:match(pattern)
+				if captured then
+					return captured
+				end
+			end
+		end
+
+		if debug and debug.getinfo then
+			local info = debug.getinfo(1, "S")
+			if info and info.source then
+				local captured = info.source:match(pattern)
+				if captured then
+					return captured
+				end
+			end
+		end
 	end
+
+	local path = findPath()
+	if not path then
+		--debugstack may truncate when the install path is very long (common on wine); fall back to this embedded copy
+		path = "Interface\\AddOns\\DetailsWotlkPort\\Libs\\LibGraph-2.0\\"
+	end
+
+	--remove the filename if it sneaked into the capture and ensure a trailing slash
+	path = path:gsub("LibGraph%-2%.0[^\\n]*%.lua", "")
+	if not path:match("[\\/]$") then
+		path = path .. "\\"
+	end
+
+	TextureDirectory = path
 end
 
 if not LibStub then error(major .. " requires LibStub") end

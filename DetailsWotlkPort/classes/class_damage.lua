@@ -1712,7 +1712,7 @@ end
 
 		local rightText = formated_damage .. bars_brackets[1] .. formated_dps .. bars_separator .. porcentagem .. bars_brackets[2]
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instancia.row_info.textR_custom_text, formated_damage, formated_dps, porcentagem, self, instancia:GetCombat(), instancia, rightText))
+			instancia:SetCustomRightText(thisLine, stringReplace(instancia.row_info.textR_custom_text, formated_damage, formated_dps, porcentagem, self, instancia:GetCombat(), instancia, rightText))
 		else
 			if (instancia.use_multi_fontstrings) then
 				instancia:SetInLineTexts(thisLine, formated_damage, formated_dps, porcentagem)
@@ -2737,6 +2737,21 @@ local classColor_Red, classColor_Green, classColor_Blue
 	end
 end
 
+--when using custom right text, clear other inline fontstrings to avoid showing stale values
+--[[exported]] function Details:SetCustomRightText(thisLine, customText)
+	if (thisLine.lineText2) then
+		thisLine.lineText2:SetText("")
+	end
+
+	if (thisLine.lineText3) then
+		thisLine.lineText3:SetText("")
+	end
+
+	if (thisLine.lineText4) then
+		thisLine.lineText4:SetText(customText or "")
+	end
+end
+
 -- ~atualizar ~barra ~update
 function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, rank, total, subAttribute, bForceRefresh, keyName, combatTime, percentageType, bUseAnimations, bars_show_data, bars_brackets, bars_separator)
 	local thisLine = lineContainer[whichRowLine]
@@ -2844,7 +2859,7 @@ function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, ra
 		local rightText = formatedDamage .. bars_brackets[1] .. formatedDps .. bars_separator .. percentString .. bars_brackets[2]
 
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instanceObject.row_info.textR_custom_text, formatedDamage, formatedDps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
+			instanceObject:SetCustomRightText(thisLine, stringReplace(instanceObject.row_info.textR_custom_text, formatedDamage, formatedDps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
 		else
 			if (instanceObject.use_multi_fontstrings) then
 				instanceObject:SetInLineTexts(thisLine, formatedDamage, formatedDps, percentString)
@@ -2911,7 +2926,7 @@ function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, ra
 		end
 
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instanceObject.row_info.textR_custom_text, formated_dps, formated_damage, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
+			instanceObject:SetCustomRightText(thisLine, stringReplace(instanceObject.row_info.textR_custom_text, formated_dps, formated_damage, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
 		else
 			if (instanceObject.use_multi_fontstrings) then
 				--instance:SetInLineTexts(thisLine, formated_damage, formated_dps, porcentagem)
@@ -2944,7 +2959,7 @@ function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, ra
 
 		local rightText = formated_damage_taken .. bars_brackets[1] .. formated_dtps .. bars_separator .. percentString .. bars_brackets[2]
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instanceObject.row_info.textR_custom_text, formated_damage_taken, formated_dtps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
+			instanceObject:SetCustomRightText(thisLine, stringReplace(instanceObject.row_info.textR_custom_text, formated_damage_taken, formated_dtps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
 		else
 			if (instanceObject.use_multi_fontstrings) then
 				instanceObject:SetInLineTexts(thisLine, formated_damage_taken, formated_dtps, percentString)
@@ -2969,7 +2984,7 @@ function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, ra
 
 		local rightText = formated_friendly_fire .. bars_brackets[1] .. percentString ..  bars_brackets[2]
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instanceObject.row_info.textR_custom_text, formated_friendly_fire, "", percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
+			instanceObject:SetCustomRightText(thisLine, stringReplace(instanceObject.row_info.textR_custom_text, formated_friendly_fire, "", percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
 		else
 			if (instanceObject.use_multi_fontstrings) then
 				instanceObject:SetInLineTexts(thisLine, "", formated_friendly_fire, percentString)
@@ -3000,7 +3015,7 @@ function damageClass:RefreshLine(instanceObject, lineContainer, whichRowLine, ra
 
 		local rightText = formatedDamageTaken .. bars_brackets[1] .. formatedDtps .. bars_separator .. percentString .. bars_brackets[2]
 		if (bUsingCustomRightText) then
-			thisLine.lineText4:SetText(stringReplace(instanceObject.row_info.textR_custom_text, formatedDamageTaken, formatedDtps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
+			instanceObject:SetCustomRightText(thisLine, stringReplace(instanceObject.row_info.textR_custom_text, formatedDamageTaken, formatedDtps, percentString, self, instanceObject:GetCombat(), instanceObject, rightText))
 		else
 			if (instanceObject.use_multi_fontstrings) then
 				instanceObject:SetInLineTexts(thisLine, formatedDamageTaken, formatedDtps, percentString)

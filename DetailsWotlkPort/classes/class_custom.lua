@@ -591,7 +591,7 @@
 				local rightText = formatedValue .. bars_brackets[1] .. percent .. bars_brackets[2]
 
 				if (UsingCustomRightText) then
-					row.lineText4:SetText(stringReplace(instance.row_info.textR_custom_text, formatedValue, "", percent, self, combat, instance, rightText))
+					instance:SetCustomRightText(row, stringReplace(instance.row_info.textR_custom_text, formatedValue, "", percent, self, combat, instance, rightText))
 				else
 					if (instance.use_multi_fontstrings) then
 						instance:SetInLineTexts(row, "", formatedValue, percent)

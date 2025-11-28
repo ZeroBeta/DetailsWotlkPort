@@ -690,7 +690,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_heal .. bars_brackets[1] .. formated_hps .. bars_separator .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_heal, formated_hps, porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_heal, formated_hps, porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, formated_heal, formated_hps, porcentagem)
@@ -721,7 +721,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_hps .. bars_brackets[1] .. formated_heal .. bars_separator .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_hps, formated_heal, porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_hps, formated_heal, porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, formated_hps, formated_heal, porcentagem)
@@ -754,7 +754,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_overheal .. bars_brackets[1] .. overheal_percent .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_overheal, "", overheal_percent, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_overheal, "", overheal_percent, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, "", formated_overheal, overheal_percent)
@@ -780,7 +780,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_healtaken .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_healtaken, "", porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_healtaken, "", porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, "", formated_healtaken, porcentagem)
@@ -806,7 +806,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_enemyheal .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_enemyheal, "", porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_enemyheal, "", porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, "", formated_enemyheal, porcentagem)
@@ -831,7 +831,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_absorbs .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_absorbs, "", porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_absorbs, "", porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, "", formated_absorbs, porcentagem)
@@ -856,7 +856,7 @@ function healingClass:RefreshLine(instancia, barras_container, whichRowLine, lug
 
 			local rightText = formated_absorbs .. bars_brackets[1] .. porcentagem .. bars_brackets[2]
 			if (UsingCustomRightText) then
-				thisLine.lineText4:SetText(_string_replace (instancia.row_info.textR_custom_text, formated_absorbs, "", porcentagem, self, instancia.showing, instancia, rightText))
+				instancia:SetCustomRightText(thisLine, _string_replace (instancia.row_info.textR_custom_text, formated_absorbs, "", porcentagem, self, instancia.showing, instancia, rightText))
 			else
 				if (instancia.use_multi_fontstrings) then
 					instancia:SetInLineTexts(thisLine, "", formated_absorbs, porcentagem)
