@@ -1,0 +1,7 @@
+## Interface: 110205
+## Title: Details!: Compare 2.0
+## Notes: Replace the Compare tab in the player breakdown window.
+## RequiredDeps: DetailsWotlkPort
+## IconTexture: Interface\AddOns\DetailsWotlkPort\images\minimap
+
+Details_Compare2.lua

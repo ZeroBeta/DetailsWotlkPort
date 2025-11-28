@@ -1,0 +1,9 @@
+## Interface: 30405
+## Title: Details!: Streamer (plugin)
+## Notes: Show which spells you are casting, viewers can see what are you doing and follow your steps.
+## RequiredDeps: DetailsWotlkPort
+## SavedVariables: Details_StreamerDB
+## IconTexture: Interface\AddOns\DetailsWotlkPort\images\minimap
+
+
+Details_Streamer.lua
