@@ -552,9 +552,10 @@ local function CreatePluginFrames (data)
 				end
 
 				if (threatActor) then
-					local role = threatActor[4]
+					local role = threatActor[4] or "DAMAGER"
+					local roleCoords = RoleIconCoord[role] or RoleIconCoord["DAMAGER"]
 					thisRow._icon:SetTexture ([[Interface\LFGFrame\UI-LFG-Icon-PortraitRoles]])
-					thisRow._icon:SetTexCoord (_unpack (RoleIconCoord [role]))
+					thisRow._icon:SetTexCoord (_unpack(roleCoords))
 
 					thisRow:SetLeftText (ThreatMeter:GetOnlyName (threatActor [1]))
 
@@ -612,9 +613,10 @@ local function CreatePluginFrames (data)
 						local thisRow = ThreatMeter.ShownRows [#ThreatMeter.ShownRows]
 						thisRow:SetLeftText (player)
 						--thisRow.textleft:SetTextColor (unpack (RAID_CLASS_COLORS [threat_actor [5]]))
-						local role = threat_actor [4]
+						local role = threat_actor [4] or "DAMAGER"
+						local roleCoords = RoleIconCoord[role] or RoleIconCoord["DAMAGER"]
 						thisRow._icon:SetTexture ([[Interface\LFGFrame\UI-LFG-Icon-PortraitRoles]])
-						thisRow._icon:SetTexCoord (_unpack (RoleIconCoord [role]))
+						thisRow._icon:SetTexCoord (_unpack(roleCoords))
 						thisRow:SetRightText (ThreatMeter:ToK2 (threat_actor [6]) .. " (" .. _cstr ("%.1f", threat_actor [2]) .. "%)")
 						thisRow:SetValue (threat_actor [2])
 

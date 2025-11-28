@@ -130,6 +130,15 @@ local iconFrameOnHideScript = function(self)
 	end
 end
 
+--compatibility for clients without Cooldown:SetHideCountdownNumbers
+local function SetCooldownTextVisibility(cooldownFrame, hideNumbers)
+	if (cooldownFrame.SetHideCountdownNumbers) then
+		cooldownFrame:SetHideCountdownNumbers(hideNumbers)
+	else
+		cooldownFrame.noCooldownCount = hideNumbers
+	end
+end
+
 detailsFramework.IconMixin = {
 	---create a new icon frame
 	---@param self df_iconrow the parent frame
@@ -195,7 +204,7 @@ detailsFramework.IconMixin = {
 			iconFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 			iconFrame:SetBackdropBorderColor(0, 0, 0, 0)
 			iconFrame:EnableMouse(false)
-			iconFrame.Cooldown:SetHideCountdownNumbers(self.options.surpress_blizzard_cd_timer)
+			SetCooldownTextVisibility(iconFrame.Cooldown, self.options.surpress_blizzard_cd_timer)
 			iconFrame.Cooldown.noCooldownCount = self.options.surpress_tulla_omni_cc
 			iconFrame.CountdownText:ClearAllPoints()
 			iconFrame.CountdownText:SetPoint(self.options.text_anchor or "center", iconFrame, self.options.text_rel_anchor or "center", self.options.text_x_offset or 0, self.options.text_y_offset or 0)
@@ -317,7 +326,7 @@ detailsFramework.IconMixin = {
 				iconFrame.Cooldown:SetReverse(self.options.cooldown_reverse)
 				iconFrame.Cooldown:SetDrawSwipe(self.options.cooldown_swipe_enabled)
 				iconFrame.Cooldown:SetEdgeTexture(self.options.cooldown_edge_texture)
-				iconFrame.Cooldown:SetHideCountdownNumbers(self.options.surpress_blizzard_cd_timer)
+				SetCooldownTextVisibility(iconFrame.Cooldown, self.options.surpress_blizzard_cd_timer)
 				iconFrame.Cooldown:Show()
 			else
 				iconFrame.timeRemaining = nil

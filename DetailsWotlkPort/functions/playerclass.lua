@@ -12,6 +12,18 @@ do
 
 	local CONST_UNKNOWN_CLASS_COORDS = {0.75, 1, 0.75, 1}
 	local CONST_DEFAULT_COLOR = {1, 1, 1, 1}
+	local CLASSIC_SPEC_ID_BY_TAB = {
+		WARRIOR = {71, 72, 73},
+		PALADIN = {65, 66, 70},
+		HUNTER = {253, 254, 255},
+		ROGUE = {259, 260, 261},
+		PRIEST = {256, 257, 258},
+		DEATHKNIGHT = {250, 251, 252},
+		SHAMAN = {262, 263, 264},
+		MAGE = {62, 63, 64},
+		WARLOCK = {265, 266, 267},
+		DRUID = {102, 103, 105},
+	}
 
 	local roles = {
 		DAMAGER = {421/512, 466/512, 381/512, 427/512},
@@ -27,23 +39,20 @@ do
 		---@type instance
 		local instance = Details:GetInstance(1)
 
-		local spec = actorObject:Spec()
-		if (spec and spec > 0 and Details.class_specs_coords[spec]) then
-			---@type string
-			local fileName
+		local specId, _, _, specIcon, _, _, specL, specR, specT, specB = Details:GetActorSpecInfo(actorObject, actorObject:Class())
+		if (specId) then
+			local specFile = (instance and instance.row_info.spec_file) or Details.instance_defaults.row_info.spec_file
+			local texturePath = specIcon or specFile
+			local coordsLeft, coordsRight, coordsTop, coordsBottom = 0, 1, 0, 1
 
-			--get the spec icon file currently in use
-			if (instance) then
-				fileName = instance.row_info.spec_file
-			else
-				fileName = Details.instance_defaults.row_info.spec_file
+			if (specL and specR and specT and specB) then
+				texturePath = specFile
+				coordsLeft, coordsRight, coordsTop, coordsBottom = specL, specR, specT, specB
 			end
 
-			local left, right, top, bottom = unpack(Details.class_specs_coords[spec])
-
 			local textureTable = {
-				texture = fileName,
-				coords = {left = left, right = right, top = top, bottom = bottom},
+				texture = texturePath,
+				coords = {left = coordsLeft, right = coordsRight, top = coordsTop, bottom = coordsBottom},
 				size = {height = 16, width = 16},
 			}
 
@@ -69,6 +78,97 @@ do
 		}
 
 		return textureTable
+	end
+
+	---Return the best spec information we can resolve for this actor using cached spec and talents.
+	---@param actorObject actor
+	---@param class string|nil
+	---@return number|nil specId, string|nil specName, string|nil specDescription, string|nil specIcon, string|nil specRole, string|nil specClass, number|nil l, number|nil r, number|nil t, number|nil b
+	function Details:GetActorSpecInfo(actorObject, class)
+		if (not actorObject) then
+			return
+		end
+
+		--when class isn't reliable (ungrouped/unknown), skip the class filter
+		local specClassFilter = class
+		if (specClassFilter == "UNKNOW" or specClassFilter == "UNGROUPPLAYER") then
+			specClassFilter = nil
+		end
+
+		local serial = actorObject.serial
+		local cachedSpec = serial and Details.cached_specs and Details.cached_specs[serial]
+		local talents = serial and Details.cached_talents and Details.cached_talents[serial]
+		local isAscensionClient = C_CharacterAdvancement and true or false
+
+		local function resolveSpec(specId)
+			if (not specId) then
+				return
+			end
+
+			local sid, sname, sdesc, sicon, srole, sclass = DetailsFramework.GetSpecializationInfoByID(specId)
+			if (sclass and specClassFilter and sclass ~= specClassFilter) then
+				return
+			end
+
+			return sid, sname, sdesc, sicon, srole, sclass
+		end
+
+		local specId, specName, specDescription, specIcon, specRole, specClass = resolveSpec(cachedSpec or actorObject.spec)
+		if (not specId and cachedSpec and actorObject.spec and cachedSpec ~= actorObject.spec) then
+			specId, specName, specDescription, specIcon, specRole, specClass = resolveSpec(actorObject.spec)
+		end
+
+		local bestLabel
+		if ((not specId) or (specClass and specClassFilter and specClass ~= specClassFilter)) and talents and type(talents) == "table" then
+			local points
+			local labels
+
+			if (talents.__names) then
+				points = {}
+				labels = talents.__names_full or talents.__names
+				local maxIndex = math.min(3, math.max(#talents, #(talents.__names)))
+				for i = 1, maxIndex do
+					points[i] = talents[i] or 0
+				end
+			elseif (#talents >= 3 and type(talents[1]) == "number") then
+				points = {talents[1], talents[2], talents[3]}
+			end
+
+			if (points) then
+				local maxPts, maxIdx = -1, 1
+				for i = 1, #points do
+					local val = points[i] or 0
+					if (val > maxPts) then
+						maxPts = val
+						maxIdx = i
+					end
+				end
+
+				if (labels and labels[maxIdx]) then
+					bestLabel = labels[maxIdx]
+				end
+
+				local mapping = specClassFilter and CLASSIC_SPEC_ID_BY_TAB[specClassFilter]
+				if (mapping and mapping[maxIdx]) then
+					specId, specName, specDescription, specIcon, specRole, specClass = DetailsFramework.GetSpecializationInfoByID(mapping[maxIdx])
+				end
+			end
+		end
+
+		if (specClass and specClassFilter and specId and specClass ~= specClassFilter) then
+			specId, specName, specDescription, specIcon, specRole, specClass = nil, nil, nil, nil, nil, nil
+		end
+
+		if (not specName and bestLabel) then
+			specName = tostring(bestLabel)
+		end
+
+		local specL, specR, specT, specB
+		if (specId and Details.class_specs_coords[specId] and not isAscensionClient) then
+			specL, specR, specT, specB = unpack(Details.class_specs_coords[specId])
+		end
+
+		return specId, specName, specDescription, specIcon, specRole, specClass, specL, specR, specT, specB
 	end
 
 	---return the path to a texture file and the texture coordinates

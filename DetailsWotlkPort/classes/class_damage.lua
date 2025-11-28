@@ -3379,21 +3379,26 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 	end
 
 	local isAscensionClient = C_CharacterAdvancement and true or false
-	local function setSpecIcon(specId)
+	local function setSpecIcon(specId, specIcon, specL, specR, specT, specB)
 		if (not specId or not instance or not instance.row_info.use_spec_icons) then
 			return
 		end
 		--prefer atlas coords when not on ascension; otherwise use the spec's own icon texture
-		if (not isAscensionClient and Details.class_specs_coords[specId]) then
+		if (not isAscensionClient and specL and specR and specT and specB) then
 			texture:SetTexture(instance.row_info.spec_file)
-			texture:SetTexCoord(unpack(Details.class_specs_coords[specId]))
+			texture:SetTexCoord(specL, specR, specT, specB)
 			texture:SetVertexColor(1, 1, 1)
 			return true
 		end
 
-		local _, _, _, specIcon = DetailsFramework.GetSpecializationInfoByID(specId)
-		if (specIcon) then
-			texture:SetTexture(specIcon)
+		local iconToUse = specIcon
+		if (not iconToUse) then
+			local _, _, _, iconPath = DetailsFramework.GetSpecializationInfoByID(specId)
+			iconToUse = iconPath
+		end
+
+		if (iconToUse) then
+			texture:SetTexture(iconToUse)
 			texture:SetTexCoord(0, 1, 0, 1)
 			texture:SetVertexColor(1, 1, 1)
 			return true
@@ -3406,6 +3411,27 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 	local newIconSize = iconSize + iconSizeOffset
 	texture:SetSize(newIconSize, newIconSize)
 
+	local specClassForSearch = class
+	if (specClassForSearch == "UNKNOW" or specClassForSearch == "UNGROUPPLAYER") then
+		specClassForSearch = nil
+	end
+
+	local englishClass
+	if (class == "UNGROUPPLAYER" and self.serial ~= "") then
+		local bResult, sResult = pcall(function() local lClass, eClass = GetPlayerInfoByGUID(self.serial or "") return eClass end) --will error with: nil, table and boolean
+		if (bResult) then
+			englishClass = sResult
+			specClassForSearch = englishClass or specClassForSearch
+		else
+			local bIncludeStackTrace = true
+			--[[GLOBAL]] DETAILS_FAILED_ACTOR = Details:GenerateActorInfo(self, sResult, bIncludeStackTrace) --avoid the game gc and details gc from destroying the actor info
+			Details:Msg("Bug happend on GetPlayerInfoByGUID() class_damage.lua:3419. Use command '/details bug' to report.")
+			englishClass = "UNKNOW"
+		end
+	end
+
+	local specId, specName, specDescription, specIcon, specRole, specClass, specL, specR, specT, specB = Details:GetActorSpecInfo(self, specClassForSearch)
+
 	if (customIcon) then
 		texture:SetTexture(customIcon[1])
 		texture:SetTexCoord(unpack(customIcon[2]))
@@ -3416,28 +3442,16 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 		texture:SetTexCoord(0.078125, 0.921875, 0.078125, 0.921875)
 
 	elseif(class == "UNKNOW") then
+		if (setSpecIcon(specId, specIcon, specL, specR, specT, specB)) then
+			return
+		end
 		texture:SetTexture([[Interface\AddOns\DetailsWotlkPort\images\classes_plus]])
 		texture:SetTexCoord(0.50390625, 0.62890625, 0, 0.125)
 		texture:SetVertexColor(1, 1, 1)
 
 	elseif(class == "UNGROUPPLAYER") then
-		if (self.spec) then
-			if (setSpecIcon(self.spec)) then
-				return
-			end
-		end
-
-		local englishClass
-		if (self.serial ~= "") then
-			local bResult, sResult = pcall(function() local lClass, eClass = GetPlayerInfoByGUID(self.serial or "") return eClass end) --will error with: nil, table and boolean
-			if (bResult) then
-				englishClass = sResult
-			else
-				local bIncludeStackTrace = true
-				--[[GLOBAL]] DETAILS_FAILED_ACTOR = Details:GenerateActorInfo(self, sResult, bIncludeStackTrace) --avoid the game gc and details gc from destroying the actor info
-				Details:Msg("Bug happend on GetPlayerInfoByGUID() class_damage.lua:3419. Use command '/details bug' to report.")
-				englishClass = "UNKNOW"
-			end
+		if (setSpecIcon(specId, specIcon, specL, specR, specT, specB)) then
+			return
 		end
 
 		if (englishClass) then
@@ -3474,7 +3488,7 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 		texture:SetVertexColor(classColor_Red, classColor_Green, classColor_Blue)
 
 	else
-		if (setSpecIcon(self.spec)) then
+		if (setSpecIcon(specId, specIcon, specL, specR, specT, specB)) then
 			return
 		end
 

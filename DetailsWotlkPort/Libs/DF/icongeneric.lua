@@ -119,6 +119,15 @@ local iconFrameOnHideScript = function(self)
 	end
 end
 
+--compatibility for clients without Cooldown:SetHideCountdownNumbers
+local function SetCooldownTextVisibility(cooldownFrame, hideNumbers)
+	if (cooldownFrame.SetHideCountdownNumbers) then
+		cooldownFrame:SetHideCountdownNumbers(hideNumbers)
+	else
+		cooldownFrame.noCooldownCount = hideNumbers
+	end
+end
+
 local checkPointCallback = function(iconFrame)
 	if (iconFrame.timeRemaining < 3) then
 
@@ -552,7 +561,7 @@ detailsFramework.IconGenericMixin = {
 			iconFrame.Cooldown:SetReverse(options.cooldown_reverse)
 			iconFrame.Cooldown:SetDrawSwipe(options.cooldown_swipe_enabled)
 			iconFrame.Cooldown:SetEdgeTexture(options.cooldown_edge_texture) --the yellow edge that follows the cooldown animation
-			iconFrame.Cooldown:SetHideCountdownNumbers(options.surpress_blizzard_cd_timer)
+			SetCooldownTextVisibility(iconFrame.Cooldown, options.surpress_blizzard_cd_timer)
 
 			iconFrame.Cooldown:SetSwipeTexture([[Interface\Masks\SquareMask]], 0, 0, 0, 0.3)
 			--iconFrame.Cooldown:SetSwipeColor(1, 1, 1, 1)

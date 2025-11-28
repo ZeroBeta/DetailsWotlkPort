@@ -61,14 +61,25 @@ local iconSize = 16
 --default icon for an attack on a monster
 local defaultAttackIcon = [[Interface\CURSOR\UnableAttack]]
 
+--safe wrapper for GetSpellInfo across client versions
 local GetSpellInfo = GetSpellInfo
+local OriginalGetSpellInfo = GetSpellInfo
 
 if (C_Spell and C_Spell.GetSpellInfo) then
 	GetSpellInfo = function(spellId)
+		if (not spellId) then
+			return nil
+		end
+		--polyfills can throw on non-numeric or invalid slots
+		if (type(spellId) ~= "number") then
+			return OriginalGetSpellInfo(spellId)
+		end
+
 		local spellInfo = C_Spell.GetSpellInfo(spellId)
 		if (spellInfo) then
-			return spellInfo.name, _, spellInfo.iconID
+			return spellInfo.name, nil, spellInfo.iconID
 		end
+		return OriginalGetSpellInfo(spellId)
 	end
 end
 
@@ -389,7 +400,11 @@ local function CreatePluginFrames()
 		local cooldownFrame = CreateFrame("cooldown", "$parentCooldown", newSquare, "CooldownFrameTemplate, BackdropTemplate")
 		cooldownFrame:SetAllPoints()
 		cooldownFrame:EnableMouse(false)
-		cooldownFrame:SetHideCountdownNumbers(true)
+		if (cooldownFrame.SetHideCountdownNumbers) then
+			cooldownFrame:SetHideCountdownNumbers(true)
+		else
+			cooldownFrame.noCooldownCount = true --fall back for older clients without the API
+		end
 		newSquare.cooldown = cooldownFrame
 
 		StreamOverlay.squares[#StreamOverlay.squares+1] = newSquare
@@ -472,6 +487,10 @@ local function CreatePluginFrames()
 			--> here gets the bar and the table with the information to shown on the bar
 			local data = StreamOverlay.battle_content [index]
 			local line = StreamOverlay.battle_lines [index]
+            
+            --DEBUG
+            --print("Streamer Line Update:", index, line ~= nil, data ~= nil)
+
 			if (data) then
 			
 				--> left
@@ -573,7 +592,10 @@ local function CreatePluginFrames()
 
 		--CastStart from the cast_send
 		table.insert (StreamOverlay.battle_content, 1, {icon1, text1, color1, icon2, icon2coords, text2, color2, backgroundcolor, bordercolor, CastID = ID, CastStart = CastStart, startTime = startTime, endTime = endTime})
-		table.remove (StreamOverlay.battle_content, StreamOverlay.total_lines+1)
+		
+        if (#StreamOverlay.battle_content > StreamOverlay.total_lines) then
+            table.remove (StreamOverlay.battle_content, StreamOverlay.total_lines+1)
+        end
 
 		if (StreamOverlay.db.use_square_mode) then
 			StreamOverlay:UpdateSquares()
@@ -1085,6 +1107,14 @@ function StreamOverlay:CastFinished (castid)
 		
 		local icon, backgroundcolor, bordercolor = StreamOverlay:GetSpellInformation (spellid)
 		local spellname, _, spellicon = GetSpellInfo (spellid)
+        
+        if (not spellname and CastsTable[castid] and CastsTable[castid].SpellName) then
+            spellname = CastsTable[castid].SpellName
+            --Try to get icon from spellname if spellid failed
+            if (not spellicon) then
+                _, _, spellicon = GetSpellInfo(spellname)
+            end
+        end
 		
 		local targetObject = Details:GetActor ("current", 1, target) or Details:GetActor ("current", 2, target)
 		
@@ -1133,7 +1163,7 @@ eventFrame.track_spell_cast = function()
 						
 					elseif (castinfo.IsChanneled) then
 						--> casting a channeled spell
-						local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo ("player")
+						local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo ("player")
 
 						if (name) then
 							startTime = startTime / 1000
@@ -1238,7 +1268,7 @@ eventFrame.track_spell_cast = function()
 						
 					elseif (castinfo.IsChanneled) then
 						--> casting a channeled spell
-						local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo ("player")
+						local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo ("player")
 
 						if (name) then
 							startTime = startTime / 1000
@@ -1338,6 +1368,85 @@ local lastspell, lastcastid, lastchannelid, ischanneling, lastspellID
 local channelspells = {}
 local lastChannelSpell = ""
 
+--normalize spellcast event payloads between modern and older clients
+local function NormalizeSpellcastEvent(event, ...)
+	local unitID, target, castGUID, spellID, spellName, lineID
+
+	if (DetailsFramework.IsWotLKWow()) then
+		if (event == "UNIT_SPELLCAST_SENT") then
+			--WotLK: unit, spellName, rank, target, lineID
+			local arg1, arg2, arg3, arg4, arg5 = ...
+			unitID = arg1
+			spellName = arg2
+			target = arg4
+			lineID = arg5
+			castGUID = lineID
+			spellID = nil -- Explicitly nil so we resolve it later
+		else
+			--WotLK: unit, spellName, rank, lineID
+			local arg1, arg2, arg3, arg4 = ...
+			unitID = arg1
+			spellName = arg2
+			lineID = arg4
+			castGUID = lineID
+			spellID = nil -- Explicitly nil so we resolve it later
+		end
+	else
+		--Modern/Other
+		if (event == "UNIT_SPELLCAST_SENT") then
+			--classic/wrath: unit, spellName, rank, targetName, lineID, spellID
+			local arg1, arg2, arg3, arg4, arg5, arg6 = ...
+			if (type(arg6) == "number") then
+				unitID = arg1
+				spellName = arg2
+				target = arg4
+				lineID = arg5
+				spellID = arg6
+				castGUID = lineID
+			else
+				--modern: unit, targetName, castGUID, spellID
+				unitID, target, castGUID, spellID = ...
+			end
+		else
+			--classic/wrath: unit, spellName, rank, lineID, spellID
+			local arg1, arg2, arg3, arg4, arg5 = ...
+			if (type(arg5) == "number") then
+				unitID = arg1
+				spellName = arg2
+				lineID = arg4
+				spellID = arg5
+				castGUID = lineID
+			else
+				--modern: unit, castGUID, spellID
+				unitID, castGUID, spellID = ...
+			end
+		end
+	end
+
+	if (castGUID == "" or castGUID == 0 or castGUID == "0") then
+		castGUID = nil
+	end
+
+	spellName = spellName or (spellID and GetSpellInfo(spellID))
+	
+	--WotLK Fix: Resolve Spell ID from name if missing
+	if (not spellID and spellName) then
+		local link = GetSpellLink(spellName)
+		if (link) then
+			spellID = tonumber(link:match("spell:(%d+)"))
+		end
+	end
+
+    --For SENT event, do NOT use lastcastid as fallback, we need a new ID
+    if (event == "UNIT_SPELLCAST_SENT") then
+        castGUID = castGUID or spellID or spellName or "unknown_cast"
+    else
+        castGUID = castGUID or lineID or lastcastid or spellID or spellName or "unknown_cast"
+    end
+
+	return unitID, target, castGUID, spellID, spellName
+end
+
 local APM = 0
 local ACTIONS = 0
 local ACTIONS_EVENT_TIME = {}
@@ -1359,12 +1468,20 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 	end
 
 	if (event == "UNIT_SPELLCAST_SENT") then
-		local unitID, target, castGUID, spellID = ...
-		--local unitID, spell, rank, target, id = ...
-		local spell = GetSpellInfo (spellID)
+		local unitID, target, castGUID, spellID, spellName = NormalizeSpellcastEvent(event, ...)
+		local spell = spellName or GetSpellInfo(spellID)
 		
 		if (unitID == "player") then
-			CastsTable [castGUID] = {Target = target or "", Id = castGUID, CastStart = GetTime()}
+            --WotLK/Ascension Fix: Force unique castGUID to avoid collisions
+            if (DetailsFramework.IsWotLKWow()) then
+                --Use a clean unique ID, don't append to potentially existing one
+                castGUID = (spellID or "0") .. "-" .. GetTime()
+            end
+
+			castGUID = castGUID or spellID or spell
+			CastsTable [castGUID] = CastsTable[castGUID] or {Target = target or "", Id = castGUID, CastStart = GetTime(), SpellName = spell}
+            CastsTable [castGUID].SpellName = CastsTable [castGUID].SpellName or spell
+			CastsTable [castGUID].Target = target or CastsTable [castGUID].Target
 			lastChannelSpell = castGUID
 			lastspell = spell
 			lastspellID = spellID
@@ -1373,22 +1490,42 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 	
 	elseif (event == "UNIT_SPELLCAST_START") then
 		--spell, rank, id, 
-		local unitID, castGUID, spellID = ...
+		local unitID, _, castGUID, spellID = NormalizeSpellcastEvent(event, ...)
 		
-		if (unitID == "player" and CastsTable [castGUID]) then
+		if (unitID == "player") then
+			if (not CastsTable [castGUID]) then
+				CastsTable [castGUID] = {Target = "", Id = castGUID, CastStart = GetTime(), SpellName = spellName}
+			end
+            CastsTable [castGUID].SpellName = CastsTable [castGUID].SpellName or spellName
+			lastcastid = castGUID
+			
+			--WotLK Fix: UnitCastingInfo doesn't return spellID
+			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo("player")
+			
+			if (not spellID and name) then
+				local link = GetSpellLink(name)
+				if (link) then
+					spellID = tonumber(link:match("spell:(%d+)"))
+				end
+			end
+			
 			CastsTable [castGUID].SpellId = spellID
 			CastsTable [castGUID].HasCastTime = true
 
-			local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellId = UnitCastingInfo("player")
-			CastsTable [castGUID].CastTimeStart = startTime / 1000
-			CastsTable [castGUID].CastTimeEnd = endTime / 1000
+			if (startTime and endTime) then
+				CastsTable [castGUID].CastTimeStart = startTime / 1000
+				CastsTable [castGUID].CastTimeEnd = endTime / 1000
+			else
+				CastsTable [castGUID].CastTimeStart = GetTime()
+				CastsTable [castGUID].CastTimeEnd = GetTime()
+			end
 
 			StreamOverlay:CastStart(castGUID)
 		end
 	
 	elseif (event == "UNIT_SPELLCAST_INTERRUPTED") then
 		--local unitID, spell, rank, id, spellID = ...
-		local unitID, castGUID, spellID = ...
+		local unitID, _, castGUID = NormalizeSpellcastEvent(event, ...)
 		
 		if (unitID == "player" and CastsTable [castGUID]) then
 			CastsTable [castGUID].Interrupted = true
@@ -1398,7 +1535,7 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 	--> channels isn't passing the CastID / cast id for channels is always Zero.
 	elseif (event == "UNIT_SPELLCAST_CHANNEL_STOP") then
 		--local unitID, spell, rank, id, spellID = ...
-		local unitID, castGUID, spellID = ...
+		local unitID, _, castGUID = NormalizeSpellcastEvent(event, ...)
 		
 		if (unitID == "player") then
 			castGUID = lastchannelid
@@ -1417,7 +1554,7 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 	
 	elseif (event == "UNIT_SPELLCAST_CHANNEL_START") then
 		
-		local unitID, castGUID, spellID = ...
+		local unitID, _, castGUID, spellID, spellName = NormalizeSpellcastEvent(event, ...)
 		
 		if (unitID == "player" and (CastsTable [castGUID] or spellID == lastspellID)) then
 			if (castGUID == "" or not castGUID) then
@@ -1438,24 +1575,46 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 			CastsTable [castGUID].IsChanneled = true
 			CastsTable [castGUID].SpellId = spellID
 			lastchannelid = castGUID
+			lastcastid = castGUID
 			ischanneling = true
 
-			local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellId = UnitChannelInfo("player")
-			CastsTable [castGUID].CastTimeStart = startTime / 1000
-			CastsTable [castGUID].CastTimeEnd = endTime / 1000
+			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellId = UnitChannelInfo("player")
+			if (startTime and endTime) then
+				CastsTable [castGUID].CastTimeStart = startTime / 1000
+				CastsTable [castGUID].CastTimeEnd = endTime / 1000
+			else
+				local now = GetTime()
+				CastsTable [castGUID].CastTimeStart = now
+				CastsTable [castGUID].CastTimeEnd = now
+			end
 			
-			local spell = GetSpellInfo(spellID)
-			channelspells[spell] = true
+			local spell = spellName or GetSpellInfo(spellID)
+			local spellKey = spell or spellID or spellName or "unknown_spell"
+			channelspells[spellKey] = true
 			
 			StreamOverlay:CastStart(castGUID)
 		end
 	
 	elseif (event == "UNIT_SPELLCAST_SUCCEEDED") then
 		--local unitID, spell, rank, id, spellID = ...
-		local unitID, castGUID, spellID = ...
-		local spell = GetSpellInfo (spellID)
+		local unitID, _, castGUID, spellID, spellName = NormalizeSpellcastEvent(event, ...)
+		local spell = spellName or GetSpellInfo (spellID)
+		local spellKey = spell or spellID or spellName or "unknown_spell"
 		
-		if (unitID == "player" and CastsTable[castGUID] and not channelspells [spell]) then
+		if (unitID == "player" and not CastsTable[castGUID]) then
+            --WotLK Fix: Try to link to lastcastid if castGUID (LineID) doesn't match
+            if (lastcastid and CastsTable[lastcastid]) then
+                 --If the spell matches, assume it's the same cast
+                 if (CastsTable[lastcastid].SpellId == spellID or lastspell == spell) then
+                     castGUID = lastcastid
+                 end
+            end
+
+			castGUID = castGUID or lastcastid or spellKey
+			CastsTable[castGUID] = {Target = "", Id = castGUID, CastStart = GetTime(), SpellId = spellID, SpellName = spell}
+		end
+
+		if (unitID == "player" and CastsTable[castGUID] and not channelspells [spellKey]) then
 			if (CastsTable[castGUID].HasCastTime and not CastsTable[castGUID].IsChanneled) then
 				--> a cast (non channeled) just successful finished
 				CastsTable [castGUID].Success = true
@@ -1471,6 +1630,47 @@ eventFrame:SetScript ("OnEvent", function (self, event, ...)
 	end
 	
 end)
+
+function StreamOverlay:CastStart (castGUID)
+	local spellid = CastsTable [castGUID].SpellId
+	local target = CastsTable [castGUID].Target
+	local caststart = CastsTable [castGUID].CastStart
+
+	local startTime = CastsTable [castGUID].CastTimeStart
+	local endTime = CastsTable [castGUID].CastTimeEnd
+
+	if (ignoredSpells [spellid]) then
+		return
+	end
+
+	local icon, backgroundcolor, bordercolor = StreamOverlay:GetSpellInformation (spellid)
+	local spellname, _, spellicon = GetSpellInfo (spellid)
+
+    if (not spellname and CastsTable[castGUID] and CastsTable[castGUID].SpellName) then
+        spellname = CastsTable[castGUID].SpellName
+        --Try to get icon from spellname if spellid failed
+        if (not spellicon) then
+            _, _, spellicon = GetSpellInfo(spellname)
+        end
+    end
+
+	local targetObject = Details:GetActor ("current", 1, target) or Details:GetActor ("current", 2, target)
+	local icon2, icon2coords, class = parse_target_icon (targetObject, target)
+	
+	local color2
+	if (icon2 == RoleIcons) then
+		color2 = parse_target_color (class)
+		if (not color2) then
+			color2 = DefaultColor
+		end
+	else
+		color2 = DefaultColor
+	end
+	
+	target = parse_target_name (target)
+	
+	StreamOverlay:NewText (spellicon, spellname, color1, icon2, icon2coords, target, color2, backgroundcolor, bordercolor, castGUID, caststart, startTime, endTime)
+end
 
 local format_time = function (v) return "-" .. format ("%.2f", v) end
 

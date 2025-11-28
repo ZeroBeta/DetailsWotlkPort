@@ -98,12 +98,10 @@ end
 
 local function getAscensionTalentPoints(unitid, specIndex, skipIlvl, guid)
 	if (not isAscension or not C_CharacterAdvancement or not C_CharacterAdvancement.GetInspectedBuild) then
-		print("Details debug: ascension talents skipped (api missing)")
 		return
 	end
 
 	if (not unitid or not UnitExists(unitid)) then
-		print("Details debug: ascension talents skipped (invalid unit)", tostring(unitid))
 		return
 	end
 
@@ -117,17 +115,14 @@ local function getAscensionTalentPoints(unitid, specIndex, skipIlvl, guid)
 
 	if (C_CharacterAdvancement.InspectUnit) then
 		C_CharacterAdvancement.InspectUnit(unitid)
-		print("Details debug: InspectUnit fired for", tostring(unitid))
 	end
 
 	local spec = C_CharacterAdvancement.GetInspectInfo and C_CharacterAdvancement.GetInspectInfo(unitid) or specIndex or 1
 	if (guid and spec and type(spec) == "number") then
 		Details.cached_specs[guid] = spec
 	end
-	print("Details debug: ascension spec resolved to", tostring(spec))
 	local build = C_CharacterAdvancement.GetInspectedBuild(unitid, spec or 1)
 	if (type(build) ~= "table" or #build == 0) then
-		print("Details debug: ascension build empty for", tostring(unitid))
 		return
 	end
 
@@ -186,13 +181,6 @@ local function getAscensionTalentPoints(unitid, specIndex, skipIlvl, guid)
 
 	points.__names = tabNames
 	points.__names_full = tabNamesFull
-	local debugParts = {}
-	local maxIndex = math.max(#points, #tabNames)
-	for i = 1, maxIndex do
-		local label = tabNames[i] or ("Tab" .. i)
-		debugParts[#debugParts+1] = tostring(label):sub(1, 3) .. ":" .. (points[i] or 0)
-	end
-	print("Details debug: ascension totals for", tostring(unitid), table.concat(debugParts, " / "))
 	return points
 end
 

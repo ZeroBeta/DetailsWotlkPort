@@ -491,8 +491,11 @@ local function CreatePluginFrames (data)
 				dblock:SetScript("OnLeave", debuff_on_leave)
 
 				dblock.texture = texture
-
-				dblock:SetHideCountdownNumbers(true)
+				if (dblock.SetHideCountdownNumbers) then
+					dblock:SetHideCountdownNumbers(true)
+				else
+					dblock.noCooldownCount = true
+				end
 
 				local elevateStringsFrame = CreateFrame("frame", support_frame:GetName() .. "_ElevateFrame", support_frame)
 				elevateStringsFrame:SetAllPoints()

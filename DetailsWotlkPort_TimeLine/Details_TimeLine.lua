@@ -181,8 +181,19 @@ local function CreatePluginFrames()
 			}
 		end
 
-		--is a boss encounter
-		if (combatObject and combatObject.is_boss) then
+		--is a boss encounter (or a dungeon boss without explicit boss info)
+		local bossInfo = combatObject and combatObject.is_boss
+		local hasEnemySpellData = next(TimeLine.current_enemy_spells) or next(TimeLine.current_spells_individual)
+
+		--fallback for dungeon/LFG bosses where Details didn't flag is_boss but we still saw enemy spell casts
+		if (not bossInfo and hasEnemySpellData and combatObject and combatObject.instance_type == "party" and not combatObject.is_pvp) then
+			bossInfo = {
+				name = combatObject.enemy or next(TimeLine.current_enemy_spells) or "Dungeon Boss",
+				encounter = combatObject.enemy
+			}
+		end
+
+		if (bossInfo) then
 			--combat information
 			table.insert(TimeLine.combat_data, 1, {})
 
@@ -190,15 +201,14 @@ local function CreatePluginFrames()
 			TimeLine.combat_data[1].total_time = combatObject:GetCombatTime()
 
 			--save the encounter name
-			local boss = combatObject.is_boss
-			if (boss) then
-				TimeLine.combat_data[1].name = boss.name
+			if (bossInfo) then
+				TimeLine.combat_data[1].name = bossInfo.name
 			else
 				TimeLine.combat_data[1].name = combatObject.enemy
 			end
 
 			--save the date
-			local startDate, endDate = combatObject:GetDate()
+			local startDate, endDate = combatObject and combatObject:GetDate()
 			TimeLine.combat_data[1].date_start = startDate or date("%H:%M:%S")
 			TimeLine.combat_data[1].date_end = endDate or date("%H:%M:%S")
 
@@ -1701,6 +1711,7 @@ local interestEvents = {
 	["SPELL_AURA_REFRESH"] = true,
 	["SPELL_AURA_REMOVED"] = true,
 	["SPELL_CAST_SUCCESS"] = true,
+	["SPELL_CAST_START"] = true,
 }
 
 TimeLine.EventFrame:SetScript("OnEvent", function()
@@ -1712,7 +1723,7 @@ TimeLine.EventFrame:SetScript("OnEvent", function()
 		elseif (token == "SPELL_AURA_REMOVED") then
 			TimeLine:AuraOff(time, token, hidding, sourceGUID, sourceName, sourceFlag, sourceFlag2, targetGUID, targetName, targetFlag, targetFlag2, spellID, spellName, spellType, amount, overKill)
 
-		elseif (token == "SPELL_CAST_SUCCESS") then
+		elseif (token == "SPELL_CAST_SUCCESS" or token == "SPELL_CAST_START") then
 			TimeLine:EnemySpellCast(time, token, hidding, sourceGUID, sourceName, sourceFlag, sourceFlag2, targetGUID, targetName, targetFlag, targetFlag2, spellID, spellName, spellType, amount, overKill)
 		end
 	end

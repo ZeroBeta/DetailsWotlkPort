@@ -4,6 +4,7 @@ local Details	= 	_G.Details
 local Loc = LibStub("AceLocale-3.0"):GetLocale ( "Details" )
 local _
 local addonName, Details222 = ...
+local dataStorageAddonName = (addonName or "Details") .. "_DataStorage"
 
 local CreateFrame = CreateFrame
 local pairs = pairs
@@ -363,7 +364,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 
 	elseif (msg == "load") then
 		print(DetailsDataStorage)
-		local loaded, reason = LoadAddOn ("Details_DataStorage")
+		local loaded, reason = LoadAddOn(dataStorageAddonName)
 		print(loaded, reason, DetailsDataStorage)
 
 	elseif (msg == "chaticon") then

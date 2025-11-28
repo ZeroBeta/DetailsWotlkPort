@@ -60,7 +60,7 @@ local _
 ---@field GetBestFromPlayer fun(difficulty:string, encounterId:number, role:role, dps:boolean, playerName:actorname):details_storage_unitresult, details_encounterkillinfo
 ---@field DBGuildSync fun()
 
-local CONST_ADDONNAME_DATASTORAGE = "Details_DataStorage"
+local CONST_ADDONNAME_DATASTORAGE = (addonName or "Details") .. "_DataStorage"
 
 local diffNumberToName = Details222.storage.DiffIdToName
 
