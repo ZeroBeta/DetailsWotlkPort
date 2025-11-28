@@ -12,6 +12,192 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetSpellInfo = Details222.GetSpellInfo
 local select = select
 local floor = floor
+local isWotLK = DetailsFramework.IsWotLKWow()
+--treat Ascension as long as the API is present, even if GetTalentTabInfo exists
+local isAscension = C_CharacterAdvancement and true or false
+
+--map classic talent tab order to modern spec ids (used for WotLK/Classic)
+local classicSpecIdByTab = {
+	["WARRIOR"] = {71, 72, 73},
+	["PALADIN"] = {65, 66, 70},
+	["HUNTER"] = {253, 254, 255},
+	["ROGUE"] = {259, 260, 261},
+	["PRIEST"] = {256, 257, 258},
+	["DEATHKNIGHT"] = {250, 251, 252},
+	["SHAMAN"] = {262, 263, 264},
+	["MAGE"] = {62, 63, 64},
+	["WARLOCK"] = {265, 266, 267},
+	["DRUID"] = {102, 103, 105},
+}
+
+local function getClassicSpecIdForUnit(unitid, isInspect)
+	if (not isWotLK or not GetNumTalentTabs or not GetTalentTabInfo) then
+		return
+	end
+
+	local _, class = UnitClass(unitid)
+	local mapping = class and classicSpecIdByTab[class]
+	if (not mapping) then
+		return
+	end
+
+	local numTabs = GetNumTalentTabs(isInspect and true or nil)
+	if (not numTabs) then
+		return
+	end
+
+	local highestPoints, highestIndex = -1, 1
+	for tabIndex = 1, numTabs do
+		--on WotLK GetTalentTabInfo(tabIndex, isInspect) returns pointsSpent as third value
+		local _, _, pointsSpent = GetTalentTabInfo(tabIndex, isInspect or nil)
+		pointsSpent = pointsSpent or 0
+		if (pointsSpent > highestPoints) then
+			highestPoints = pointsSpent
+			highestIndex = tabIndex
+		end
+	end
+
+	return mapping[highestIndex]
+end
+
+local function getClassicTalentPoints(unitid, isInspect)
+	if (not isWotLK or not GetNumTalentTabs or not GetTalentTabInfo) then
+		return
+	end
+
+	local numTabs = GetNumTalentTabs(isInspect and true or nil)
+	if (not numTabs) then
+		return
+	end
+
+	local points = {}
+	for tabIndex = 1, numTabs do
+		--for inspected units, pass the inspect flag and unitid so the API returns their points
+		local _, _, spent = GetTalentTabInfo(tabIndex, isInspect or nil, nil, nil, unitid)
+		points[tabIndex] = spent or 0
+	end
+
+	--fallback: some servers return 0 here; sum ranks manually
+	local total = (points[1] or 0) + (points[2] or 0) + (points[3] or 0)
+	if (total == 0 and GetTalentInfo) then
+		for tabIndex = 1, numTabs do
+			local numTalents = GetNumTalents(tabIndex, isInspect or nil, nil, unitid)
+			local tabTotal = 0
+			if (numTalents) then
+				for talentIndex = 1, numTalents do
+					local _, _, _, _, currentRank = GetTalentInfo(tabIndex, talentIndex, isInspect or nil, nil, unitid)
+					tabTotal = tabTotal + (currentRank or 0)
+				end
+			end
+			points[tabIndex] = tabTotal
+		end
+	end
+
+	return points
+end
+
+local function getAscensionTalentPoints(unitid, specIndex, skipIlvl, guid)
+	if (not isAscension or not C_CharacterAdvancement or not C_CharacterAdvancement.GetInspectedBuild) then
+		print("Details debug: ascension talents skipped (api missing)")
+		return
+	end
+
+	if (not unitid or not UnitExists(unitid)) then
+		print("Details debug: ascension talents skipped (invalid unit)", tostring(unitid))
+		return
+	end
+
+	--kick off an ilvl inspect alongside talent reads unless explicitly skipped
+	if (not skipIlvl and Details.ilevel and Details.ilevel.core and Details.ilevel.core.GetItemLevel) then
+		local guid = UnitGUID(unitid)
+		if (guid) then
+			Details.ilevel.core:GetItemLevel(unitid, guid, true)
+		end
+	end
+
+	if (C_CharacterAdvancement.InspectUnit) then
+		C_CharacterAdvancement.InspectUnit(unitid)
+		print("Details debug: InspectUnit fired for", tostring(unitid))
+	end
+
+	local spec = C_CharacterAdvancement.GetInspectInfo and C_CharacterAdvancement.GetInspectInfo(unitid) or specIndex or 1
+	if (guid and spec and type(spec) == "number") then
+		Details.cached_specs[guid] = spec
+	end
+	print("Details debug: ascension spec resolved to", tostring(spec))
+	local build = C_CharacterAdvancement.GetInspectedBuild(unitid, spec or 1)
+	if (type(build) ~= "table" or #build == 0) then
+		print("Details debug: ascension build empty for", tostring(unitid))
+		return
+	end
+
+	local points = {}
+	local tabIndexMap = {}
+	local nextTabIndex = 1
+	local tabNames = {}
+	local tabNamesFull = {}
+
+	local function getTabIndex(tab)
+		local label
+		local fullLabel
+		if (type(tab) == "string") then
+			label = tab
+			fullLabel = tab
+		elseif (tab ~= nil) then
+			label = "Tab" .. tab
+			fullLabel = label
+		else
+			label = "Tab1"
+			fullLabel = label
+		end
+
+		label = tostring(label):sub(1, 3)
+
+		if (not tabIndexMap[label]) then
+			tabIndexMap[label] = nextTabIndex
+			tabNames[nextTabIndex] = label
+			tabNamesFull[nextTabIndex] = tostring(fullLabel or label)
+			nextTabIndex = nextTabIndex + 1
+		end
+
+		return tabIndexMap[label]
+	end
+
+	for _, entry in ipairs(build) do
+		local entryId = entry.EntryID or entry.EntryId or entry.ID or entry.Id or (type(entry.Entry) == "number" and entry.Entry) or (type(entry.Entry) == "table" and (entry.Entry.EntryID or entry.Entry.EntryId or entry.Entry.ID or entry.Entry.Id))
+		local tab
+
+		if (entryId and C_CharacterAdvancement.GetEntryByInternalID) then
+			local info = C_CharacterAdvancement.GetEntryByInternalID(entryId)
+			tab = info and (info.Tab or info.tab) or tab
+		end
+
+		tab = tab or entry.Tab or (entry.Entry and entry.Entry.Tab) or 1
+		local tabIndex = getTabIndex(tab)
+
+		local rank = entry.CurrentRank or entry.Rank
+		if (not rank and entryId and C_CharacterAdvancement.UnitTalentRankByID) then
+			rank = C_CharacterAdvancement.UnitTalentRankByID(unitid, entryId)
+		end
+		rank = rank or 0
+
+		points[tabIndex] = (points[tabIndex] or 0) + rank
+	end
+
+	points.__names = tabNames
+	points.__names_full = tabNamesFull
+	local debugParts = {}
+	local maxIndex = math.max(#points, #tabNames)
+	for i = 1, maxIndex do
+		local label = tabNames[i] or ("Tab" .. i)
+		debugParts[#debugParts+1] = tostring(label):sub(1, 3) .. ":" .. (points[i] or 0)
+	end
+	print("Details debug: ascension totals for", tostring(unitid), table.concat(debugParts, " / "))
+	return points
+end
+
+--expose for tooltip refreshes
+Details.GetAscensionTalentPoints = getAscensionTalentPoints
 
 local CONST_INSPECT_ACHIEVEMENT_DISTANCE = 1 --Compare Achievements, 28 yards
 local CONST_SPELLBOOK_GENERAL_TABID = 1
@@ -561,6 +747,7 @@ ilvl_core:RegisterEvent("GROUP_ONLEAVE", "OnLeave")
 ilvl_core:RegisterEvent("COMBAT_PLAYER_ENTER", "EnterCombat")
 ilvl_core:RegisterEvent("COMBAT_PLAYER_LEAVE", "LeaveCombat")
 ilvl_core:RegisterEvent("ZONE_TYPE_CHANGED", "ZoneChanged")
+ilvl_core:RegisterEvent("PLAYER_ENTERING_WORLD", "OnEnter")
 
 local inspecting = {}
 ilvl_core.forced_inspects = {}
@@ -574,6 +761,7 @@ end
 
 local inspect_frame = CreateFrame("frame")
 inspect_frame:RegisterEvent("INSPECT_READY")
+inspect_frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 
 local two_hand = {
 	["INVTYPE_2HWEAPON"] = true,
@@ -581,7 +769,7 @@ local two_hand = {
 	["INVTYPE_RANGEDRIGHT"] = true,
 }
 
-local MAX_INSPECT_AMOUNT = 1
+local MAX_INSPECT_AMOUNT = 5
 local MIN_ILEVEL_TO_STORE = 50
 local LOOP_TIME = 7
 
@@ -647,6 +835,95 @@ function ilvl_core:CalcItemLevel(unitid, guid, shout)
 		unitid = unitid [1]
 	end
 
+	--for self, bypass inspect distance/CanInspect limitations and just read equipped gear
+	if (unitid == "player" or UnitIsUnit(unitid, "player")) then
+		guid = guid or UnitGUID("player")
+		local item_amount = 16
+		local item_level = 0
+	for equip_id = 1, 17 do
+		if (equip_id ~= 4) then --shirt slot
+			local item = GetInventoryItemLink("player", equip_id)
+			if (item) then
+				local _, _, _, iLevel, _, _, _, _, equipSlot = GetItemInfo(item)
+					if (iLevel) then
+						item_level = item_level + iLevel
+						if (equip_id == 16 and two_hand[equipSlot]) then
+							item_amount = 15
+							break
+						end
+					end
+				end
+			end
+		end
+
+		local average = item_amount > 0 and (item_level / item_amount) or 0
+		if (average > 0) then
+			if (shout) then
+				Details:Msg(UnitName("player") .. " item level: " .. average)
+			end
+			local storeThreshold = DetailsFramework.IsTimewalkWoW() and 0 or MIN_ILEVEL_TO_STORE
+			if (average > storeThreshold and guid) then
+				local unitName = Details:GetFullName("player")
+				Details.item_level_pool[guid] = {name = unitName, ilvl = average, time = time()}
+
+				--push into actor tables
+				local function pushIlvl(combatObject)
+					if (combatObject) then
+						local actorDamage = combatObject:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+						if (actorDamage) then actorDamage.ilvl = average end
+						local actorHeal = combatObject:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+						if (actorHeal) then actorHeal.ilvl = average end
+					end
+				end
+				pushIlvl(Details:GetCurrentCombat())
+				pushIlvl(Details:GetOverallCombat())
+
+				--also set spec/talent cache for self on classic/ascension clients
+				if (isAscension and C_CharacterAdvancement) then
+					local points = getAscensionTalentPoints("player", nil, true, guid)
+					if (points) then
+						Details.cached_talents[guid] = points
+					end
+					local specId = C_CharacterAdvancement.GetActiveSpecID and C_CharacterAdvancement.GetActiveSpecID()
+					if (specId) then
+						Details.cached_specs[guid] = specId
+						local function pushSpec(combatObject)
+							if (combatObject) then
+								local actorDamage = combatObject:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+								if (actorDamage) then actorDamage.spec = specId end
+								local actorHeal = combatObject:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+								if (actorHeal) then actorHeal.spec = specId end
+							end
+						end
+						pushSpec(Details:GetCurrentCombat())
+						pushSpec(Details:GetOverallCombat())
+					end
+				elseif (isWotLK) then
+					local specId = getClassicSpecIdForUnit("player")
+					local points = getClassicTalentPoints("player")
+					if (specId) then
+						Details.cached_specs[guid] = specId
+						local function pushSpec(combatObject)
+							if (combatObject) then
+								local actorDamage = combatObject:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+								if (actorDamage) then actorDamage.spec = specId end
+								local actorHeal = combatObject:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+								if (actorHeal) then actorHeal.spec = specId end
+							end
+						end
+						pushSpec(Details:GetCurrentCombat())
+						pushSpec(Details:GetOverallCombat())
+					end
+					if (points) then
+						Details.cached_talents[guid] = points
+					end
+				end
+			end
+		end
+
+		return
+	end
+
 	--disable due to changes to CheckInteractDistance()
 	if (not InCombatLockdown() and unitid and UnitPlayerControlled(unitid) and CheckInteractDistance(unitid, CONST_INSPECT_ACHIEVEMENT_DISTANCE) and CanInspect(unitid)) then
 
@@ -687,9 +964,89 @@ function ilvl_core:CalcItemLevel(unitid, guid, shout)
 				Details:Msg(UnitName(unitid) .. " item level: " .. average)
 			end
 
-			if (average > MIN_ILEVEL_TO_STORE) then
+			local storeThreshold = DetailsFramework.IsTimewalkWoW() and 0 or MIN_ILEVEL_TO_STORE
+			if (average > storeThreshold) then
 				local unitName = Details:GetFullName(unitid)
 				Details.item_level_pool [guid] = {name = unitName, ilvl = average, time = time()}
+
+				--also push the value into live combat actor tables so tooltips have it immediately
+				local currentCombat = Details:GetCurrentCombat()
+				if (currentCombat) then
+					local actorDamage = currentCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+					if (actorDamage) then
+						actorDamage.ilvl = average
+					end
+					local actorHeal = currentCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+					if (actorHeal) then
+						actorHeal.ilvl = average
+					end
+				end
+
+				local overallCombat = Details:GetOverallCombat()
+				if (overallCombat) then
+					local actorDamage = overallCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+					if (actorDamage) then
+						actorDamage.ilvl = average
+					end
+					local actorHeal = overallCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+					if (actorHeal) then
+						actorHeal.ilvl = average
+					end
+				end
+
+				--cache talents/spec for inspected unit on Ascension
+				if (isAscension and guid) then
+					local points = getAscensionTalentPoints(unitid, nil, true, guid)
+					if (points) then
+						Details.cached_talents[guid] = points
+					end
+					local specId = Details.cached_specs[guid] or (C_CharacterAdvancement.GetInspectInfo and C_CharacterAdvancement.GetInspectInfo(unitid))
+					if (specId) then
+						Details.cached_specs[guid] = specId
+						local currentCombat = Details:GetCurrentCombat()
+						if (currentCombat) then
+							local actorDamage = currentCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+							if (actorDamage) then actorDamage.spec = specId end
+							local actorHeal = currentCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+							if (actorHeal) then actorHeal.spec = specId end
+						end
+
+						local overallCombat = Details:GetOverallCombat()
+						if (overallCombat) then
+							local actorDamage = overallCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+							if (actorDamage) then actorDamage.spec = specId end
+							local actorHeal = overallCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+							if (actorHeal) then actorHeal.spec = specId end
+						end
+					end
+
+				--cache spec for inspected unit on classic/WotLK
+				elseif (isWotLK and guid) then
+					local specId = getClassicSpecIdForUnit(unitid, true)
+					local points = getClassicTalentPoints(unitid, true)
+					if (specId) then
+						Details.cached_specs[guid] = specId
+
+						local currentCombat = Details:GetCurrentCombat()
+						if (currentCombat) then
+							local actorDamage = currentCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+							if (actorDamage) then actorDamage.spec = specId end
+							local actorHeal = currentCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+							if (actorHeal) then actorHeal.spec = specId end
+						end
+
+						local overallCombat = Details:GetOverallCombat()
+						if (overallCombat) then
+							local actorDamage = overallCombat:GetActor(DETAILS_ATTRIBUTE_DAMAGE, unitName)
+							if (actorDamage) then actorDamage.spec = specId end
+							local actorHeal = overallCombat:GetActor(DETAILS_ATTRIBUTE_HEAL, unitName)
+							if (actorHeal) then actorHeal.spec = specId end
+						end
+					end
+					if (points) then
+						Details.cached_talents[guid] = points
+					end
+				end
 			end
 		end
 
@@ -744,6 +1101,17 @@ end
 Details.ilevel.CalcItemLevel = ilvl_core.CalcItemLevel
 
 inspect_frame:SetScript("OnEvent", function(self, event, ...)
+	if (event == "PLAYER_REGEN_ENABLED") then
+			if (ilvl_core.inspect_after_combat) then
+				local unitid, guid, try_number = unpack(ilvl_core.inspect_after_combat)
+				ilvl_core.inspect_after_combat = nil
+				if (unitid and guid) then
+					ilvl_core:GetItemLevel(unitid, guid, true, try_number)
+				end
+			end
+			return
+		end
+
 	local guid = select(1, ...)
 
 	if (inspecting [guid]) then
@@ -788,19 +1156,66 @@ function ilvl_core:ReGetItemLevel(t)
 	return ilvl_core:GetItemLevel(unitid, guid, is_forced, try_number)
 end
 
+--resolve a unit token for a given name; prefers raid/party/self, then target/focus if names match
+function ilvl_core:GetUnitIdForName(unitName)
+	if (not unitName) then
+		return
+	end
+
+	local function matches(unitToken)
+		if (not UnitExists(unitToken)) then
+			return
+		end
+		local full = Details:GetFullName(unitToken, "none")
+		if (full == unitName) then
+			return true
+		end
+		local short = full and full:match("^[^-]+")
+		local wantShort = unitName:match("^[^-]+")
+		return short and wantShort and short == wantShort
+	end
+
+	if (IsInRaid()) then
+		for i = 1, GetNumGroupMembers() do
+			if (Details:GetFullName("raid" .. i, "none") == unitName) then
+				return "raid" .. i
+			end
+		end
+	elseif (IsInGroup()) then
+		for i = 1, GetNumGroupMembers()-1 do
+			if (Details:GetFullName("party" .. i, "none") == unitName) then
+				return "party" .. i
+			end
+		end
+	else
+		local playerName = Details:GetFullName("player", "none") or UnitName("player")
+		if (playerName == unitName) then
+			return "player"
+		end
+	end
+
+	if (matches("target")) then
+		return "target"
+	end
+	if (matches("focus")) then
+		return "focus"
+	end
+end
+
 function ilvl_core:GetItemLevel(unitid, guid, is_forced, try_number)
 
-	--disable for timewalk wow ~timewalk
-	if (DetailsFramework.IsTimewalkWoW()) then
+	--disable for timewalk wow ~timewalk unless on ascension or wotlk clients
+	if (DetailsFramework.IsTimewalkWoW() and not (isWotLK or isAscension)) then
 		return
 	end
 
-	--ddouble check
-	if (not is_forced and(UnitAffectingCombat("player") or InCombatLockdown())) then
-		return
+	--auto scans stay out of combat; manual/forced requests now run even in combat
+	if (UnitAffectingCombat("player") or InCombatLockdown()) then
+		--no deferral: proceed to NotifyInspect attempts below
 	end
 
-	if (InCombatLockdown() or not unitid or not CanInspect(unitid) or not UnitPlayerControlled(unitid) or not CheckInteractDistance(unitid, CONST_INSPECT_ACHIEVEMENT_DISTANCE)) then
+	local canInspect = unitid and UnitPlayerControlled(unitid)
+	if (not canInspect) then
 		if (is_forced) then
 			try_number = try_number or 0
 			if (try_number > 18) then
@@ -813,10 +1228,39 @@ function ilvl_core:GetItemLevel(unitid, guid, is_forced, try_number)
 		return
 	end
 
+	-- on WotLK/classic, relax CanInspect/CheckInteractDistance since private servers may not behave; rely on NotifyInspect + retries
+	if (not isWotLK) then
+		if (not CanInspect(unitid) or not CheckInteractDistance(unitid, CONST_INSPECT_ACHIEVEMENT_DISTANCE)) then
+			if (is_forced) then
+				try_number = try_number or 0
+				if (try_number > 18) then
+					return
+				else
+					try_number = try_number + 1
+				end
+				ilvl_core:ScheduleTimer("ReGetItemLevel", 3, {unitid, guid, is_forced, try_number})
+			end
+			return
+		end
+	end
+
+	--for the player we can calculate immediately without waiting for inspect events
+	if (unitid == "player" or UnitIsUnit(unitid, "player")) then
+		ilvl_core:CalcItemLevel(unitid, guid, is_forced)
+		return
+	end
+
 	inspecting [guid] = {unitid, ilvl_core:ScheduleTimer("InspectTimeOut", 12, guid)}
 	ilvl_core.amt_inspecting = ilvl_core.amt_inspecting + 1
 
-	--NotifyInspect(unitid)
+	if (NotifyInspect) then
+		NotifyInspect(unitid)
+	end
+
+	--fallback: some clients/servers fail to fire INSPECT_READY, so schedule direct attempts
+	local t = {unitid, guid}
+	ilvl_core:ScheduleTimer("CalcItemLevel", 1, t)
+	ilvl_core:ScheduleTimer("CalcItemLevel", 3, t)
 end
 
 local NotifyInspectHook = function(unitid) --not in use
@@ -852,29 +1296,11 @@ end
 
 function ilvl_core:QueryInspect(unitName, callback, param1)
 	--disable for timewalk wow ~timewalk
-	if (DetailsFramework.IsTimewalkWoW()) then
+	if (DetailsFramework.IsTimewalkWoW() and not (isWotLK or isAscension)) then
 		return
 	end
 
-	local unitid
-
-	if (IsInRaid()) then
-		for i = 1, GetNumGroupMembers() do
-			if (Details:GetFullName("raid" .. i, "none") == unitName) then
-				unitid = "raid" .. i
-				break
-			end
-		end
-	elseif (IsInGroup()) then
-		for i = 1, GetNumGroupMembers()-1 do
-			if (Details:GetFullName("party" .. i, "none") == unitName) then
-				unitid = "party" .. i
-				break
-			end
-		end
-	else
-		unitid = unitName
-	end
+	local unitid = ilvl_core:GetUnitIdForName(unitName)
 
 	if (not unitid) then
 		return false
@@ -908,8 +1334,8 @@ function ilvl_core:ClearQueryInspectQueue()
 end
 
 function ilvl_core:Loop()
-	--disable for timewalk wow ~timewalk
-	if (DetailsFramework.IsTimewalkWoW()) then
+	--disable for timewalk wow ~timewalk unless on ascension or wotlk clients
+	if (DetailsFramework.IsTimewalkWoW() and not (isWotLK or isAscension)) then
 		return
 	end
 
@@ -960,8 +1386,8 @@ function ilvl_core:EnterCombat()
 end
 
 local can_start_loop = function()
-	--disable for timewalk wow ~timewalk
-	if (DetailsFramework.IsTimewalkWoW()) then
+	--disable for timewalk wow ~timewalk unless on ascension or wotlk clients
+	if (DetailsFramework.IsTimewalkWoW() and not (isWotLK or isAscension)) then
 		return false
 	end
 
@@ -1031,8 +1457,27 @@ function Details:GetItemLevelFromGuid(guid)
 	return Details.item_level_pool[guid] and Details.item_level_pool[guid].ilvl or 0
 end
 
-function Details.ilevel:GetIlvl(guid)
-	return Details.item_level_pool[guid]
+function Details.ilevel:GetIlvl(guid, name)
+	local pool = Details.item_level_pool
+	if (not pool) then
+		return
+	end
+
+	if (guid and pool[guid]) then
+		return pool[guid]
+	end
+
+	if (name) then
+		local shortName = name:match("^[^-]+")
+		for _, t in pairs(pool) do
+			if (t.name == name) then
+				return t
+			end
+			if (shortName and t.name and t.name:match("^[^-]+") == shortName) then
+				return t
+			end
+		end
+	end
 end
 
 function Details.ilevel:GetInOrder()

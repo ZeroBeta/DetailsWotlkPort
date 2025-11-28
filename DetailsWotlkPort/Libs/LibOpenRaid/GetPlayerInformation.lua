@@ -29,6 +29,7 @@ local CONST_ISITEM_BY_TYPEID = {
 
 local GetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetActiveTalentGroup = _G.GetActiveTalentGroup or function() return 1 end
 
 local GetInventoryItemLink = GetInventoryItemLink
 
@@ -74,6 +75,8 @@ local GetSpellCharges = GetSpellCharges or function(spellId)
 end
 
 local _, _, _, buildInfo = GetBuildInfo()
+local hasClassTalentsAPI = C_ClassTalents and C_ClassTalents.GetActiveConfigID and C_Traits
+local hasAverageItemLevelAPI = type(_G.GetAverageItemLevel) == "function"
 
 local isTimewalkWoW = function()
     if (buildInfo < 40000) then
@@ -98,8 +101,39 @@ local IsShadowlands = function()
     end
 end
 
+-- classic/wrath fallback tables and helpers
+local classicSpecIdByTab = {
+	["WARRIOR"] = {71, 72, 73},
+	["PALADIN"] = {65, 66, 70},
+	["HUNTER"] = {253, 254, 255},
+	["ROGUE"] = {259, 260, 261},
+	["PRIEST"] = {256, 257, 258},
+	["DEATHKNIGHT"] = {250, 251, 252},
+	["SHAMAN"] = {262, 263, 264},
+	["MAGE"] = {62, 63, 64},
+	["WARLOCK"] = {265, 266, 267},
+	["DRUID"] = {102, 103, 105},
+}
+
+local function getClassicTalentId(tabIndex, talentIndex)
+	if (GetTalentLink) then
+		local link = GetTalentLink(tabIndex, talentIndex, false, false, GetActiveTalentGroup())
+		if (link) then
+			--retail-style spell link or classic talent link, grab any numeric id we can
+			local spellId = link:match("Hspell:(%d+)")
+			if (spellId) then
+				return tonumber(spellId)
+			end
+			local talentId = link:match("talent:(%d+)")
+			if (talentId) then
+				return tonumber(talentId)
+			end
+		end
+	end
+end
+
 function openRaidLib.GetHeroTalentId()
-    if (IsTWWExpansion()) then
+    if (IsTWWExpansion() and hasClassTalentsAPI) then
         local configId = C_ClassTalents.GetActiveConfigID()
         if (not configId) then
             return
@@ -153,6 +187,9 @@ function openRaidLib.GetBorrowedTalentVersion()
 end
 
 local getDragonflightTalentsExportedString = function()
+    if (not hasClassTalentsAPI) then
+        return ""
+    end
     local exportStream = ExportUtil.MakeExportDataStream()
 	local configId = C_ClassTalents.GetActiveConfigID()
     if (configId) then
@@ -168,6 +205,9 @@ end
 
 ---@return string
 local getDragonlightTalentAsString = function()
+	if (not hasClassTalentsAPI) then
+		return ""
+	end
 	local activeConfigID = C_ClassTalents.GetActiveConfigID()
 	if (activeConfigID and activeConfigID > 0) then
 		return C_Traits.GenerateImportString(activeConfigID)
@@ -177,6 +217,9 @@ end
 
 local getDragonflightTalentsAsIndexTable = function()
     local allTalents = {}
+    if (not hasClassTalentsAPI) then
+        return allTalents
+    end
     local configId = C_ClassTalents.GetActiveConfigID()
     if (not configId) then
         return allTalents
@@ -316,6 +359,23 @@ function openRaidLib.UnitInfoManager.GetPlayerTalentsAsPairsTable()
                 end
             end
         end
+
+    elseif (talentVersion == CONST_TALENT_VERSION_CLASSIC) then
+        local numTabs = GetNumTalentTabs and GetNumTalentTabs()
+        if (numTabs) then
+            for tabIndex = 1, numTabs do
+                local numTalents = GetNumTalents(tabIndex)
+                for talentIndex = 1, numTalents do
+                    local _, _, _, _, currentRank = GetTalentInfo(tabIndex, talentIndex, false, false, GetActiveTalentGroup())
+                    if (currentRank and currentRank > 0) then
+                        local talentId = getClassicTalentId(tabIndex, talentIndex)
+                        if (talentId) then
+                            talentsPairs[talentId] = true
+                        end
+                    end
+                end
+            end
+        end
     end
 
     return talentsPairs
@@ -339,6 +399,23 @@ function openRaidLib.UnitInfoManager.GetPlayerTalents()
                 end
             end
         end
+
+    elseif (talentVersion == CONST_TALENT_VERSION_CLASSIC) then
+        local numTabs = GetNumTalentTabs and GetNumTalentTabs()
+        if (numTabs) then
+            for tabIndex = 1, numTabs do
+                local numTalents = GetNumTalents(tabIndex)
+                for talentIndex = 1, numTalents do
+                    local _, _, _, _, currentRank = GetTalentInfo(tabIndex, talentIndex, false, false, GetActiveTalentGroup())
+                    if (currentRank and currentRank > 0) then
+                        local talentId = getClassicTalentId(tabIndex, talentIndex)
+                        if (talentId) then
+                            talents[#talents+1] = talentId
+                        end
+                    end
+                end
+            end
+        end
     end
 
     return talents
@@ -349,12 +426,18 @@ function openRaidLib.UnitInfoManager.GetPlayerPvPTalents()
     --    return {}
     --end
 
+    if (not C_SpecializationInfo or not C_SpecializationInfo.GetAllSelectedPvpTalentIDs) then
+        return {}
+    end
+
     local talentsPvP = {0, 0, 0}
     local talentList = C_SpecializationInfo.GetAllSelectedPvpTalentIDs()
-    for talentIndex, talentId in ipairs(talentList) do
-        local doesExists = GetPvpTalentInfoByID(talentId)
-        if (doesExists) then
-            talentsPvP[talentIndex] = talentId
+    if (type(talentList) == "table") then
+        for talentIndex, talentId in ipairs(talentList) do
+            local doesExists = GetPvpTalentInfoByID and GetPvpTalentInfoByID(talentId)
+            if (doesExists) then
+                talentsPvP[talentIndex] = talentId
+            end
         end
     end
     return talentsPvP
@@ -366,11 +449,32 @@ function openRaidLib.GetPlayerSpecId()
         return 0
     end
 
-    local spec = GetSpecialization()
-    if (spec) then
-        local specId = GetSpecializationInfo(spec)
-        if (specId and specId > 0) then
-            return specId
+    if (GetSpecialization) then
+	    local spec = GetSpecialization()
+	    if (spec) then
+	        local specId = GetSpecializationInfo(spec)
+	        if (specId and specId > 0) then
+	            return specId
+	        end
+	    end
+    end
+
+    --classic / wrath fallback: pick the tree with the most points and map to a modern spec id
+    if (GetNumTalentTabs and GetTalentTabInfo) then
+        local _, playerClass = UnitClass("player")
+        local mapping = classicSpecIdByTab[playerClass]
+        if (mapping) then
+            local highestPoints, highestIndex = -1, 1
+            local numTabs = GetNumTalentTabs()
+            for tabIndex = 1, numTabs do
+                local _, _, pointsSpent = GetTalentTabInfo(tabIndex, false, false, GetActiveTalentGroup())
+                pointsSpent = pointsSpent or 0
+                if (pointsSpent > highestPoints) then
+                    highestPoints = pointsSpent
+                    highestIndex = tabIndex
+                end
+            end
+            return mapping[highestIndex] or 0
         end
     end
 end
@@ -423,13 +527,32 @@ end
 
 
 function openRaidLib.GearManager.GetPlayerItemLevel()
-    if (_G.GetAverageItemLevel) then
+    if (hasAverageItemLevelAPI) then
         local _, itemLevel = GetAverageItemLevel()
         itemLevel = floor(itemLevel)
         return itemLevel
-    else
-        return 0
     end
+
+    --classic / wrath fallback: average equipped item levels from inventory
+    local total, count = 0, 0
+    for slotId = INVSLOT_FIRST_EQUIPPED, INVSLOT_LAST_EQUIPPED do
+        if (slotId ~= INVSLOT_BODY and slotId ~= INVSLOT_TABARD) then --ignore shirt and tabard
+            local itemLink = GetInventoryItemLink("player", slotId)
+            if (itemLink) then
+                local _, _, _, effectiveILvl = GetItemInfo(itemLink)
+                if (effectiveILvl) then
+                    total = total + effectiveILvl
+                    count = count + 1
+                end
+            end
+        end
+    end
+
+    if (count > 0) then
+        return floor(total / count)
+    end
+
+    return 0
 end
 
 --return an integer between zero and one hundret indicating the player gear durability

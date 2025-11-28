@@ -3378,6 +3378,28 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 		customIcon = Details.Immersion.GetIcon(self.aID)
 	end
 
+	local isAscensionClient = C_CharacterAdvancement and true or false
+	local function setSpecIcon(specId)
+		if (not specId or not instance or not instance.row_info.use_spec_icons) then
+			return
+		end
+		--prefer atlas coords when not on ascension; otherwise use the spec's own icon texture
+		if (not isAscensionClient and Details.class_specs_coords[specId]) then
+			texture:SetTexture(instance.row_info.spec_file)
+			texture:SetTexCoord(unpack(Details.class_specs_coords[specId]))
+			texture:SetVertexColor(1, 1, 1)
+			return true
+		end
+
+		local _, _, _, specIcon = DetailsFramework.GetSpecializationInfoByID(specId)
+		if (specIcon) then
+			texture:SetTexture(specIcon)
+			texture:SetTexCoord(0, 1, 0, 1)
+			texture:SetVertexColor(1, 1, 1)
+			return true
+		end
+	end
+
 	--set the size offset of the icon
 	local iconSizeOffset = instance.row_info.icon_size_offset or 0
 	local iconSize = instance.row_info.height or instance.settings.lines.height
@@ -3400,13 +3422,8 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 
 	elseif(class == "UNGROUPPLAYER") then
 		if (self.spec) then
-			if (instance and instance.row_info.use_spec_icons) then
-				if (self.spec and Details.class_specs_coords[self.spec]) then
-					texture:SetTexture(instance.row_info.spec_file)
-					texture:SetTexCoord(unpack(Details.class_specs_coords[self.spec]))
-					texture:SetVertexColor(1, 1, 1)
-					return
-				end
+			if (setSpecIcon(self.spec)) then
+				return
 			end
 		end
 
@@ -3457,21 +3474,13 @@ function Details:SetClassIcon(texture, instance, class) --[[exported]] --~icons
 		texture:SetVertexColor(classColor_Red, classColor_Green, classColor_Blue)
 
 	else
-		if (instance and instance.row_info.use_spec_icons) then
-			if (self.spec and Details.class_specs_coords[self.spec]) then
-				texture:SetTexture(instance.row_info.spec_file)
-				texture:SetTexCoord(unpack(Details.class_specs_coords[self.spec]))
-				texture:SetVertexColor(1, 1, 1)
-			else
-				texture:SetTexture(instance.row_info.icon_file or [[Interface\AddOns\DetailsWotlkPort\images\classes_small]])
-				texture:SetTexCoord(unpack(Details.class_coords[class]))
-				texture:SetVertexColor(1, 1, 1)
-			end
-		else
-			texture:SetTexture(instance and instance.row_info.icon_file or [[Interface\AddOns\DetailsWotlkPort\images\classes_small]])
-			texture:SetTexCoord(unpack(Details.class_coords[class]))
-			texture:SetVertexColor(1, 1, 1)
+		if (setSpecIcon(self.spec)) then
+			return
 		end
+
+		texture:SetTexture(instance and instance.row_info.icon_file or [[Interface\AddOns\DetailsWotlkPort\images\classes_small]])
+		texture:SetTexCoord(unpack(Details.class_coords[class]))
+		texture:SetVertexColor(1, 1, 1)
 	end
 end
 

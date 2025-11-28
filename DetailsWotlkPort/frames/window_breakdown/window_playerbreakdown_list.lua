@@ -259,7 +259,7 @@ local createPlayerScrollBox = function(breakdownWindowFrame, breakdownSideMenu, 
 		self.rankText:SetText(self.index) --not in use
 
 		--item level
-		local itemLevel = Details.ilevel:GetIlvl(self.playerObject.serial)
+		local itemLevel = Details.ilevel:GetIlvl(self.playerObject.serial, self.playerObject.nome)
 		self.itemLevelText:SetText((itemLevel and itemLevel.ilvl and math.floor(itemLevel.ilvl)) or (self.playerObject.ilvl) or (playerGear and playerGear.ilevel) or "0")
 
 		local actorSpecId = self.playerObject.spec

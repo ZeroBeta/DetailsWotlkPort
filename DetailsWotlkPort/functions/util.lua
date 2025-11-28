@@ -1388,7 +1388,15 @@ end
 		if (Details.playerclass == "ROGUE") then
 			--if the player has vanish aura, skip this check
 			---@type aurainfo
-			local auraInfo = C_UnitAuras.GetPlayerAuraBySpellID(11327)
+			local GetPlayerAuraBySpellID = (C_UnitAuras and C_UnitAuras.GetPlayerAuraBySpellID) or function(spellId)
+				for i = 1, 40 do
+					local _, _, _, _, _, _, _, _, _, spellID = UnitBuff("player", i)
+					if (spellID == spellId) then
+						return {spellID = spellID}
+					end
+				end
+			end
+			local auraInfo = GetPlayerAuraBySpellID(11327)
 			if (auraInfo) then
 				return true
 			end

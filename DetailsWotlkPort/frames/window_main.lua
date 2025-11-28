@@ -2170,9 +2170,24 @@ local iconFrame_OnEnter = function(self)
 			local serial = actor.serial
 			local name = actor:name()
 			local class = actor:class()
-			local spec = Details.cached_specs[serial] or actor.spec
+			local isAscensionClient = C_CharacterAdvancement and true or false
+			local cachedSpec = Details.cached_specs[serial]
+			local spec = cachedSpec or actor.spec
 			local talents = Details.cached_talents[serial]
-			local ilvl = Details.ilevel:GetIlvl(serial)
+			local ilvlData = Details.ilevel:GetIlvl(serial, name) or Details.ilevel:GetIlvl(nil, actor.nome)
+			local ilvlValue = (ilvlData and ilvlData.ilvl) or actor.ilvl or Details:GetItemLevelFromGuid(serial) or 0
+			local classicSpecIdByTabLocal = {
+				WARRIOR = {71, 72, 73},
+				PALADIN = {65, 66, 70},
+				HUNTER = {253, 254, 255},
+				ROGUE = {259, 260, 261},
+				PRIEST = {256, 257, 258},
+				DEATHKNIGHT = {250, 251, 252},
+				SHAMAN = {262, 263, 264},
+				MAGE = {62, 63, 64},
+				WARLOCK = {265, 266, 267},
+				DRUID = {102, 103, 105},
+			}
 
 			local iconSize = 20
 			local instance = Details:GetInstance(self.row.instance_id)
@@ -2183,11 +2198,102 @@ local iconFrame_OnEnter = function(self)
 
 			local classIcon, classL, classR, classT, classB = Details:GetClassIcon(class)
 
-			local specId, specName, specDescription, specIcon, specRole, specClass = DetailsFramework.GetSpecializationInfoByID(spec or 0) --thanks pas06
+			local isSelf = (serial and serial == UnitGUID("player")) or name == Details:GetFullName("player") or actor.nome == UnitName("player")
+			local function resolveSpec(id)
+				if (not id) then return end
+				local sid, sname, sdesc, sicon, srole, sclass = DetailsFramework.GetSpecializationInfoByID(id)
+				if (sclass and class and sclass ~= class) then
+					return
+				end
+				return sid, sname, sdesc, sicon, srole, sclass
+			end
+
+			local specId, specName, specDescription, specIcon, specRole, specClass = resolveSpec(spec or 0)
+			--if cached spec is wrong for class, try actor.spec as fallback
+			if (not specId and cachedSpec and actor.spec and cachedSpec ~= actor.spec) then
+				specId, specName, specDescription, specIcon, specRole, specClass = resolveSpec(actor.spec)
+			end
+			--if still nil or mismatched, infer from talent points (highest tree -> spec)
+			local bestLabel
+			if ((not specId) or (specClass and class and specClass ~= class)) and class and talents and type(talents) == "table" then
+				local points
+				if (talents.__names) then
+					points = {}
+					local maxIndex = math.min(3, math.max(#talents, #(talents.__names)))
+					for i = 1, maxIndex do
+						points[i] = talents[i] or 0
+					end
+					bestLabel = (talents.__names_full and talents.__names_full[maxIndex]) or talents.__names_full and talents.__names_full[1] or talents.__names[maxIndex] or talents.__names[1]
+				elseif (#talents >= 3 and type(talents[1]) == "number") then
+					points = {talents[1], talents[2], talents[3]}
+				end
+				if (points) then
+					local maxPts, maxIdx = -1, 1
+					for i = 1, #points do
+						local val = points[i] or 0
+						if (val > maxPts) then
+							maxPts = val
+							maxIdx = i
+						end
+					end
+					if (talents.__names_full and talents.__names_full[maxIdx]) then
+						bestLabel = talents.__names_full[maxIdx]
+					elseif (talents.__names and talents.__names[maxIdx]) then
+						bestLabel = talents.__names[maxIdx]
+					end
+					local mapping = classicSpecIdByTabLocal[class]
+					if (mapping and mapping[maxIdx]) then
+						specId, specName, specDescription, specIcon, specRole, specClass = DetailsFramework.GetSpecializationInfoByID(mapping[maxIdx])
+					end
+				end
+			end
+			--final guard: if spec class mismatches, drop it
+			if (specClass and class and specId and specClass ~= class) then
+				specId, specName, specDescription, specIcon, specRole, specClass = nil, nil, nil, nil, nil, nil
+			end
+			if (not specName and bestLabel) then
+				specName = tostring(bestLabel)
+			end
 			local specL, specR, specT, specB
-			if (specId) then
-				if (Details.class_specs_coords[specId]) then
-					specL, specR, specT, specB = unpack(Details.class_specs_coords[specId])
+			if (specId and Details.class_specs_coords[specId] and not isAscensionClient) then
+				specL, specR, specT, specB = unpack(Details.class_specs_coords[specId])
+			end
+
+			--fallback: if we have classic-style talent totals, use the highest tree to name/spec
+			if (not specName and talents and type(talents) == "table") then
+				local points
+				local labels
+				if (talents.__names) then
+					points = {}
+					labels = talents.__names
+					local maxIndex = math.min(3, math.max(#talents, #(talents.__names)))
+					for i = 1, maxIndex do
+						points[i] = talents[i] or 0
+					end
+				elseif (#talents >= 3 and type(talents[1]) == "number") then
+					points = {talents[1], talents[2], talents[3]}
+				end
+				if (points) then
+					local maxPts, maxIdx = -1, 1
+					for i = 1, #points do
+						if ((points[i] or 0) > maxPts) then
+							maxPts = points[i] or 0
+							maxIdx = i
+						end
+					end
+					if (labels and labels[maxIdx]) then
+						specName = tostring(labels[maxIdx])
+					end
+					--if still no name and we have a mapping, try to resolve it
+					if (not specId and class) then
+						local mapping = classicSpecIdByTabLocal[class]
+						if (mapping and mapping[maxIdx]) then
+							specId, specName, specDescription, specIcon, specRole, specClass = DetailsFramework.GetSpecializationInfoByID(mapping[maxIdx])
+							if (specId and Details.class_specs_coords[specId] and not isAscensionClient) then
+								specL, specR, specT, specB = unpack(Details.class_specs_coords[specId])
+							end
+						end
+					end
 				end
 			end
 
@@ -2205,30 +2311,92 @@ local iconFrame_OnEnter = function(self)
 				GameCooltip:AddIcon([[Interface\AddOns\DetailsWotlkPort\images\classes_small_alpha]], 1, 1, iconSize, iconSize, classL, classR, classT, classB)
 			end
 
+			local tooltipIconTexture = nil
+			local tooltipL, tooltipR, tooltipT, tooltipB = specL, specR, specT, specB
 			if (specL) then
-				GameCooltip:AddIcon([[Interface\AddOns\DetailsWotlkPort\images\spec_icons_normal_alpha]], 1, 2, iconSize, iconSize, specL, specR, specT, specB)
+				tooltipIconTexture = [[Interface\AddOns\DetailsWotlkPort\images\spec_icons_normal_alpha]]
+			elseif (specIcon) then
+				tooltipIconTexture = specIcon
+				tooltipL, tooltipR, tooltipT, tooltipB = 0, 1, 0, 1
+			elseif (classL) then
+				tooltipIconTexture = [[Interface\AddOns\DetailsWotlkPort\images\classes_small_alpha]]
+				tooltipL, tooltipR, tooltipT, tooltipB = classL, classR, classT, classB
+			end
+
+			if (tooltipIconTexture) then
+				GameCooltip:AddIcon(tooltipIconTexture, 1, 2, iconSize, iconSize, tooltipL, tooltipR, tooltipT, tooltipB)
 			else
 				GameCooltip:AddIcon([[Interface\GossipFrame\IncompleteQuestIcon]], 1, 2, iconSize, iconSize)
 			end
 			Details:AddTooltipHeaderStatusbar()
 
 			local talentString = ""
+			local hasTalents = false
+			local isAscensionClient = C_CharacterAdvancement and true or false
 
-			if (type(talents) == "table") then
-				if (talents and not bIsClassic) then
-					for i = 1, #talents do
-						local talentID, talentName, texture, selected, available = GetTalentInfoByID(talents[i])
-						if (texture) then
-							talentString = talentString ..  " |T" .. texture .. ":" .. 24 .. ":" .. 24 ..":0:0:64:64:4:60:4:60|t"
+			if (isAscensionClient) then
+				local needsAscension = (type(talents) ~= "table") or not talents.__names
+				if (not needsAscension and #talents >= 3 and talents[1] == 0 and talents[2] == 0 and talents[3] == 0) then
+					needsAscension = true
+				end
+
+				if (needsAscension and Details.GetAscensionTalentPoints) then
+					local unitid = Details:GetUnitId(actor.nome)
+					if (unitid) then
+						local ascensionTalents = Details.GetAscensionTalentPoints(unitid)
+						if (ascensionTalents) then
+							talents = ascensionTalents
+							Details.cached_talents[serial] = ascensionTalents
+						elseif (C_Timer and C_Timer.After) then
+							C_Timer.After(0.5, function()
+								local late = Details.GetAscensionTalentPoints(unitid)
+								if (late) then
+									Details.cached_talents[serial] = late
+									--force tooltip rebuild if still on this row
+									if (self and self:IsVisible() and self.row and self.row.minha_tabela == actor) then
+										local enter = self:GetScript("OnEnter")
+										if (type(enter) == "function") then
+											enter(self)
+										end
+									end
+								end
+							end)
 						end
 					end
 				end
 			end
 
+			if (type(talents) == "table") then
+				if (talents.__names) then
+					local pieces = {}
+					local names = talents.__names_full or talents.__names
+					local maxIndex = math.max(#talents, #names)
+					for i = 1, maxIndex do
+						local label = names[i] and tostring(names[i]) or tostring(i)
+						local pts = talents[i] or 0
+						pieces[#pieces+1] = label .. ":" .. pts
+					end
+					talentString = table.concat(pieces, " / ")
+					hasTalents = true
+				elseif (talents and not bIsClassic) then
+					for i = 1, #talents do
+						local talentID, talentName, texture, selected, available = GetTalentInfoByID(talents[i])
+						if (texture) then
+							talentString = talentString ..  " |T" .. texture .. ":" .. 24 .. ":" .. 24 ..":0:0:64:64:4:60:4:60|t"
+							hasTalents = true
+						end
+					end
+				elseif (bIsClassic and #talents >= 3 and type(talents[1]) == "number") then
+					--classic-style points per tree
+					talentString = string.format("%d/%d/%d", talents[1], talents[2], talents[3])
+					hasTalents = true
+				end
+			end
+
 			local gotInfo
 				local localizedItemLevelString = _G.STAT_AVERAGE_ITEM_LEVEL or "Item Level"
-				if (ilvl) then
-					GameCooltip:AddLine((localizedItemLevelString or "Item Level") .. ":" , ilvl and "|T:" .. 24 .. ":" .. 24 ..":0:0:64:64:4:60:4:60|t" .. floor(ilvl.ilvl) or "|T:" .. 24 .. ":" .. 24 ..":0:0:64:64:4:60:4:60|t ??") --Loc from GlobalStrings.lua
+				if (ilvlValue and ilvlValue > 0) then
+					GameCooltip:AddLine((localizedItemLevelString or "Item Level") .. ":" , "|T:" .. 24 .. ":" .. 24 ..":0:0:64:64:4:60:4:60|t" .. floor(ilvlValue)) --Loc from GlobalStrings.lua
 					GameCooltip:AddIcon([[]], 1, 1, 1, 20)
 					Details:AddTooltipBackgroundStatusbar()
 					gotInfo = true
@@ -2247,7 +2415,7 @@ local iconFrame_OnEnter = function(self)
 				Details:AddTooltipBackgroundStatusbar()
 				gotInfo = true
 
-			elseif (gotInfo) then
+			elseif (gotInfo and not isAscensionClient and not hasTalents) then
 				GameCooltip:AddLine(localizedTalentsString .. ":", Loc["STRING_QUERY_INSPECT_REFRESH"])
 				GameCooltip:AddIcon([[]], 1, 1, 1, 24)
 				Details:AddTooltipBackgroundStatusbar()
@@ -2525,11 +2693,6 @@ local icon_frame_on_click_up = function(self, button)
 		return
 	end
 
-	if (Details.in_combat) then
-		Details:Msg(Loc["STRING_QUERY_INSPECT_FAIL1"])
-		return
-	end
-
 	if (self.showing == "actor") then
 
 		if (Details.ilevel.core:HasQueuedInspec (self.unitname)) then
@@ -2571,6 +2734,84 @@ local icon_frame_on_click_up = function(self, button)
 		end
 
 		local does_query = Details.ilevel.core:QueryInspect (self.unitname, icon_frame_inspect_callback, self)
+		do
+			local debugTalents
+			local isAscensionClient = C_CharacterAdvancement and true or false
+			print("Details debug: ascension client?", tostring(isAscensionClient), "C_CharacterAdvancement", tostring(C_CharacterAdvancement), "GetAscensionTalentPoints", tostring(Details.GetAscensionTalentPoints))
+			if (isAscensionClient and Details.GetAscensionTalentPoints) then
+				local function toLine(tbl)
+					if (type(tbl) ~= "table") then
+						return
+					end
+					local names = tbl.__names or {}
+					local maxIndex = math.max(#tbl, #names)
+					if (maxIndex == 0) then
+						return
+					end
+					local parts = {}
+					for i = 1, maxIndex do
+						local label = names[i] and tostring(names[i]) or tostring(i)
+						local short = label:sub(1, 3)
+						parts[#parts+1] = short .. ":" .. (tbl[i] or 0)
+					end
+					return table.concat(parts, " / ")
+				end
+
+				--resolve the unitid for the clicked name
+				local unitid = Details.ilevel.core and Details.ilevel.core.GetUnitIdForName and Details.ilevel.core:GetUnitIdForName(self.unitname)
+				local guid = unitid and UnitGUID(unitid)
+				print("Details debug: click refresh unit", tostring(self.unitname or "unknown"), "unitid:", tostring(unitid), "guid:", tostring(guid))
+
+				--first, show cached talents if available
+				if (guid) then
+					debugTalents = toLine(Details.cached_talents[guid])
+					print("Details debug: cached talents", debugTalents or "nil")
+				end
+
+				--then, try to pull live talents
+				if (unitid) then
+					local pts = Details.GetAscensionTalentPoints(unitid)
+					debugTalents = toLine(pts) or debugTalents or "no ascension points yet"
+					print("Details debug: live talents", debugTalents or "nil")
+					if ((not pts or not pts[1]) and C_Timer and C_Timer.After) then
+						C_Timer.After(0.5, function()
+							local retry = Details.GetAscensionTalentPoints(unitid)
+							local retryLine = toLine(retry)
+							if (retryLine) then
+								Details.cached_talents[guid] = retry
+								--force tooltip rebuild if still on this row
+								if (self and self:IsVisible() and self.row and self.row.minha_tabela == actor) then
+									local enter = self:GetScript("OnEnter")
+									if (type(enter) == "function") then
+										enter(self)
+									end
+								end
+								print("Details debug: live talents (delayed)", retryLine)
+							end
+						end)
+					end
+				else
+					debugTalents = debugTalents or "no unitid"
+				end
+			else
+				--fallback: raw attempt on target for visibility
+				if (Details.GetAscensionTalentPoints and UnitExists("target")) then
+					local pts = Details.GetAscensionTalentPoints("target")
+					local names = pts and pts.__names or {}
+					local maxIndex = pts and math.max(#pts, #names) or 0
+					if (maxIndex > 0) then
+						local parts = {}
+						for i = 1, maxIndex do
+							local label = names[i] and tostring(names[i]) or tostring(i)
+							parts[#parts+1] = label:sub(1, 3) .. ":" .. (pts[i] or 0)
+						end
+						debugTalents = table.concat(parts, " / ")
+						print("Details debug: target talents fallback", debugTalents)
+					end
+				end
+			end
+			print("Details debug: talent refresh click", tostring(self.unitname or "unknown"), "queued:", tostring(does_query), "talents:", debugTalents or "n/a")
+		end
 
 		if (self.icon_animation) then
 			return
