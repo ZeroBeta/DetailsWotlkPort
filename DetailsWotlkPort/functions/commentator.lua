@@ -14,7 +14,7 @@ function Details222.LoadCommentatorFunctions()
     local frameWidth = 300
     local frameHeight = 400
 
-    local bestInShowFrame = CreateFrame("frame", "DetailsBestInShowFrame", UIParent, "BackdropTemplate")
+    local bestInShowFrame = CreateFrame("frame", "DetailsBestInShowFrame", UIParent, nil)
     bestInShowFrame:SetSize(frameWidth, frameHeight)
     bestInShowFrame:SetPoint("left", UIParent, "left", 0, 0)
     bestInShowFrame:Hide()

@@ -285,7 +285,7 @@ function Details:CreateEventTrackerFrame(parentObject, name)
 	local SharedMedia = LibStub:GetLibrary ("LibSharedMedia-3.0")
 
 	--> screen frame
-		local screenFrame = CreateFrame("frame", name, parentObject or UIParent,"BackdropTemplate")
+		local screenFrame = CreateFrame("frame", name, parentObject or UIParent,nil)
 		screenFrame:SetPoint("center", UIParent, "center")
 
 		if (not DetailsFramework.IsDragonflightAndBeyond() and not DetailsFramework.IsNonRetailWowWithRetailAPI()) then
@@ -378,7 +378,7 @@ function Details:CreateEventTrackerFrame(parentObject, name)
 
 		--create a line on the scroll frame
 		local scroll_createline = function(self, index)
-			local line = CreateFrame("frame", "$parentLine" .. index, self,"BackdropTemplate")
+			local line = CreateFrame("frame", "$parentLine" .. index, self,nil)
 			line:EnableMouse(false)
 			line.Index = index --hack to not trigger error on UpdateWorldTrackerLines since Index is set after this function is ran
 
@@ -387,7 +387,7 @@ function Details:CreateEventTrackerFrame(parentObject, name)
 			--line:SetBackdropColor(1, 1, 1, 0.75)
 
 			--statusbar
-			local statusbar = CreateFrame("statusbar", "$parentStatusBar", line,"BackdropTemplate")
+			local statusbar = CreateFrame("statusbar", "$parentStatusBar", line,nil)
 			statusbar:SetAllPoints()
 			local statusbartexture = statusbar:CreateTexture(nil, "border")
 			statusbar:SetStatusBarTexture(statusbartexture)

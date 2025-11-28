@@ -1413,7 +1413,7 @@ local compare_create = function(tab, frame)
         spellicon:SetPoint("topleft", parent, "topleft", 4, y)
         spellicon:SetTexture([[Interface\InventoryItems\WoWUnknownItem01]])
 
-        local bar = CreateFrame("StatusBar", name, parent,"BackdropTemplate")
+        local bar = CreateFrame("StatusBar", name, parent,nil)
         bar.index = index
         bar:SetPoint("topleft", spellicon, "topright", 0, 0)
         bar:SetPoint("topright", parent, "topright", -4, y)
@@ -1478,7 +1478,7 @@ local compare_create = function(tab, frame)
     end
 
     local create_tooltip = function(name)
-        local tooltip = CreateFrame("frame", name, UIParent,"BackdropTemplate")
+        local tooltip = CreateFrame("frame", name, UIParent,nil)
 
         Details.gump:CreateBorder (tooltip)
 
@@ -1583,7 +1583,7 @@ local compare_create = function(tab, frame)
     end
 
     local create_tooltip_target = function(name)
-        local tooltip = CreateFrame("frame", name, UIParent,"BackdropTemplate")
+        local tooltip = CreateFrame("frame", name, UIParent,nil)
         tooltip:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\AddOns\DetailsWotlkPort\images\background]], tileSize = 64, tile = true})
         tooltip:SetBackdropColor(0, 0, 0, 1)
         tooltip:SetBackdropBorderColor(0, 0, 0, 1)
@@ -1624,7 +1624,7 @@ local compare_create = function(tab, frame)
             spellicon:SetPoint("topleft", parent, "topleft", 1, y)
             spellicon:SetTexture([[Interface\InventoryItems\WoWUnknownItem01]])
 
-            local bar = CreateFrame("StatusBar", name .. "Bar" .. index, parent, "BackdropTemplate")
+            local bar = CreateFrame("StatusBar", name .. "Bar" .. index, parent, nil)
             bar.index = index
             bar:SetPoint("topleft", spellicon, "topright", 0, 0)
             bar:SetPoint("topright", parent, "topright", -1, y)
@@ -1746,8 +1746,8 @@ local compare_create = function(tab, frame)
 
 --------------------------------------------
 
-    local frame2 = CreateFrame("frame", "DetailsPlayerComparisonBox2", frame,"BackdropTemplate")
-    local frame3 = CreateFrame("frame", "DetailsPlayerComparisonBox3", frame,"BackdropTemplate")
+    local frame2 = CreateFrame("frame", "DetailsPlayerComparisonBox2", frame,nil)
+    local frame3 = CreateFrame("frame", "DetailsPlayerComparisonBox3", frame,nil)
 
     frame2:SetPoint("topleft", frame1, "topright", 27, 0)
     frame2:SetSize(spell_compare_frame_width[2], spell_compare_frame_height)
@@ -1792,7 +1792,7 @@ local compare_create = function(tab, frame)
     end
 
     --cria o box dos targets
-    local target2 = CreateFrame("frame", "DetailsPlayerComparisonTarget2", frame,"BackdropTemplate")
+    local target2 = CreateFrame("frame", "DetailsPlayerComparisonTarget2", frame,nil)
     target2:SetSize(spell_compare_frame_width[2], target_compare_frame_height)
     target2:SetPoint("topleft", frame2, "bottomleft", 0, -10)
     target2:SetBackdrop(frame_backdrop)
@@ -1853,7 +1853,7 @@ local compare_create = function(tab, frame)
     end
 
     --cria o box dos targets
-    local target3 = CreateFrame("frame", "DetailsPlayerComparisonTarget3", frame,"BackdropTemplate")
+    local target3 = CreateFrame("frame", "DetailsPlayerComparisonTarget3", frame,nil)
     target3:SetSize(spell_compare_frame_width[3], target_compare_frame_height)
     target3:SetPoint("topleft", frame3, "bottomleft", 0, -10)
     target3:SetBackdrop(frame_backdrop)

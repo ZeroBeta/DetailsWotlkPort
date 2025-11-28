@@ -184,7 +184,7 @@ function Details:CreateAPI2Frame()
         --create lines
         for i = 1, lineAmount do 
             api2ScrollMenu:CreateLine (function(self, index)
-                local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+                local line = CreateFrame("button", "$parentLine" .. index, self, nil)
                 line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(lineHeight+1)) - 1)
                 line:SetSize(scrollWidth - 2, lineHeight)
                 line.index = index
@@ -231,7 +231,7 @@ function Details:CreateAPI2Frame()
             parametersYStart = parametersYStart - 20
             
             local space1, space2, space3 = 150, 300, 450
-            local parametersHeader = CreateFrame("frame", nil, Api2Frame, "BackdropTemplate")
+            local parametersHeader = CreateFrame("frame", nil, Api2Frame, nil)
             parametersHeader:SetSize(infoWidth, 20)
             parametersHeader:SetPoint("topleft", Api2Frame, "topleft", xAnchorPoint, parametersYStart)
             parametersHeader:SetBackdrop({bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -266,7 +266,7 @@ function Details:CreateAPI2Frame()
             
             for i = 1, parametersAmount do
                 local parameterLine = {}
-                local f = CreateFrame("frame", nil, Api2Frame, "BackdropTemplate")
+                local f = CreateFrame("frame", nil, Api2Frame, nil)
                 f:SetSize(infoWidth, 20)
                 f:SetScript("OnEnter", parameterOnEnter)
                 f:SetScript("OnLeave", parameterOnLeave)
@@ -297,7 +297,7 @@ function Details:CreateAPI2Frame()
             returnYStart = returnYStart - 20
             
             local space1 = 200
-            local returnHeader = CreateFrame("frame", nil, Api2Frame, "BackdropTemplate")
+            local returnHeader = CreateFrame("frame", nil, Api2Frame, nil)
             returnHeader:SetSize(infoWidth, 20)
             returnHeader:SetPoint("topleft", Api2Frame, "topleft", xAnchorPoint, returnYStart)
             returnHeader:SetBackdrop({bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -316,7 +316,7 @@ function Details:CreateAPI2Frame()
             
             for i = 1, returnAmount do
                 local parameterLine = {}
-                local f = CreateFrame("frame", nil, Api2Frame, "BackdropTemplate")
+                local f = CreateFrame("frame", nil, Api2Frame, nil)
                 f:SetSize(infoWidth, 20)
                 f:SetScript("OnEnter", returnOnEnter)
                 f:SetScript("OnLeave", returnOnLeave)

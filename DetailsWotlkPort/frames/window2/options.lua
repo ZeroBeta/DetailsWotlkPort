@@ -94,7 +94,7 @@ end
 
 --function to create the options panel, it'll be called from the open function if the panel isn't created yet
 function AllInOneWindow:CreateOptionsPanel()
-    optionsPanel = CreateFrame("frame", "DetailsAllInOneWindowOptionsPanel", UIParent, "BackdropTemplate")
+    optionsPanel = CreateFrame("frame", "DetailsAllInOneWindowOptionsPanel", UIParent, nil)
     optionsPanel:SetSize(600, 400)
     optionsPanel:SetPoint("center", UIParent, "center", 0, 0)
     optionsPanel:SetFrameStrata("HIGH")
@@ -111,7 +111,7 @@ function AllInOneWindow:CreateOptionsPanel()
         end
     end)
 
-    local headerOptionsFrame = CreateFrame("frame", "$parentHeaderOptionsFrame", optionsPanel, "BackdropTemplate")
+    local headerOptionsFrame = CreateFrame("frame", "$parentHeaderOptionsFrame", optionsPanel, nil)
     headerOptionsFrame:SetPoint("topleft", optionsPanel, "topleft", 2, -30)
     headerOptionsFrame:SetPoint("bottomright", optionsPanel, "bottomright", -2, 2)
     --detailsFramework:ApplyStandardBackdrop(headerOptionsFrame)

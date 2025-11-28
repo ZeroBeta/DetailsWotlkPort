@@ -914,7 +914,7 @@ local createLineForWindow = function(scrollFrame, lineId) --~line
     local windowFrame = scrollFrame:GetParent()
 
     ---@type details_allinonewindow_line
-    local line = CreateFrame("Button", "$parentLine" .. lineId, scrollFrame, "BackdropTemplate")
+    local line = CreateFrame("Button", "$parentLine" .. lineId, scrollFrame, nil)
     line:EnableMouse(true)
     line:RegisterForClicks("AnyUp", "AnyDown")
     line:SetScript("OnEnter", windowLineOnEnter)
@@ -1014,7 +1014,7 @@ local createLineForWindow = function(scrollFrame, lineId) --~line
     line.FramesForData[#line.FramesForData+1] = playerIconFrame
 
     ---@type details_allinonewindow_line_statusbar_expandbutton
-    local expandButton = CreateFrame("button", "$parentExpandButton", statusBar, "BackdropTemplate")
+    local expandButton = CreateFrame("button", "$parentExpandButton", statusBar, nil)
     expandButton:SetSize(20, 20) --this size is updated later in an update function
     expandButton:SetFrameLevel(statusBar:GetFrameLevel()+1)
     expandButton:RegisterForClicks("LeftButtonDown")
@@ -1067,7 +1067,7 @@ function AllInOneWindow:CreateWindowFrame() --~create
     local windowId = self:GetNumWindowsCreated()+1
 
     ---@type details_allinonewindow_frame
-    local windowFrame = CreateFrame("Frame", "DetailsAllInOneWindow" .. windowId, UIParent, "BackdropTemplate")
+    local windowFrame = CreateFrame("Frame", "DetailsAllInOneWindow" .. windowId, UIParent, nil)
     detailsFramework:Mixin(windowFrame, windowFunctionsMixin)
     windowFrame.windowId = windowId
 

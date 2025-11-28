@@ -991,7 +991,7 @@ end
 		buttonObject.is_locked = true
 		buttonObject.options = {OnGrab = false}
 
-		buttonObject.button = CreateFrame("button", name, parent, "BackdropTemplate")
+		buttonObject.button = CreateFrame("button", name, parent, nil)
 		detailsFramework:Mixin(buttonObject.button, detailsFramework.WidgetFunctions)
 
 		createButtonWidgets(buttonObject.button)
@@ -1399,7 +1399,7 @@ detailsFramework.TabButtonMixin = {
 ---@return df_tabbutton
 function detailsFramework:CreateTabButton(parent, frameName)
 	---@type df_tabbutton
-	local tabButton = CreateFrame("button", frameName, parent, "BackdropTemplate")
+	local tabButton = CreateFrame("button", frameName, parent, nil)
 	tabButton:SetSize(50, 20)
 	tabButton.bIsSelected = false
 

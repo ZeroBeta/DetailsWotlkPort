@@ -560,7 +560,7 @@ detailsFramework.HeaderMixin = {
 		if (not columnHeader) then
 			--create a new column header
 			---@type df_headercolumnframe
-			columnHeader = CreateFrame("button", "$parentHeaderIndex" .. nextHeader, self, "BackdropTemplate")
+			columnHeader = CreateFrame("button", "$parentHeaderIndex" .. nextHeader, self, nil)
 
 			--store the mouse xy position when onmousedown the column header, when the mouse is up, before calling its onclick function, check if the mouse position is the same, if not ignore the click
 			--this prevents the click event when the user is trying to move the parent frame
@@ -742,7 +742,7 @@ local default_header_options = {
 function detailsFramework:CreateHeader(parent, headerTable, options, frameName)
 	---create the header frame which is returned by this function
 	---@type df_headerframe
-	local newHeader = CreateFrame("frame", frameName or ("$parentHeaderLine" .. math.random(100000000)), parent, "BackdropTemplate")
+	local newHeader = CreateFrame("frame", frameName or ("$parentHeaderLine" .. math.random(100000000)), parent, nil)
 
 	detailsFramework:Mixin(newHeader, detailsFramework.OptionsFunctions)
 	detailsFramework:Mixin(newHeader, detailsFramework.HeaderMixin)

@@ -78,7 +78,7 @@ function Details222.AutoRunCode.OpenRunCodeWindow()
         codeEditor.__background:SetAllPoints()
 
         --code compile error warning
-        local errortext_frame = CreateFrame("frame", nil, codeEditor, "BackdropTemplate")
+        local errortext_frame = CreateFrame("frame", nil, codeEditor, nil)
         errortext_frame:SetPoint("bottomleft", codeEditor, "bottomleft", 1, 1)
         errortext_frame:SetPoint("bottomright", codeEditor, "bottomright", -1, 1)
         errortext_frame:SetHeight(20)

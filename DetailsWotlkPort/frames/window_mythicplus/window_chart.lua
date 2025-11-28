@@ -22,7 +22,7 @@ local UISpecialFrames = UISpecialFrames
 
 function mythicDungeonCharts.ShowChart()
 	if (not mythicDungeonCharts.Frame) then
-		mythicDungeonCharts.Frame = CreateFrame("frame", "DetailsMythicDungeonChartFrame", UIParent, "BackdropTemplate")
+		mythicDungeonCharts.Frame = CreateFrame("frame", "DetailsMythicDungeonChartFrame", UIParent, nil)
 		local dungeonChartFrame = mythicDungeonCharts.Frame
 
 		--get the screen width
@@ -37,7 +37,7 @@ function mythicDungeonCharts.ShowChart()
 		dungeonChartFrame.__background:SetAlpha(0.834)
 
 		--minimized frame
-		mythicDungeonCharts.FrameMinimized = CreateFrame("frame", "DetailsMythicDungeonChartFrameminimized", UIParent, "BackdropTemplate")
+		mythicDungeonCharts.FrameMinimized = CreateFrame("frame", "DetailsMythicDungeonChartFrameminimized", UIParent, nil)
 		local fMinimized = mythicDungeonCharts.FrameMinimized
 		fMinimized:SetSize(160, 24)
 		fMinimized:SetPoint("center", UIParent, "center", 0, 0)
@@ -50,7 +50,7 @@ function mythicDungeonCharts.ShowChart()
 		dungeonChartFrame.IsMinimized = false
 
 		--titlebar
-			local titlebar = CreateFrame("frame", nil, dungeonChartFrame, "BackdropTemplate")
+			local titlebar = CreateFrame("frame", nil, dungeonChartFrame, nil)
 			titlebar:SetPoint("topleft", dungeonChartFrame, "topleft", 2, -3)
 			titlebar:SetPoint("topright", dungeonChartFrame, "topright", -2, -3)
 			titlebar:SetHeight(20)
@@ -65,7 +65,7 @@ function mythicDungeonCharts.ShowChart()
 			dungeonChartFrame.TitleText = titleLabel
 
 		--titlebar when minimized
-			local titlebarMinimized = CreateFrame("frame", nil, fMinimized, "BackdropTemplate")
+			local titlebarMinimized = CreateFrame("frame", nil, fMinimized, nil)
 			titlebarMinimized:SetPoint("topleft", fMinimized, "topleft", 2, -3)
 			titlebarMinimized:SetPoint("topright", fMinimized, "topright", -2, -3)
 			titlebarMinimized:SetHeight(20)
@@ -337,7 +337,7 @@ function mythicDungeonCharts.RefreshBossTimeline(dungeonChartFrame, elapsedTime)
 		local bossWidget = dungeonChartFrame.BossWidgetsFrame.Widgets[i]
 
 		if (not bossWidget) then
-			local newBossWidget = CreateFrame("frame", "$parentBossWidget" .. i, dungeonChartFrame.BossWidgetsFrame, "BackdropTemplate")
+			local newBossWidget = CreateFrame("frame", "$parentBossWidget" .. i, dungeonChartFrame.BossWidgetsFrame, nil)
 			newBossWidget:SetSize(64, 32)
 			newBossWidget:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
 			newBossWidget:SetBackdropColor(0, 0, 0, 0.1)
@@ -448,7 +448,7 @@ function mythicDungeonCharts.CreateCloseMinimizeButtons(dungeonChartFrame)
 end
 
 function mythicDungeonCharts.CreateBossWidgets(dungeonChartFrame)
-	dungeonChartFrame.BossWidgetsFrame = CreateFrame("frame", "$parentBossFrames", dungeonChartFrame, "BackdropTemplate")
+	dungeonChartFrame.BossWidgetsFrame = CreateFrame("frame", "$parentBossFrames", dungeonChartFrame, nil)
 	dungeonChartFrame.BossWidgetsFrame:SetFrameLevel(dungeonChartFrame:GetFrameLevel()+10)
 	dungeonChartFrame.BossWidgetsFrame.Widgets = {}
 

@@ -528,7 +528,7 @@ detailsFramework.EditorMixin = {
                 local overTheTopFrame = editorFrame:GetOverTheTopFrame()
 
                 for i = 1, 9 do
-                    local anchorFrame = CreateFrame("button", "$parentAnchorFrame" .. i, overTheTopFrame, "BackdropTemplate")
+                    local anchorFrame = CreateFrame("button", "$parentAnchorFrame" .. i, overTheTopFrame, nil)
                     anchorFrame:SetSize(8, 8)
                     anchorFrame:SetBackdrop({bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
                     anchorFrame:SetBackdropColor(1, 0, 0, 0.5)
@@ -670,7 +670,7 @@ detailsFramework.EditorMixin = {
 
         for i = 1, amountOfMovers do
             ---@type df_editor_mover
-            local moverFrame = CreateFrame("button", "$parentMover" .. i, UIParent, "BackdropTemplate")
+            local moverFrame = CreateFrame("button", "$parentMover" .. i, UIParent, nil)
             moverFrame:SetFrameStrata("TOOLTIP")
             moverFrame:SetSize(16, 16)
             moverFrame:SetClampedToScreen(true)
@@ -1208,7 +1208,7 @@ detailsFramework.EditorMixin = {
         end
 
 		local createLineFunc = function(self, index) -- ~createline --~line
-			local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+			local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 			line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(scroll_line_height+1)) - 1)
 			line:SetSize(scroll_width - 2, scroll_line_height)
 
@@ -1310,7 +1310,7 @@ local editorDefaultOptions = {
 
 function detailsFramework:CreateEditor(parent, name, options)
     name = name or ("DetailsFrameworkEditor" .. math.random(100000, 10000000))
-    local editorFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+    local editorFrame = CreateFrame("frame", name, parent, nil)
 
     detailsFramework:Mixin(editorFrame, detailsFramework.EditorMixin)
     detailsFramework:Mixin(editorFrame, detailsFramework.OptionsFunctions)
@@ -1327,7 +1327,7 @@ function detailsFramework:CreateEditor(parent, name, options)
 
     --The options frame holds the options for the object being edited. It is used as the parent frame for the BuildMenuVolatile() function.
     ---@type df_menu
-    local optionsFrame = CreateFrame("frame", name .. "OptionsFrame", editorFrame, "BackdropTemplate")
+    local optionsFrame = CreateFrame("frame", name .. "OptionsFrame", editorFrame, nil)
     optionsFrame:SetSize(editorFrame.options.options_width, 5000)
 
     local canvasScrollBoxOptions = {

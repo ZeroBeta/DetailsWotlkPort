@@ -150,7 +150,7 @@ function Details:ScrollDamage()
 		end
 
 		local createLineFunc = function(self, index)
-			local line = CreateFrame("button", "$parentLine" .. index, self,"BackdropTemplate")
+			local line = CreateFrame("button", "$parentLine" .. index, self,nil)
 			line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(scroll_line_height+1)) - 1)
 			line:SetSize(scroll_width - 2, scroll_line_height)
 
@@ -262,7 +262,7 @@ function Details:ScrollDamage()
 		end)
 
 		--statusbar and auto open checkbox
-		local statusBar = CreateFrame("frame", nil, DetailsScrollDamage, "BackdropTemplate")
+		local statusBar = CreateFrame("frame", nil, DetailsScrollDamage, nil)
 		statusBar:SetPoint("bottomleft", DetailsScrollDamage, "bottomleft")
 		statusBar:SetPoint("bottomright", DetailsScrollDamage, "bottomright")
 		statusBar:SetHeight(20)

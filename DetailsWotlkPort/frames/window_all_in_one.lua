@@ -437,7 +437,7 @@
 
         --menu support frame is the frame which will parent the menu buttons (cogwheel, segments, report button, etc)
         CreateMenuSupportFrame = function(titleBar)
-            local menuSupportFrame = CreateFrame("frame", "$parentMenuSupportFrame", titleBar, "BackdropTemplate")
+            local menuSupportFrame = CreateFrame("frame", "$parentMenuSupportFrame", titleBar, nil)
             titleBar.MenuSupportFrame = menuSupportFrame
             detailsFramework:Mixin(menuSupportFrame, menuSupportFrameMixin)
             menuSupportFrame:Constructor()
@@ -517,7 +517,7 @@
         end,
 
         CreateTitleBar = function(window)
-            local titleBar = CreateFrame("frame", "$parentTitleBar", window, "BackdropTemplate")
+            local titleBar = CreateFrame("frame", "$parentTitleBar", window, nil)
             window.TitleBar = titleBar
             df:Mixin(titleBar, titleBarMixin)
             titleBar:Constructor()
@@ -573,7 +573,7 @@
     --create only the frame for a new window ~newwindow ñewwindow
     function Details.AllInOneWindow.CreateFrame(settingId)
         --create the new window
-        local newFrame = CreateFrame("frame", "DetailsNewWindow" .. settingId, UIParent, "BackdropTemplate")
+        local newFrame = CreateFrame("frame", "DetailsNewWindow" .. settingId, UIParent, nil)
         newFrame.id = settingId
         df:Mixin(newFrame, AllInOneWindowMixin)
 
@@ -656,7 +656,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 
 function DetailsPrivite.WindowTooltip.CreateTooltipFrame()
-    local damageDoneTooltipFrame = CreateFrame("frame", "DetailsWindowTooltipFrame", UIParent, "BackdropTemplate")
+    local damageDoneTooltipFrame = CreateFrame("frame", "DetailsWindowTooltipFrame", UIParent, nil)
     DetailsFramework:ApplyStandardBackdrop(damageDoneTooltipFrame)
 
     --create header

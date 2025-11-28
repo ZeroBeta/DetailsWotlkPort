@@ -312,7 +312,7 @@
 		pluginFlag = pluginFlag or 0x0
 		local newPluginObject = {__options = pluginFlag, __enabled = true, RegisterEvent = registerEventFunc, UnregisterEvent = unregisterEventFunc}
 
-		local pluginFrame = CreateFrame("Frame", frameName, UIParent, "BackdropTemplate")
+		local pluginFrame = CreateFrame("Frame", frameName, UIParent, nil)
 		pluginFrame:RegisterEvent("PLAYER_LOGIN")
 		pluginFrame:RegisterEvent("PLAYER_LOGOUT")
 		pluginFrame:SetFrameStrata("HIGH")
@@ -449,7 +449,7 @@
 			return optionsFrame
 
 		elseif (template == 1) then
-			local optionsFrame = CreateFrame("frame", name, UIParent, "BackdropTemplate")
+			local optionsFrame = CreateFrame("frame", name, UIParent, nil)
 			table.insert(UISpecialFrames, name)
 			optionsFrame:SetSize(500, 200)
 			optionsFrame:SetMovable(true)
@@ -505,7 +505,7 @@
 	end
 
 	function Details:CreatePluginWindowContainer()
-		local pluginContainerFrame = CreateFrame("frame", "DetailsPluginContainerWindow", UIParent, "BackdropTemplate")
+		local pluginContainerFrame = CreateFrame("frame", "DetailsPluginContainerWindow", UIParent, nil)
 		pluginContainerFrame:EnableMouse(true)
 		pluginContainerFrame:SetMovable(true)
 		pluginContainerFrame:SetPoint("center", UIParent, "center", 0, 0)
@@ -542,7 +542,7 @@
 		pluginContainerFrame.scaleBar = scaleBar
 
 		--left side bar menu
-		local optionsLeftSideBarMenu = CreateFrame("frame", "$parentMenuFrame", pluginContainerFrame, "BackdropTemplate")
+		local optionsLeftSideBarMenu = CreateFrame("frame", "$parentMenuFrame", pluginContainerFrame, nil)
 		detailsFramework:AddRoundedCornersToFrame(optionsLeftSideBarMenu, Details.PlayerBreakdown.RoundedCornerPreset)
 		optionsLeftSideBarMenu:SetPoint("topright", pluginContainerFrame, "topleft", -2, 0)
 		optionsLeftSideBarMenu:SetPoint("bottomright", pluginContainerFrame, "bottomleft", -2, 0)
@@ -550,7 +550,7 @@
 		pluginContainerFrame.optionsLeftSideBarMenu = optionsLeftSideBarMenu
 
 		--statusbar
-		local statusBar = CreateFrame("frame", nil, optionsLeftSideBarMenu, "BackdropTemplate")
+		local statusBar = CreateFrame("frame", nil, optionsLeftSideBarMenu, nil)
 		statusBar:SetPoint("bottomleft", pluginContainerFrame, "bottomleft", 7, 5)
 		statusBar:SetPoint("bottomright", pluginContainerFrame, "bottomright", 0, 5)
 		statusBar:SetHeight(16)
@@ -577,7 +577,7 @@
 		bigDogRowTexture:Hide()
 
 		--tools title bar
-		local titleBarTools = CreateFrame("frame", "$parentToolsHeader", optionsLeftSideBarMenu, "BackdropTemplate")
+		local titleBarTools = CreateFrame("frame", "$parentToolsHeader", optionsLeftSideBarMenu, nil)
 		PixelUtil.SetPoint(titleBarTools, "topleft", optionsLeftSideBarMenu, "topleft", 2, -3)
 		PixelUtil.SetPoint(titleBarTools, "topright", optionsLeftSideBarMenu, "topright", -2, -3)
 		titleBarTools:SetHeight(pluginContainerFrame.TitleHeight)

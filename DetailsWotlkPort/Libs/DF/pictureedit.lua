@@ -9,7 +9,7 @@ local texCoordinates
 
 local CreateImageEditorFrame = function()
 
-	local background_frame = CreateFrame("frame", "DetailsFrameworkImageEditBackground", UIParent, "BackdropTemplate")
+	local background_frame = CreateFrame("frame", "DetailsFrameworkImageEditBackground", UIParent, nil)
 	background_frame:SetPoint("center", UIParent, "center")
 	background_frame:SetFrameStrata("TOOLTIP")
 	background_frame:SetSize(790, 560)
@@ -352,7 +352,7 @@ local CreateImageEditorFrame = function()
 			end
 		end)
 
-		local resizer = CreateFrame("Button", nil, editorWindow.widget, "BackdropTemplate")
+		local resizer = CreateFrame("Button", nil, editorWindow.widget, nil)
 		resizer:SetNormalTexture([[Interface\AddOns\DetailsWotlkPort\images\skins\default_skin]])
 		resizer:SetHighlightTexture([[Interface\AddOns\DetailsWotlkPort\images\skins\default_skin]])
 		resizer:GetNormalTexture():SetTexCoord(0.00146484375, 0.01513671875, 0.24560546875, 0.25927734375)
@@ -420,7 +420,7 @@ local CreateImageEditorFrame = function()
 	flipButtonH:SetTemplate(DF:GetTemplate("dropdown", "OPTIONS_DROPDOWN_TEMPLATE"))
 
 	--select area to crop
-	local dragFrame = CreateFrame("frame", nil, background_frame, "BackdropTemplate")
+	local dragFrame = CreateFrame("frame", nil, background_frame, nil)
 	dragFrame:EnableMouse(false)
 	dragFrame:SetFrameStrata("TOOLTIP")
 	dragFrame:SetPoint("topleft", edit_texture.widget, "topleft")

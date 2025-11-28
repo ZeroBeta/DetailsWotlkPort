@@ -277,7 +277,7 @@ function Details.Survey.OpenSpellCategoryScreen()
         detailsSpellCategoryFrame.Title:SetPoint("left", detailsSpellCategoryFrame.TitleBar, "left", 5, 0)
 
 		--statusbar
-		local statusBar = CreateFrame("frame", nil, detailsSpellCategoryFrame, "BackdropTemplate")
+		local statusBar = CreateFrame("frame", nil, detailsSpellCategoryFrame, nil)
 		statusBar:SetPoint("bottomleft", detailsSpellCategoryFrame, "bottomleft")
 		statusBar:SetPoint("bottomright", detailsSpellCategoryFrame, "bottomright")
 		statusBar:SetHeight(26)
@@ -285,7 +285,7 @@ function Details.Survey.OpenSpellCategoryScreen()
 		DF:ApplyStandardBackdrop(statusBar)
 
         --statusbar of the statusbar
-		local statusBar2 = CreateFrame("frame", nil, statusBar, "BackdropTemplate")
+		local statusBar2 = CreateFrame("frame", nil, statusBar, nil)
 		statusBar2:SetPoint("topleft", statusBar, "bottomleft")
 		statusBar2:SetPoint("topright", statusBar, "bottomright")
 		statusBar2:SetHeight(20)
@@ -515,7 +515,7 @@ function Details.Survey.OpenSpellCategoryScreen()
         end
 
         local scrollCreateline = function(self, lineId) --self is spellScroll
-            local line = CreateFrame("frame", "$parentLine" .. lineId, self, "BackdropTemplate")
+            local line = CreateFrame("frame", "$parentLine" .. lineId, self, nil)
             DF:Mixin(line, DF.HeaderFunctions)
 
 			line:SetPoint("topleft", self, "topleft", 1, -((lineId-1) * (scrollLineHeight+1)) - 1)

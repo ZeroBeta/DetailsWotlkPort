@@ -165,7 +165,7 @@ end
 function lib:CreateGraphRealtime(name, parent, relative, relativeTo, offsetX, offsetY, Width, Height)
 	local graph
 	local i
-	graph = CreateFrame("Frame", name, parent, BackdropTemplateMixin and "BackdropTemplate")
+	graph = CreateFrame("Frame", name, parent, BackdropTemplateMixin and nil)
 
 	Width = math_floor(Width)
 
@@ -182,7 +182,7 @@ function lib:CreateGraphRealtime(name, parent, relative, relativeTo, offsetX, of
 	graph.Height = Height
 	for i = 1, Width do
 		local bar
-		bar = CreateFrame("StatusBar", name.."Bar"..i, graph, BackdropTemplateMixin and "BackdropTemplate")--graph:CreateTexture(nil, "ARTWORK")
+		bar = CreateFrame("StatusBar", name.."Bar"..i, graph, BackdropTemplateMixin and nil)--graph:CreateTexture(nil, "ARTWORK")
 		bar:SetPoint("BOTTOMLEFT", graph, "BOTTOMLEFT", i - 1, 0)
 		bar:SetHeight(Height)
 		bar:SetWidth(1)
@@ -297,7 +297,7 @@ end
 function lib:CreateGraphLine(name, parent, relative, relativeTo, offsetX, offsetY, Width, Height)
 	local graph
 	local i
-	graph = CreateFrame("Frame", name, parent, BackdropTemplateMixin and "BackdropTemplate")
+	graph = CreateFrame("Frame", name, parent, BackdropTemplateMixin and nil)
 
 
 	graph:SetPoint(relative, parent, relativeTo, offsetX, offsetY)
@@ -387,7 +387,7 @@ end
 function lib:CreateGraphScatterPlot(name, parent, relative, relativeTo, offsetX, offsetY, Width, Height)
 	local graph
 	local i
-	graph = CreateFrame("Frame",name, parent, BackdropTemplateMixin and "BackdropTemplate")
+	graph = CreateFrame("Frame",name, parent, BackdropTemplateMixin and nil)
 
 
 	graph:SetPoint(relative, parent, relativeTo, offsetX, offsetY)
@@ -455,7 +455,7 @@ end
 function lib:CreateGraphPieChart(name, parent, relative, relativeTo, offsetX, offsetY, Width, Height)
 	local graph
 	local i
-	graph = CreateFrame("Frame",name, parent, BackdropTemplateMixin and "BackdropTemplate")
+	graph = CreateFrame("Frame",name, parent, BackdropTemplateMixin and nil)
 
 
 	graph:SetPoint(relative, parent, relativeTo, offsetX, offsetY)

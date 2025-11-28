@@ -1936,7 +1936,7 @@ end
 -- text_size 72
 
 function _detalhes:InitializeAuraCreationWindow() if true then return end
-    local DetailsAuraPanel = CreateFrame("frame", "DetailsAuraPanel", UIParent,"BackdropTemplate")
+    local DetailsAuraPanel = CreateFrame("frame", "DetailsAuraPanel", UIParent,nil)
     DetailsAuraPanel.Frame = DetailsAuraPanel
     DetailsAuraPanel.__name = L["STRING_CREATEAURA"]
     DetailsAuraPanel.real_name = "DETAILS_CREATEAURA"
@@ -1980,7 +1980,7 @@ function _detalhes:OpenAuraPanel (spellid, spellname, spellicon, encounterid, tr
             end
         end
 
-        local f = DetailsAuraPanel or CreateFrame("frame", "DetailsAuraPanel", UIParent,"BackdropTemplate")
+        local f = DetailsAuraPanel or CreateFrame("frame", "DetailsAuraPanel", UIParent,nil)
         f:SetSize(800, 600)
         f:SetPoint("center", UIParent, "center", 0, 150)
         f:SetFrameStrata("DIALOG")
@@ -2015,7 +2015,7 @@ function _detalhes:OpenAuraPanel (spellid, spellname, spellicon, encounterid, tr
         end)
         
         --titlebar
-        f.TitleBar = CreateFrame("frame", "$parentTitleBar", f,"BackdropTemplate")
+        f.TitleBar = CreateFrame("frame", "$parentTitleBar", f,nil)
         f.TitleBar:SetPoint("topleft", f, "topleft", 2, -3)
         f.TitleBar:SetPoint("topright", f, "topright", -2, -3)
         f.TitleBar:SetHeight(20)
@@ -2024,7 +2024,7 @@ function _detalhes:OpenAuraPanel (spellid, spellname, spellicon, encounterid, tr
         f.TitleBar:SetBackdropBorderColor(0, 0, 0, 1)
         
         --close button
-        f.Close = CreateFrame("button", "$parentCloseButton", f, "BackdropTemplate")
+        f.Close = CreateFrame("button", "$parentCloseButton", f, nil)
         f.Close:SetPoint("right", f.TitleBar, "right", -2, 0)
         f.Close:SetSize(16, 16)
 

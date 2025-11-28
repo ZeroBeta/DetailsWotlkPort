@@ -299,7 +299,7 @@ function detailsFramework:CreateTabContainer(parent, title, frameName, tabList, 
 
     --create the base frame
     ---@type df_tabcontainer
-	local tabContainer = CreateFrame("frame", frameName, parent["widget"] or parent, "BackdropTemplate")
+	local tabContainer = CreateFrame("frame", frameName, parent["widget"] or parent, nil)
     tabContainer.hookList = hookList or {}
     tabContainer:SetSize(optionsTable.width or 750, optionsTable.height or 450)
     tabContainer.options = optionsTable
@@ -333,7 +333,7 @@ function detailsFramework:CreateTabContainer(parent, title, frameName, tabList, 
         --create a frame which will be shown when the tabButton is clicked
         --when this tab isn't selected, this frame is hidden
         ---@type df_tabcontainerframe
-		local tabFrame = CreateFrame("frame", "$parent" .. tabInfo.name, tabContainer, "BackdropTemplate")
+		local tabFrame = CreateFrame("frame", "$parent" .. tabInfo.name, tabContainer, nil)
         detailsFramework:Mixin(tabFrame, detailsFramework.TabContainerFrameMixin)
 		tabFrame:SetAllPoints()
 		tabFrame:SetFrameLevel(210)

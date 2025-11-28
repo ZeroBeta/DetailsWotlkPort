@@ -455,7 +455,7 @@ local cleanfunction = function() end
 function detailsFramework:CreateHealthBar(parent, name, settingsOverride)
 	assert(name or parent:GetName(), "DetailsFramework:CreateHealthBar parameter 'name' omitted and parent has no name.")
 
-	local healthBar = CreateFrame("StatusBar", name or (parent:GetName() .. "HealthBar"), parent, "BackdropTemplate")
+	local healthBar = CreateFrame("StatusBar", name or (parent:GetName() .. "HealthBar"), parent, nil)
 		do --layers
 			--background
 			healthBar.background = healthBar:CreateTexture(nil, "background")
@@ -765,7 +765,7 @@ detailsFramework:Mixin(detailsFramework.PowerFrameFunctions, detailsFramework.Sc
 function detailsFramework:CreatePowerBar(parent, name, settingsOverride)
 	assert(name or parent:GetName(), "DetailsFramework:CreatePowerBar parameter 'name' omitted and parent has no name.")
 
-	local powerBar = CreateFrame("StatusBar", name or (parent:GetName() .. "PowerBar"), parent, "BackdropTemplate")
+	local powerBar = CreateFrame("StatusBar", name or (parent:GetName() .. "PowerBar"), parent, nil)
 		do --layers
 			--background
 			powerBar.background = powerBar:CreateTexture(nil, "background")
@@ -1920,7 +1920,7 @@ detailsFramework:Mixin(detailsFramework.CastFrameFunctions, detailsFramework.Scr
 function detailsFramework:CreateCastBar(parent, name, settingsOverride)
 	assert(name or parent:GetName(), "DetailsFramework:CreateCastBar parameter 'name' omitted and parent has no name.")
 
-	local castBar = CreateFrame("StatusBar", name or (parent:GetName() .. "CastBar"), parent, "BackdropTemplate")
+	local castBar = CreateFrame("StatusBar", name or (parent:GetName() .. "CastBar"), parent, nil)
 
 		do --layers
 
@@ -2512,7 +2512,7 @@ function detailsFramework:CreateUnitFrame(parent, name, unitFrameSettingsOverrid
 	local parentName = name or ("DetailsFrameworkUnitFrame" .. tostring(math.random(1, 100000000)))
 
 	--create the main unit frame
-	local mewUnitFrame = CreateFrame("button", parentName, parent, "BackdropTemplate")
+	local mewUnitFrame = CreateFrame("button", parentName, parent, nil)
 
 	--base level
 	--local baseFrameLevel = f:GetFrameLevel()
@@ -2542,7 +2542,7 @@ function detailsFramework:CreateUnitFrame(parent, name, unitFrameSettingsOverrid
 	mewUnitFrame.border = borderFrame
 
 	--overlay frame (widgets that need to stay above the unit frame)
-	local overlayFrame = CreateFrame("frame", "$parentOverlayFrame", mewUnitFrame, "BackdropTemplate")
+	local overlayFrame = CreateFrame("frame", "$parentOverlayFrame", mewUnitFrame, nil)
 	overlayFrame:SetFrameLevel(mewUnitFrame:GetFrameLevel() + 6)
 	mewUnitFrame.overlayFrame = overlayFrame
 

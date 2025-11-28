@@ -2441,7 +2441,7 @@ end
 
 function CopyText(text) --[[GLOBAL]]
 	if (not Details.CopyTextField) then
-		Details.CopyTextField = CreateFrame("Frame", "DetailsCopyText", UIParent, "BackdropTemplate")
+		Details.CopyTextField = CreateFrame("Frame", "DetailsCopyText", UIParent, nil)
 		Details.CopyTextField:SetHeight(14)
 		Details.CopyTextField:SetWidth(120)
 		Details.CopyTextField:SetPoint("center", UIParent, "center")
@@ -2451,7 +2451,7 @@ function CopyText(text) --[[GLOBAL]]
 
 		tinsert(UISpecialFrames, "DetailsCopyText")
 
-		Details.CopyTextField.textField = CreateFrame("editbox", nil, Details.CopyTextField, "BackdropTemplate")
+		Details.CopyTextField.textField = CreateFrame("editbox", nil, Details.CopyTextField, nil)
 		Details.CopyTextField.textField:SetPoint("topleft", Details.CopyTextField, "topleft")
 		Details.CopyTextField.textField:SetAutoFocus(false)
 		Details.CopyTextField.textField:SetFontObject("GameFontHighlightSmall")

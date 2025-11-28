@@ -784,7 +784,7 @@ function detailsFramework:CreateAuraScrollBox(parent, name, data, onAuraRemoveCa
     end
 
     local createLineFunc = function(self, index)
-        local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+        local line = CreateFrame("button", "$parentLine" .. index, self, nil)
         local scrollBoxWidth = options.width
         local lineHeight = options.line_height
         local verticalPadding = options.vertical_padding

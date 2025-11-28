@@ -751,7 +751,7 @@ function DF:NewSplitBar (parent, container, name, member, w, h)
 		SplitBarObject.currentValue = 0.5
 	
 	--create widgets
-		SplitBarObject.statusbar = CreateFrame("statusbar", name, parent, "BackdropTemplate")
+		SplitBarObject.statusbar = CreateFrame("statusbar", name, parent, nil)
 		build_statusbar (SplitBarObject.statusbar)
 		SplitBarObject.spark = SplitBarObject.statusbar.spark
 		SplitBarObject.widget = SplitBarObject.statusbar

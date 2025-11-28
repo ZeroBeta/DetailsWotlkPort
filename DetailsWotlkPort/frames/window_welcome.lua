@@ -1267,7 +1267,7 @@ local window_openned_at = time()
 
 		local instance1 = _detalhes:GetInstance(1)
 
-		local bookmark_frame = CreateFrame("frame", "WelcomeBookmarkFrame", window,"BackdropTemplate")
+		local bookmark_frame = CreateFrame("frame", "WelcomeBookmarkFrame", window,nil)
 		bookmark_frame:SetPoint("topleft", instance1.baseframe, "topleft")
 		bookmark_frame:SetPoint("bottomright", instance1.baseframe, "bottomright")
 		bookmark_frame:SetBackdrop({bgFile = [[Interface\AddOns\DetailsWotlkPort\images\background]], tile = true, tileSize = 64})

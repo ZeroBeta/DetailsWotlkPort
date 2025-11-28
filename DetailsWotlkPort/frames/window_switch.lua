@@ -20,7 +20,7 @@ function Details222.CreateAllDisplaysFrame()
 	local icon_size = 16
 	local text_color = {.9, .9, .9, 1}
 
-	local allDisplaysFrame = CreateFrame("frame", "DetailsAllAttributesFrame", UIParent,"BackdropTemplate")
+	local allDisplaysFrame = CreateFrame("frame", "DetailsAllAttributesFrame", UIParent,nil)
 	allDisplaysFrame:SetFrameStrata("tooltip")
 	allDisplaysFrame:Hide()
 	allDisplaysFrame:SetSize(600, 150)
@@ -373,7 +373,7 @@ end
 
 --api locals
 do
-	local bookmarkFrame = CreateFrame("frame", "DetailsSwitchPanel", UIParent, "BackdropTemplate")
+	local bookmarkFrame = CreateFrame("frame", "DetailsSwitchPanel", UIParent, nil)
 	bookmarkFrame:SetPoint("center", UIParent, "center", 500, -300)
 	bookmarkFrame:SetWidth(250)
 	bookmarkFrame:SetHeight(100)
@@ -452,7 +452,7 @@ function Details.switch:ShowMe(instancia)
 	if (IsControlKeyDown()) then
 		if (not Details.tutorial.ctrl_click_close_tutorial) then
 			if (not DetailsCtrlCloseWindowPanelTutorial) then
-				local tutorialFrame = CreateFrame("frame", "DetailsCtrlCloseWindowPanelTutorial", Details.switch.frame, "BackdropTemplate")
+				local tutorialFrame = CreateFrame("frame", "DetailsCtrlCloseWindowPanelTutorial", Details.switch.frame, nil)
 				tutorialFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 				tutorialFrame:SetAllPoints()
 				tutorialFrame:EnableMouse(true)
@@ -1276,7 +1276,7 @@ local changeIconFunc = function(self, icon1, icon2, icon3, icon4)
 end
 
 function Details.switch:NewSwitchButton(frame, index, x, y, rightButton)
-	local newSwitchButton = CreateFrame("button", "DetailsSwitchPanelButton_1_" .. index, frame, "BackdropTemplate")
+	local newSwitchButton = CreateFrame("button", "DetailsSwitchPanelButton_1_" .. index, frame, nil)
 	newSwitchButton:SetSize(15, 24)
 	newSwitchButton:SetPoint("topleft", frame, "topleft", x, -y)
 	newSwitchButton:SetScript("OnMouseDown", bookmarkButtonIconOnClick)
@@ -1288,7 +1288,7 @@ function Details.switch:NewSwitchButton(frame, index, x, y, rightButton)
 	local backgroundTexture = DetailsFramework:CreateTexture(newSwitchButton, {gradient = "vertical", fromColor = {0, 0, 0, 0.3}, toColor = "transparent"}, 1, 1, "artwork", {0, 1, 0, 1})
 	backgroundTexture:SetAllPoints()
 
-	local button2 = CreateFrame("button", "DetailsSwitchPanelButton_2_" .. index, newSwitchButton, "BackdropTemplate")
+	local button2 = CreateFrame("button", "DetailsSwitchPanelButton_2_" .. index, newSwitchButton, nil)
 	button2:SetSize(1, 1)
 	button2:SetPoint("topleft", newSwitchButton, "topright", 1, 0)
 	button2:SetPoint("bottomright", newSwitchButton, "bottomright", 90, 0)

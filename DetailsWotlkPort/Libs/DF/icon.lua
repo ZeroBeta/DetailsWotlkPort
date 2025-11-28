@@ -146,7 +146,7 @@ detailsFramework.IconMixin = {
 	---@return df_icon
     CreateIcon = function(self, iconName)
 		---@type df_icon
-        local iconFrame = CreateFrame("button", iconName, self, "BackdropTemplate")
+        local iconFrame = CreateFrame("button", iconName, self, nil)
 
 		---@type texture
         iconFrame.Texture = iconFrame:CreateTexture(nil, "artwork")
@@ -668,7 +668,7 @@ local default_icon_row_options = {
 ---@param options table?
 ---@return df_iconrow
 function detailsFramework:CreateIconRow(parent, name, options)
-	local newIconRowFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local newIconRowFrame = CreateFrame("frame", name, parent, nil)
 	newIconRowFrame.IconPool = {}
 	newIconRowFrame.NextIcon = 1
 	newIconRowFrame.AuraCache = {}

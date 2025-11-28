@@ -665,7 +665,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 							tile = true, edgeSize = 1, tileSize = 5,
 						}
 
-						Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, "BackdropTemplate")
+						Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, nil)
 						Details.id_frame:SetHeight(14)
 						Details.id_frame:SetWidth(120)
 						Details.id_frame:SetPoint("center", UIParent, "center")
@@ -673,7 +673,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 
 						table.insert(UISpecialFrames, "DetailsID")
 
-						Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, "BackdropTemplate")
+						Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, nil)
 						Details.id_frame.texto:SetPoint("topleft", Details.id_frame, "topleft")
 						Details.id_frame.texto:SetAutoFocus(false)
 						Details.id_frame.texto:SetFontObject(GameFontHighlightSmall)
@@ -721,7 +721,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 						tile = true, edgeSize = 1, tileSize = 5,
 					}
 
-					Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, "BackdropTemplate")
+					Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, nil)
 					Details.id_frame:SetHeight(14)
 					Details.id_frame:SetWidth(120)
 					Details.id_frame:SetPoint("center", UIParent, "center")
@@ -729,7 +729,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 
 					table.insert(UISpecialFrames, "DetailsID")
 
-					Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, "BackdropTemplate")
+					Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, nil)
 					Details.id_frame.texto:SetPoint("topleft", Details.id_frame, "topleft")
 					Details.id_frame.texto:SetAutoFocus(false)
 					Details.id_frame.texto:SetFontObject(GameFontHighlightSmall)
@@ -773,7 +773,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 					tile = true, edgeSize = 1, tileSize = 5,
 				}
 
-				Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, "BackdropTemplate")
+				Details.id_frame = CreateFrame("Frame", "DetailsID", UIParent, nil)
 				Details.id_frame:SetHeight(14)
 				Details.id_frame:SetWidth(120)
 				Details.id_frame:SetPoint("center", UIParent, "center")
@@ -781,7 +781,7 @@ function SlashCmdList.DETAILS (msg, editbox)
 
 				table.insert(UISpecialFrames, "DetailsID")
 
-				Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, "BackdropTemplate")
+				Details.id_frame.texto = CreateFrame("editbox", nil, Details.id_frame, nil)
 				Details.id_frame.texto:SetPoint("topleft", Details.id_frame, "topleft")
 				Details.id_frame.texto:SetAutoFocus(false)
 				Details.id_frame.texto:SetFontObject(GameFontHighlightSmall)
@@ -1739,7 +1739,7 @@ function Details:UpdateUserPanel(usersTable)
 		end
 
 		local scroll_createline = function(self, index)
-			local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+			local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 			line:SetPoint("topleft", self, "topleft", 3, -((index-1)*(scroll_line_height+1)) - 1)
 			line:SetSize(scroll_width - 2, scroll_line_height)
 
@@ -1806,8 +1806,8 @@ function Details:CreateListPanel(name)
 	table.insert(UISpecialFrames, name)
 	newListPanel.close_with_right = true
 
-	local container_barras_window = CreateFrame("ScrollFrame", "$parentActorsBarrasScroll", newListPanel.widget, "BackdropTemplate")
-	local container_barras = CreateFrame("Frame", "$parentActorsBarras", container_barras_window, "BackdropTemplate")
+	local container_barras_window = CreateFrame("ScrollFrame", "$parentActorsBarrasScroll", newListPanel.widget, nil)
+	local container_barras = CreateFrame("Frame", "$parentActorsBarras", container_barras_window, nil)
 	newListPanel.container = container_barras
 
 	newListPanel.width = 835
@@ -1951,7 +1951,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 
 	--pre create 30 protected buttons
 	for i = 1, 30 do
-		local teleportButton = CreateFrame("button", nil, detailsKeystoneInfoFrame, "BackdropTemplate")
+		local teleportButton = CreateFrame("button", nil, detailsKeystoneInfoFrame, nil)
 		teleportButton:SetAttribute("type", "spell")
 		teleportButton:RegisterForClicks("AnyDown")
 		teleportButton:SetFrameLevel(detailsKeystoneInfoFrame:GetFrameLevel() + 10)
@@ -2023,7 +2023,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	detailsKeystoneInfoFrame.TitleBar:SetPoint(point1, frame1, point2, offSetX+2, offSetY+1)
 	detailsKeystoneInfoFrame.TitleBar:SetHeight(detailsKeystoneInfoFrame.TitleBar:GetHeight() + 2)
 
-	local footer = CreateFrame("frame", "$parentFooter", detailsKeystoneInfoFrame, "BackdropTemplate")
+	local footer = CreateFrame("frame", "$parentFooter", detailsKeystoneInfoFrame, nil)
 	detailsFramework:ApplyStandardBackdrop(footer)
 	footer:SetPoint("bottomleft", detailsKeystoneInfoFrame, "bottomleft", 0, 0)
 	footer:SetPoint("bottomright", detailsKeystoneInfoFrame, "bottomright", 0, 0)
@@ -2040,7 +2040,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	teleportersLabel:SetPoint("topleft", footer, "topleft", 58, -9)
 	teleportersLabel:SetText(Loc["STRING_TELEPORTERS"])
 
-	local cooldownBlocker = CreateFrame("frame", "$parentCooldownBlocker", footer, "BackdropTemplate")
+	local cooldownBlocker = CreateFrame("frame", "$parentCooldownBlocker", footer, nil)
 	cooldownBlocker:SetPoint("topleft", footer, "topleft", 140, -5)
 	cooldownBlocker:SetSize(8 * (buttonSize + spaceBetweenButtons) - spaceBetweenButtons, buttonSize)
 	cooldownBlocker:SetFrameLevel(footer:GetFrameLevel() + 10)
@@ -2057,7 +2057,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 
 	local spellIdToCheckCooldown
 	local teleporterButtons = {}
-	local frameAboveTeleporterButtons = CreateFrame("frame", "$parentFrameAboveTeleporterButtons", footer, "BackdropTemplate")
+	local frameAboveTeleporterButtons = CreateFrame("frame", "$parentFrameAboveTeleporterButtons", footer, nil)
 	frameAboveTeleporterButtons:SetAllPoints()
 	frameAboveTeleporterButtons:SetFrameLevel(footer:GetFrameLevel() + 2)
 	frameAboveTeleporterButtons:EnableMouse(false)
@@ -2091,7 +2091,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 
 	for i = 1, #currentDungeons do --array of mapIds from GetInstanceInfo()
 		local mapId = currentDungeons[i]
-		local teleportButton = CreateFrame("button", nil, footer, "BackdropTemplate")
+		local teleportButton = CreateFrame("button", nil, footer, nil)
 		teleportButton:SetAttribute("type", "spell")
 		teleportButton:RegisterForClicks("AnyDown")
 		teleporterButtons[#teleporterButtons+1] = teleportButton
@@ -2247,7 +2247,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 				end)
 
 				--select key addon
-				local selectAddonFrame = CreateFrame("frame", "DetailsMythicPlusSelectAddonFrame", f, "BackdropTemplate")
+				local selectAddonFrame = CreateFrame("frame", "DetailsMythicPlusSelectAddonFrame", f, nil)
 				selectAddonFrame:SetPoint("center", f, "center", 5, -5)
 				selectAddonFrame:SetSize(270, 200)
 				detailsFramework:ApplyStandardBackdrop(selectAddonFrame)
@@ -2456,7 +2456,7 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 				requestFromGuildButton:SetFrameLevel(f:GetFrameLevel()+5)
 				f.RequestFromGuildButton = requestFromGuildButton
 
-				local recentPlayersFrame = CreateFrame("frame", nil, f, "BackdropTemplate")
+				local recentPlayersFrame = CreateFrame("frame", nil, f, nil)
 				recentPlayersFrame:SetPoint("bottomleft", footer, "topleft", 0, 0)
 				recentPlayersFrame:SetPoint("bottomright", footer, "topright", 0, 0)
 				recentPlayersFrame:SetHeight(102)
@@ -2981,7 +2981,7 @@ recentPlayerTable = {
 
 					local likesGivenHeader = f.Header:GetHeaderColumnByName("likesGiven")
 					if (likesGivenHeader and not likesGivenHeader.helpButton) then
-						local helpButton = CreateFrame("button", "$parentHelpButton", likesGivenHeader, "BackdropTemplate")
+						local helpButton = CreateFrame("button", "$parentHelpButton", likesGivenHeader, nil)
 						helpButton:SetSize(24, 24)
 						helpButton:SetPoint("right", likesGivenHeader, "right", -2, 0)
 						helpButton:SetNormalTexture("Interface/Buttons/AdventureGuideMicrobuttonAlert")
@@ -3036,7 +3036,7 @@ recentPlayerTable = {
 				end
 
 				local createLineForScroll = function(self, index)
-					local line = CreateFrame("frame", "$parentLine" .. index, self, "BackdropTemplate")
+					local line = CreateFrame("frame", "$parentLine" .. index, self, nil)
 					line:SetPoint("topleft", self, "topleft", 1, -((index-1) * (CONST_SCROLL_LINE_HEIGHT + 1)) - 1)
 					line:SetSize(scrollFrame:GetWidth() - 2, CONST_SCROLL_LINE_HEIGHT)
 
@@ -4335,7 +4335,7 @@ noteEditor.OpenNoteEditor = function()
 			end
 
 			do --floating frame above the bottom of the text editor
-				local bottomFrameFloating = CreateFrame("frame", "$parentFloatingFrame", mainFrame.EditboxNotes, "BackdropTemplate")
+				local bottomFrameFloating = CreateFrame("frame", "$parentFloatingFrame", mainFrame.EditboxNotes, nil)
 				bottomFrameFloating:SetPoint("bottomleft", mainFrame.EditboxNotes, "bottomleft", 0, 0)
 				bottomFrameFloating:SetPoint("bottomright", mainFrame.EditboxNotes, "bottomright", 0, 0)
 				bottomFrameFloating:SetHeight(130)
@@ -4536,7 +4536,7 @@ noteEditor.OpenNoteEditor = function()
 				end
 
 				local createdNoteSelectionLine = function(self, index)
-					local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+					local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 					line:SetPoint("topleft", self, "topleft", 1, -((index-1) * (CONST_LINE_HEIGHT+1)) - 1)
 					line:SetSize(mainFrame.NoteSelectionScrollFrame:GetWidth()-22, CONST_LINE_HEIGHT)
 					detailsFramework:ApplyStandardBackdrop(line, index % 2 == 0)
@@ -4633,7 +4633,7 @@ noteEditor.OpenNoteEditor = function()
 			end
 
 			do --create the bottom panel
-				local bottomFrame = CreateFrame("frame", "$parentBottomFrame", mainFrame, "BackdropTemplate")
+				local bottomFrame = CreateFrame("frame", "$parentBottomFrame", mainFrame, nil)
 				bottomFrame:SetPoint("topleft", mainFrame.EditboxNotes, "bottomleft", 0, -2)
 				bottomFrame:SetPoint("topright", mainFrame.NoteSelectionScrollFrame, "bottomright", 0, -2)
 				bottomFrame:SetPoint("bottomleft", mainFrame, "bottomleft", 0, 22)
@@ -4798,7 +4798,7 @@ noteEditor.OpenNoteEditor = function()
 			end
 
 			do --create a panel below the note selection scroll frame
-				local belowScrollFrame = CreateFrame("frame", "$parentBelowScrollFrame", mainFrame, "BackdropTemplate")
+				local belowScrollFrame = CreateFrame("frame", "$parentBelowScrollFrame", mainFrame, nil)
 				detailsFramework:ApplyStandardBackdrop(belowScrollFrame)
 				belowScrollFrame:SetPoint("topleft", mainFrame.NoteSelectionScrollFrame, "bottomleft", 0, -2)
 				belowScrollFrame:SetPoint("topright", mainFrame.NoteSelectionScrollFrame, "bottomright", 0, -2)
@@ -4842,7 +4842,7 @@ noteEditor.OpenNoteScreenPanel = function(senderName, noteText, commId, bIsSimul
 	end
 
 	if (not DetailsNoteScreenFrame) then
-		local screenFrame = CreateFrame("button", "DetailsNoteScreenFrame", UIParent, "BackdropTemplate")
+		local screenFrame = CreateFrame("button", "DetailsNoteScreenFrame", UIParent, nil)
 		screenFrame:SetSize(config.screenpos.width or 275, config.screenpos.height or 350)
 		screenFrame:SetPoint("topleft", UIParent, "topleft", 5, -5)
 		screenFrame:EnableMouse(true)
@@ -4890,7 +4890,7 @@ noteEditor.OpenNoteScreenPanel = function(senderName, noteText, commId, bIsSimul
 		local alphaInAnim = detailsFramework:CreateAnimation(screenFrameFadeInAnimGroup, "Alpha", 1, 0.075, 0, 1)
 		screenFrame.FadeInAnimation = screenFrameFadeInAnimGroup
 
-		local titleRoundedFrame = CreateFrame("frame", "DetailsNoteScreenTitleFrame", screenFrame, "BackdropTemplate")
+		local titleRoundedFrame = CreateFrame("frame", "DetailsNoteScreenTitleFrame", screenFrame, nil)
 		titleRoundedFrame:SetPoint("bottomleft", screenFrame, "topleft", 5, -17)
 		titleRoundedFrame:SetPoint("bottomright", screenFrame, "topright", -5, -17)
 		titleRoundedFrame:SetHeight(34)
@@ -4936,7 +4936,7 @@ noteEditor.OpenNoteScreenPanel = function(senderName, noteText, commId, bIsSimul
 		closeButton.icon:SetDesaturated(true)
 
 		--text area for the note
-		local textArea = CreateFrame("EditBox", "$parentTextArea", screenFrame, "BackdropTemplate")
+		local textArea = CreateFrame("EditBox", "$parentTextArea", screenFrame, nil)
 		textArea:SetPoint("topleft", screenFrame, "topleft", 3, -27)
 		textArea:SetPoint("bottomright", screenFrame, "bottomright", -2, 22)
 		textArea:ClearFocus()

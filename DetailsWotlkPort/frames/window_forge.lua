@@ -76,7 +76,7 @@ function Details:OpenForge()
         end
 
         if (not Details:GetTutorialCVar("FORGE_TUTORIAL") and false) then
-            local tutorialFrame = CreateFrame("frame", "$parentTutorialFrame", f,"BackdropTemplate")
+            local tutorialFrame = CreateFrame("frame", "$parentTutorialFrame", f,nil)
             tutorialFrame:SetPoint("center", f, "center")
             tutorialFrame:SetFrameStrata("DIALOG")
             tutorialFrame:SetSize(400, 300)
@@ -165,7 +165,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_PLAYERS_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeAllPlayersFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeAllPlayersFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeAllPlayersFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -229,7 +229,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_PETS_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeAllPetsFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeAllPetsFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeAllPetsFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -316,7 +316,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_ENEMIES_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeAllEnemiesFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeAllEnemiesFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeAllEnemiesFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -413,7 +413,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_ALLSPELLS_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeAllSpellsFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeAllSpellsFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeAllSpellsFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -544,7 +544,7 @@ function Details:OpenForge()
             filters_widgets = function()
                 if (not DetailsForgeEncounterBossSpellsFilterPanel) then
 
-                    local w = CreateFrame("frame", "DetailsForgeEncounterBossSpellsFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeEncounterBossSpellsFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -706,7 +706,7 @@ function Details:OpenForge()
 
             filters_widgets = function()
                 if (not DetailsForgeEncounterNpcIDsFilterPanel) then
-                    local npcIdFrame = CreateFrame("frame", "DetailsForgeEncounterNpcIDsFilterPanel", f, "BackdropTemplate")
+                    local npcIdFrame = CreateFrame("frame", "DetailsForgeEncounterNpcIDsFilterPanel", f, nil)
                     npcIdFrame:SetSize(600, 20)
                     npcIdFrame:SetPoint("topleft", f, "topleft", 164, -40)
 
@@ -803,7 +803,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_DBMTIMERS_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeDBMBarsFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeDBMBarsFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeDBMBarsFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --
@@ -936,7 +936,7 @@ function Details:OpenForge()
             desc = L["STRING_FORGE_BUTTON_BWTIMERS_DESC"],
             filters_widgets = function()
                 if (not DetailsForgeBigWigsBarsFilterPanel) then
-                    local w = CreateFrame("frame", "DetailsForgeBigWigsBarsFilterPanel", f, "BackdropTemplate")
+                    local w = CreateFrame("frame", "DetailsForgeBigWigsBarsFilterPanel", f, nil)
                     w:SetSize(600, 20)
                     w:SetPoint("topleft", f, "topleft", 164, -40)
                     --

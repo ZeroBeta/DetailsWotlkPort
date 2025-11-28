@@ -599,7 +599,7 @@ function spellsTab.OnCreateTabCallback(tabButton, tabFrame) --~init
 
 	--create a report overlay for each of the containers
 	local createReportOverlay = function(scrollFrame)
-		local reportOverlayButton = CreateFrame("button", "DetailsSpellScrollSelectionButton", scrollFrame, "BackdropTemplate")
+		local reportOverlayButton = CreateFrame("button", "DetailsSpellScrollSelectionButton", scrollFrame, nil)
 		local ROB = reportOverlayButton
 
 		spellsTab.ReportOverlays[#spellsTab.ReportOverlays+1] = ROB

@@ -942,7 +942,7 @@ local default_iconrow_generic_options = {
 ---@param options table?
 ---@return df_iconrow_generic
 function detailsFramework:CreateIconRowGeneric(parent, name, options)
-	local newIconRowFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local newIconRowFrame = CreateFrame("frame", name, parent, nil)
 	newIconRowFrame.IconPool = {}
 	newIconRowFrame.NextIcon = 1
 	newIconRowFrame.AuraCache = {}

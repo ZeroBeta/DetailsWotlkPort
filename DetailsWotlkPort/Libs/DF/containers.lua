@@ -483,7 +483,7 @@ local frameContainerOptions = {
 ---@return df_framecontainer
 function DF:CreateFrameContainer(parent, options, frameName)
     ---@type df_framecontainer
-    local frameContainer = CreateFrame("frame", frameName or ("$parentFrameContainer" .. math.random(10000, 99999)), parent, "BackdropTemplate")
+    local frameContainer = CreateFrame("frame", frameName or ("$parentFrameContainer" .. math.random(10000, 99999)), parent, nil)
     frameContainer.components = {}
     frameContainer.movableChildren = {}
     frameContainer:EnableMouse(false)
@@ -518,7 +518,7 @@ function DF:CreateFrameContainerTest(parent, options, frameName)
     for i = 1, 4 do
         local lastBox = nil
         for o = 1, 4 do
-            local frame = CreateFrame("frame", "$parentFrame" .. i .. o, container, "BackdropTemplate")
+            local frame = CreateFrame("frame", "$parentFrame" .. i .. o, container, nil)
             container:RegisterChildForDrag(frame)
 
             frame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})

@@ -171,7 +171,7 @@ end
 	--return the profile table requested
 
 function Details:CreatePanicWarning()
-	Details.instance_load_failed = CreateFrame("frame", "DetailsPanicWarningFrame", UIParent,"BackdropTemplate")
+	Details.instance_load_failed = CreateFrame("frame", "DetailsPanicWarningFrame", UIParent,nil)
 	Details.instance_load_failed:SetHeight(80)
 	--tinsert(UISpecialFrames, "DetailsPanicWarningFrame")
 	Details.instance_load_failed.text = Details.instance_load_failed:CreateFontString(nil, "overlay", "GameFontNormal")
@@ -2125,7 +2125,7 @@ end
 --create a import profile confirmation dialog with a text box to enter the profile name and a checkbox to select if should import auto run scripts
 function Details.ShowImportProfileConfirmation(message, callback)
 	if (not Details.profileConfirmationDialog) then
-		local promptFrame = CreateFrame("frame", "DetailsImportProfileDialog", UIParent, "BackdropTemplate")
+		local promptFrame = CreateFrame("frame", "DetailsImportProfileDialog", UIParent, nil)
 		promptFrame:SetSize(400, 170)
 		promptFrame:SetFrameStrata("FULLSCREEN")
 		promptFrame:SetPoint("center", UIParent, "center", 0, 100)

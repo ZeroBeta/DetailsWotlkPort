@@ -982,7 +982,7 @@ function ArenaSummary.CreateWindow() --~create
 
         --this button is used to give a tooltip when the player hover over the value
         local createLineColumnButton = function(line, name)
-            --local button = CreateFrame("button", "$parentColumnButton" .. name, line, "BackdropTemplate")
+            --local button = CreateFrame("button", "$parentColumnButton" .. name, line, nil)
             local callbackParam1 = name
             ---@type arenaline_button
             local button = detailsFramework:CreateButton(line, emptyFunction, 100, 20, "", callbackParam1, nil, nil, nil, "$parent" .. name)
@@ -1015,7 +1015,7 @@ function ArenaSummary.CreateWindow() --~create
         ArenaSummary.Lines = {}
 
         local createLineFunc = function(self, index)
-			local line = CreateFrame("button", "$parentLine" .. index, self,"BackdropTemplate")
+			local line = CreateFrame("button", "$parentLine" .. index, self,nil)
 			line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(lineHeight+1)) - 1)
 			line:SetSize(scrollWidth - 2, lineHeight)
 

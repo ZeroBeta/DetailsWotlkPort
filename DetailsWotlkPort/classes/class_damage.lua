@@ -5304,7 +5304,7 @@ end
 	end
 
 	if (not row.IconUpBorder) then
-		row.IconUpBorder = CreateFrame("frame", nil, row,"BackdropTemplate")
+		row.IconUpBorder = CreateFrame("frame", nil, row,nil)
 		row.IconUpBorder:SetAllPoints(row.icone)
 		row.IconUpBorder:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 		row.IconUpBorder:SetBackdropBorderColor(0, 0, 0, 0.75)
@@ -6390,7 +6390,7 @@ function Details:BuildPlayerDetailsSpellChart()
 
 	if (not playerDetailSmallChart) then
 
-		playerDetailSmallChart = CreateFrame("frame", "DetailsPlayerDetailSmallChart", breakdownWindowFrame,"BackdropTemplate")
+		playerDetailSmallChart = CreateFrame("frame", "DetailsPlayerDetailSmallChart", breakdownWindowFrame,nil)
 		DetailsFramework:ApplyStandardBackdrop(playerDetailSmallChart)
 		playerDetailSmallChart.Lines = {}
 

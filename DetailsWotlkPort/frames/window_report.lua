@@ -118,7 +118,7 @@ local _
 
 	function Details:SendReportTextWindow(lines)
 		if (not Details.copypasteframe) then
-			Details.copypasteframe = CreateFrame("frame", "DetailsCopyPasteFrame2", UIParent, "BackdropTemplate")
+			Details.copypasteframe = CreateFrame("frame", "DetailsCopyPasteFrame2", UIParent, nil)
 			Details.copypasteframe:SetFrameStrata("TOOLTIP")
 			Details.copypasteframe:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
 			table.insert(UISpecialFrames, "DetailsCopyPasteFrame2")
@@ -384,7 +384,7 @@ local createDropdown = function(thisFrame)
 		thisFrame.linhas_amt:SetPoint("bottomleft", thisFrame, "bottomleft", 58, 12)
 		Details:SetFontSize(thisFrame.linhas_amt, 10)
 
-		local slider = CreateFrame("Slider", "Details_Report_Slider", thisFrame, "BackdropTemplate")
+		local slider = CreateFrame("Slider", "Details_Report_Slider", thisFrame, nil)
 		thisFrame.slider = slider
 		slider:SetPoint("bottomleft", thisFrame, "bottomleft", 58, -7)
 
@@ -449,7 +449,7 @@ local createDropdown = function(thisFrame)
 		Details:SetFontSize(thisFrame.wisp_who, 10)
 
 		--editbox
-		local editbox = CreateFrame("EditBox", nil, thisFrame, "BackdropTemplate")
+		local editbox = CreateFrame("EditBox", nil, thisFrame, nil)
 		thisFrame.editbox = editbox
 
 		editbox:SetAutoFocus(false)
@@ -671,7 +671,7 @@ local createDropdown = function(thisFrame)
 		if (not window.widgets) then
 			window.widgets = {}
 
-			local titlebar = CreateFrame("frame", window:GetName() .. "TitleBar", window, "BackdropTemplate")
+			local titlebar = CreateFrame("frame", window:GetName() .. "TitleBar", window, nil)
 			titlebar:SetPoint("topleft", window, "topleft", 2, -3)
 			titlebar:SetPoint("topright", window, "topright", -2, -3)
 			titlebar:SetHeight(20)
@@ -737,7 +737,7 @@ local createDropdown = function(thisFrame)
 
 	function gump:CriaJanelaReport()
 		--window
-		local window = CreateFrame("Frame", "DetailsReportWindow", UIParent, "BackdropTemplate")
+		local window = CreateFrame("Frame", "DetailsReportWindow", UIParent, nil)
 		table.insert(UISpecialFrames, "DetailsReportWindow")
 		window:SetPoint("CENTER", UIParent, "CENTER")
 		window:SetFrameStrata("DIALOG")
@@ -813,7 +813,7 @@ local createDropdown = function(thisFrame)
 		window.last_reported_label:SetText(Loc ["STRING_REPORTHISTORY"] .. ":") --this string could be removed from localization
 
 		for i = 1, window.max_last_buttons do
-			local button = CreateFrame("button", "DetailsReportWindowRRB" .. i, window, "BackdropTemplate")
+			local button = CreateFrame("button", "DetailsReportWindowRRB" .. i, window, nil)
 			local icon = button:CreateTexture(nil, "overlay")
 			icon:SetPoint("left", button, "left")
 			icon:SetSize(16, 16)
@@ -905,7 +905,7 @@ local createDropdown = function(thisFrame)
 		createWisperField(window)
 		createCheckButtons(window)
 
-		window.enviar = CreateFrame("Button", nil, window, "BackdropTemplate")
+		window.enviar = CreateFrame("Button", nil, window, nil)
 		window.enviar:SetPoint("topleft", window.editbox, "topleft", 61, -19)
 		window.enviar:SetWidth(60)
 		window.enviar:SetHeight(15)

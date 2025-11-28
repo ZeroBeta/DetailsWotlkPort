@@ -346,7 +346,7 @@ function Details:CreateCurrentDpsFrame(parent, name)
 		local spacing_vertical = -6 --vertical space between the group anchor and the group dps
 
 	--main farame
-		local f = CreateFrame("frame", name, parent or UIParent, "BackdropTemplate")
+		local f = CreateFrame("frame", name, parent or UIParent, nil)
 		f:SetPoint("top", UIParent, "top", 0, -110)
 		f:SetSize(Details.realtime_dps_meter.frame_settings.width, Details.realtime_dps_meter.frame_settings.height)
 
@@ -419,7 +419,7 @@ function Details:CreateCurrentDpsFrame(parent, name)
 
 		--frame to support the two bars, one for the dps and another for heal
 		--the dps bar is wider and taller, hps is below it and smaller
-			local barFrame = CreateFrame("frame", "DetailsArenaDpsBars", f, "BackdropTemplate")
+			local barFrame = CreateFrame("frame", "DetailsArenaDpsBars", f, nil)
 			f.dpsBarFrame = barFrame
 			barFrame:SetSize(400, 80)
 			barFrame:SetPoint("center", f, "center", 0, 0)
@@ -438,7 +438,7 @@ function Details:CreateCurrentDpsFrame(parent, name)
 			--barFrame.splitBar.widget.righttext:SetPoint("RIGHT", barFrame.splitBar.widget.righticon, "LEFT", -15, 0)
 			--barFrame.splitBar.widget.righttext:ClearAllPoints()
 
-			barFrame.borderFrame = CreateFrame("frame", "DetailsArenaDpsBarsBorderFrame", barFrame.splitBar.widget, "BackdropTemplate")
+			barFrame.borderFrame = CreateFrame("frame", "DetailsArenaDpsBarsBorderFrame", barFrame.splitBar.widget, nil)
 			barFrame.borderFrame:SetFrameLevel(barFrame.splitBar:GetFrameLevel()-1)
 			barFrame.borderFrame:SetPoint("topleft", barFrame.splitBar.widget, "topleft", -1, 1)
 			barFrame.borderFrame:SetPoint("bottomright", barFrame.splitBar.widget, "bottomright", 1, -1)
@@ -450,7 +450,7 @@ function Details:CreateCurrentDpsFrame(parent, name)
 			backgroundText:SetColorTexture(0, 0, 0, 0.5)
 			backgroundText:SetAllPoints()
 
-			local fff = CreateFrame("frame", "nopnopnopnopnop", barFrame.splitBar.widget, "BackdropTemplate")
+			local fff = CreateFrame("frame", "nopnopnopnopnop", barFrame.splitBar.widget, nil)
 			fff:SetSize(300, 20)
 			fff:SetPoint("topleft", barFrame.splitBar.widget, "topleft", -1, 1)
 			fff:SetPoint("bottomright", barFrame.splitBar.widget, "bottomright", 1, -1)
@@ -939,7 +939,7 @@ function DetailsTestSplitBar()
 		backgroundTexture:SetAllPoints()
 		backgroundTexture:SetColorTexture(.1, .1, .1, .7)
 
-		local barFrame = CreateFrame("frame", "DetailsArenaDpsBars", f, "BackdropTemplate")
+		local barFrame = CreateFrame("frame", "DetailsArenaDpsBars", f, nil)
 		f.dpsBarFrame = barFrame
 		barFrame:SetSize(400, 80)
 		barFrame:SetPoint("center", f, "center", 0, 50)

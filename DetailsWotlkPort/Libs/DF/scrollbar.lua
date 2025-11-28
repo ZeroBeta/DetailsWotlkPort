@@ -11,7 +11,7 @@ do
 	end
 
 	function detailsFramework:NewScrollBar(parent, scrollContainer, x, y)
-		local newSlider = CreateFrame("Slider", nil, parent, "BackdropTemplate")
+		local newSlider = CreateFrame("Slider", nil, parent, nil)
 		newSlider.scrollMax = 560
 
 		newSlider:SetPoint("TOPLEFT", parent, "TOPRIGHT", x, y)
@@ -31,7 +31,7 @@ do
 		newSlider:SetValue(0)
 		newSlider.ultimo = 0
 
-		local upButton = CreateFrame("Button", nil, parent,"BackdropTemplate")
+		local upButton = CreateFrame("Button", nil, parent,nil)
 
 		upButton:SetPoint("BOTTOM", newSlider, "TOP", 0, -12)
 		upButton.x = 0
@@ -45,7 +45,7 @@ do
 		upButton:Show()
 		upButton:Disable()
 
-		local downDutton = CreateFrame("Button", nil, parent,"BackdropTemplate")
+		local downDutton = CreateFrame("Button", nil, parent,nil)
 		downDutton:SetPoint("TOP", newSlider, "BOTTOM", 0, 12)
 		downDutton.x = 0
 		downDutton.y = 12

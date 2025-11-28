@@ -24,7 +24,7 @@ local unpack = unpack
 local _CreateFrame = CreateFrame
 -- Wrath-safe CreateFrame wrapper: try requested template, then retry without BackdropTemplate if needed.
 local function CreateFrame(frameType, name, parent, template, ...)
-	if template == "BackdropTemplate" then
+	if template == nil then
 		template = nil
 	end
 
@@ -1904,7 +1904,7 @@ local barra_backdrop_onleave = {
 }
 
 --pre creating the truncate frame
-	Details.left_anti_truncate = CreateFrame("frame", "DetailsLeftTextAntiTruncate", UIParent,"BackdropTemplate")
+	Details.left_anti_truncate = CreateFrame("frame", "DetailsLeftTextAntiTruncate", UIParent,nil)
 	Details.left_anti_truncate:SetBackdrop(defaultBackdropSt)
 	Details.left_anti_truncate:SetBackdropColor(0, 0, 0, 0.8)
 	Details.left_anti_truncate:SetFrameStrata("FULLSCREEN")
@@ -3266,7 +3266,7 @@ local function CreateAlertFrame(baseframe, instancia)
 	frameLayerLower:SetPoint("right", frameLayerUpper, "right")
 	frameLayerUpper:SetScrollChild(frameLayerLower)
 
-	local alertBackgroundFrame = CreateFrame("frame", "DetailsAlertFrame" .. instancia.meu_id, frameLayerLower,"BackdropTemplate")
+	local alertBackgroundFrame = CreateFrame("frame", "DetailsAlertFrame" .. instancia.meu_id, frameLayerLower,nil)
 	alertBackgroundFrame:SetPoint("bottom", baseframe, "bottom")
 	alertBackgroundFrame:SetPoint("left", baseframe, "left", 3, 0)
 	alertBackgroundFrame:SetPoint("right", baseframe, "right", -3, 0)
@@ -3459,7 +3459,7 @@ end
 
 do
 	--search key: ~tooltip
-	local tooltipAnchor = CreateFrame("frame", "DetailsTooltipAnchor", UIParent,"BackdropTemplate")
+	local tooltipAnchor = CreateFrame("frame", "DetailsTooltipAnchor", UIParent,nil)
 	tooltipAnchor:SetSize(140, 20)
 	tooltipAnchor:SetAlpha(0)
 	tooltipAnchor:SetMovable(false)
@@ -3558,7 +3558,7 @@ end
 --~inicio ~janela ~window ~nova ~start
 function gump:CriaJanelaPrincipal(ID, instancia, criando)
 	--baseframe is the lowest frame in the window architecture
-	local baseframe = CreateFrame("scrollframe", "DetailsBaseFrame" .. ID, UIParent, "BackdropTemplate")
+	local baseframe = CreateFrame("scrollframe", "DetailsBaseFrame" .. ID, UIParent, nil)
 	if (not baseframe) then
 		--fallback for clients without scrollframe/template support
 		baseframe = CreateFrame("Frame", "DetailsBaseFrame" .. ID, UIParent)
@@ -3578,7 +3578,7 @@ function gump:CriaJanelaPrincipal(ID, instancia, criando)
 	baseframe.border = baseframeBorder
 	baseframe.border:Hide()
 
-	local titleBar = CreateFrame("frame", baseframe:GetName() .. "TitleBar", baseframe, "BackdropTemplate")
+	local titleBar = CreateFrame("frame", baseframe:GetName() .. "TitleBar", baseframe, nil)
 	titleBar:SetPoint("bottomleft", baseframe, "topleft", 0, 0)
 	titleBar:SetPoint("bottomright", baseframe, "topright", 0, 0)
 	titleBar:SetHeight(16)
@@ -3592,7 +3592,7 @@ function gump:CriaJanelaPrincipal(ID, instancia, criando)
 
 	--a background frame that anchors in the topleft of the title bar and bottom right of the baseframe
 	--this frame does not attack to statusbar (yet)
-	local fullWindowFrame = CreateFrame("frame", baseframe:GetName() .. "FullWindowFrame", baseframe, "BackdropTemplate")
+	local fullWindowFrame = CreateFrame("frame", baseframe:GetName() .. "FullWindowFrame", baseframe, nil)
 	fullWindowFrame:EnableMouse(false)
 	fullWindowFrame:SetPoint("topleft", titleBar, "topleft", 0, 0)
 	fullWindowFrame:SetPoint("bottomright", baseframe, "bottomright", 0, 0)
@@ -3608,7 +3608,7 @@ function gump:CriaJanelaPrincipal(ID, instancia, criando)
 	--background holds the wallpaper, alert strings ans textures, have setallpoints on baseframe
 	--backgrounddisplay is a scrollschild of backgroundframe, hence its children won't show outside its canvas
 	local backgroundframe =  CreateFrame("scrollframe", "Details_WindowFrame"..ID, baseframe) --window frame
-	local backgrounddisplay = CreateFrame("frame", "Details_GumpFrame"..ID, backgroundframe,"BackdropTemplate") --gump frame
+	local backgrounddisplay = CreateFrame("frame", "Details_GumpFrame"..ID, backgroundframe,nil) --gump frame
 	backgroundframe:SetFrameLevel(3)
 	backgrounddisplay:SetFrameLevel(3)
 	backgroundframe.instance = instancia
@@ -4265,7 +4265,7 @@ function gump:CreateNewLine(instance, index)
 	local rowframe = instance.rowframe
 
 	--create the bar with rowframe as parent
-	local newLine = CreateFrame("button", "DetailsBarra_" .. instance.meu_id .. "_" .. index, rowframe, "BackdropTemplate")
+	local newLine = CreateFrame("button", "DetailsBarra_" .. instance.meu_id .. "_" .. index, rowframe, nil)
 	DetailsFramework:Mixin(newLine, windowLineMixin)
 
 	newLine.row_id = index
@@ -4327,7 +4327,7 @@ function gump:CreateNewLine(instance, index)
 	newLine.extraStatusbar:SetScript("OnLeave", onLeaveExtraStatusbar)
 
 	--frame for hold the backdrop border
-	newLine.border = CreateFrame("Frame", "DetailsBarra_Border_" .. instance.meu_id .. "_" .. index, newLine.statusbar, "BackdropTemplate")
+	newLine.border = CreateFrame("Frame", "DetailsBarra_Border_" .. instance.meu_id .. "_" .. index, newLine.statusbar, nil)
 	newLine.border:SetFrameLevel(newLine.statusbar:GetFrameLevel()+2)
 	newLine.border:SetAllPoints(newLine)
 
@@ -5810,7 +5810,7 @@ function gump:CriaRodape(baseframe, instancia)
 	baseframe.rodape.StatusBarCenterAnchor = StatusBarCenterAnchor
 
 	--display frame
-	baseframe.statusbar = CreateFrame("frame", "DetailsStatusBar" .. instancia.meu_id, instancia.floatingframe,"BackdropTemplate")
+	baseframe.statusbar = CreateFrame("frame", "DetailsStatusBar" .. instancia.meu_id, instancia.floatingframe,nil)
 	baseframe.statusbar:SetFrameLevel(instancia.floatingframe:GetFrameLevel() + 2)
 	baseframe.statusbar:SetPoint("left", baseframe.rodape.esquerdo, "right", -13, 10)
 	baseframe.statusbar:SetPoint("right", baseframe.rodape.direita, "left", 13, 10)

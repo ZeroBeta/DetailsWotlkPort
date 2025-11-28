@@ -77,7 +77,7 @@ function Details:CreateOrOpenNewsWindow()
 		frame:Hide()
 		DetailsFramework:ApplyStandardBackdrop(frame)
 
-		frame.imageFrame = CreateFrame("frame", "DetailsNewsWindowImageFrame", frame, "BackdropTemplate")
+		frame.imageFrame = CreateFrame("frame", "DetailsNewsWindowImageFrame", frame, nil)
 		frame.imageFrame:SetPoint("topleft", frame, "topright", 2, 0)
 		frame.imageFrame:SetPoint("bottomleft", frame, "bottomright", 2, 0)
 		frame.imageFrame:SetWidth(256)
@@ -97,8 +97,8 @@ function Details:CreateOrOpenNewsWindow()
 
 		frame.DumpTableFrame = dumpFrame
 
-		local frameUpper = CreateFrame("scrollframe", nil, frame, "BackdropTemplate")
-		local frameLower = CreateFrame("frame", "DetailsNewsWindowLower", frameUpper, "BackdropTemplate")
+		local frameUpper = CreateFrame("scrollframe", nil, frame, nil)
+		local frameLower = CreateFrame("frame", "DetailsNewsWindowLower", frameUpper, nil)
 
 		frameLower:SetSize(450, 2000)
 		frameUpper:SetPoint("topleft", frame, "topleft", 10, -30)
@@ -111,7 +111,7 @@ function Details:CreateOrOpenNewsWindow()
 		frameUpper:SetBackdropColor(.1, .1, .1, .3)
 		frameUpper:SetScrollChild(frameLower)
 		
-		local slider = CreateFrame("slider", "DetailsNewsWindowSlider", frame, "BackdropTemplate")
+		local slider = CreateFrame("slider", "DetailsNewsWindowSlider", frame, nil)
 		slider.bg = slider:CreateTexture(nil, "background")
 		slider.bg:SetAllPoints(true)
 		slider.bg:SetTexture(0, 0, 0, 0.5)
@@ -153,7 +153,7 @@ function Details:CreateOrOpenNewsWindow()
 		texto:SetWidth(450)
 		texto:SetHeight(2500)
 
-		local statusBar = CreateFrame("frame", nil, frame, "BackdropTemplate")
+		local statusBar = CreateFrame("frame", nil, frame, nil)
 		statusBar:SetPoint("bottomleft", frame, "bottomleft")
 		statusBar:SetPoint("bottomright", frame, "bottomright")
 		statusBar:SetHeight(20)

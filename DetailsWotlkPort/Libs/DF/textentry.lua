@@ -735,7 +735,7 @@ function detailsFramework:NewTextEntry(parent, container, name, member, width, h
 	end
 
 	--editbox
-	newTextEntryObject.editbox = CreateFrame("EditBox", name, parent,"BackdropTemplate")
+	newTextEntryObject.editbox = CreateFrame("EditBox", name, parent,nil)
 	newTextEntryObject.editbox:SetSize(232, 20)
 	newTextEntryObject.editbox:SetBackdrop({bgFile = [["Interface\DialogFrame\UI-DialogBox-Background"]], tileSize = 64, tile = true, edgeFile = [[Interface\DialogFrame\UI-DialogBox-Border]], edgeSize = 10, insets = {left = 1, right = 1, top = 0, bottom = 0}})
 	newTextEntryObject.editbox:SetTextInsets(3, 0, 0, -3)
@@ -1183,7 +1183,7 @@ function detailsFramework:NewSpecialLuaEditorEntry(parent, width, height, member
 		name =  nil
 	end
 
-	local borderframe = CreateFrame("Frame", name, parent,"BackdropTemplate")
+	local borderframe = CreateFrame("Frame", name, parent,nil)
 	borderframe:SetSize(width, height)
 
 	if (member) then
@@ -1193,7 +1193,7 @@ function detailsFramework:NewSpecialLuaEditorEntry(parent, width, height, member
 	local scrollframe = CreateFrame("ScrollFrame", name, borderframe, "UIPanelScrollFrameTemplate, BackdropTemplate")
 	local scrollframeNumberLines = CreateFrame("ScrollFrame", name and (name .. "NumberLines"), borderframe, "UIPanelScrollFrameTemplate, BackdropTemplate")
 
-	scrollframe.editbox = CreateFrame("editbox", name and "$parentEditBox", scrollframe,"BackdropTemplate")
+	scrollframe.editbox = CreateFrame("editbox", name and "$parentEditBox", scrollframe,nil)
 	scrollframe.editbox:SetMultiLine (true)
 	scrollframe.editbox:SetAutoFocus(false)
 	scrollframe.editbox:SetScript("OnCursorChanged", _G.ScrollingEdit_OnCursorChanged)
@@ -1203,7 +1203,7 @@ function detailsFramework:NewSpecialLuaEditorEntry(parent, width, height, member
 
 	--line number
 	if (showLineNumbers) then
-		scrollframeNumberLines.editbox = CreateFrame("editbox", name and "$parentLineNumbers", scrollframeNumberLines, "BackdropTemplate")
+		scrollframeNumberLines.editbox = CreateFrame("editbox", name and "$parentLineNumbers", scrollframeNumberLines, nil)
 		scrollframeNumberLines.editbox:SetMultiLine (true)
 		scrollframeNumberLines.editbox:SetAutoFocus(false)
 		scrollframeNumberLines.editbox:SetEnabled (false)

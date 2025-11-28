@@ -1331,7 +1331,7 @@ do
 
 	--create the breakdown window frame
 	---@type breakdownwindow
-	Details.BreakdownWindowFrame = CreateFrame("Frame", "DetailsBreakdownWindow", UIParent, "BackdropTemplate")
+	Details.BreakdownWindowFrame = CreateFrame("Frame", "DetailsBreakdownWindow", UIParent, nil)
 	Details.PlayerDetailsWindow = Details.BreakdownWindowFrame
 	Details.BreakdownWindow = Details.BreakdownWindowFrame
 
@@ -1368,7 +1368,7 @@ do
 ------------------------------------------------------------------------------------------
 -- welcome panel
 	function _detalhes:CreateWelcomePanel(name, parent, width, height, makeMovable)
-		local newWelcomePanel = CreateFrame("frame", name, parent or UIParent, "BackdropTemplate")
+		local newWelcomePanel = CreateFrame("frame", name, parent or UIParent, nil)
 
 		DetailsFramework:ApplyStandardBackdrop(newWelcomePanel)
 		newWelcomePanel:SetSize(width or 1, height or 1)

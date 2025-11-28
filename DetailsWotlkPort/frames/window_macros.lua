@@ -84,7 +84,7 @@ function Details.OpenMacrosWindow()
         
         local macroListCreateLine = function(self, index)
             --create a new line
-            local line = CreateFrame("button", "$parentLine" .. index, self,"BackdropTemplate")
+            local line = CreateFrame("button", "$parentLine" .. index, self,nil)
             
             --set its parameters
             line:SetPoint("topleft", self, "topleft", 0, -((index-1) * (scrollbox_line_height+1)))

@@ -526,7 +526,7 @@ local spellBlockMixin = {
 ---@return breakdownspellblock
 function spellsTab.CreateSpellBlock(spellBlockContainer, index) --~breakdownspellblock ~create ~spellblocks
 	---@type breakdownspellblock
-	local spellBlock = CreateFrame("statusbar", "$parentBlock" .. index, spellBlockContainer, "BackdropTemplate")
+	local spellBlock = CreateFrame("statusbar", "$parentBlock" .. index, spellBlockContainer, nil)
 	detailsFramework:Mixin(spellBlock, spellBlockMixin)
 
 	local statusBarTexture = spellBlock:CreateTexture("$parentTexture", "artwork")
@@ -787,7 +787,7 @@ function spellsTab.CreateSpellBlockContainer(tabFrame) --~create ~createblock ~s
 
 	--create the container which will hold the spell blocks
 	---@type breakdownspellblockframe
-	local spellBlockFrame = CreateFrame("Frame", "$parentSpellBlockContainer", container, "BackdropTemplate")
+	local spellBlockFrame = CreateFrame("Frame", "$parentSpellBlockContainer", container, nil)
 	spellBlockFrame:EnableMouse(false)
 	spellBlockFrame:SetResizable(false)
 	spellBlockFrame:SetMovable(false)
@@ -1540,7 +1540,7 @@ function spellsTab.CreateSpellBar(self, index) --~spellbar ~spellline ~spell ~cr
 
 	--button to expand the bar when there's spells merged
 	---@type breakdownexpandbutton
-	local expandButton = CreateFrame("button", "$parentExpandButton", spellBar, "BackdropTemplate")
+	local expandButton = CreateFrame("button", "$parentExpandButton", spellBar, nil)
 	expandButton:SetSize(CONST_BAR_HEIGHT, CONST_BAR_HEIGHT)
 	expandButton:RegisterForClicks("LeftButtonDown")
 	spellBar.expandButton = expandButton
@@ -1553,7 +1553,7 @@ function spellsTab.CreateSpellBar(self, index) --~spellbar ~spellline ~spell ~cr
 
 	--frame which will show the spell tooltip
 	---@type frame
-	local spellIconFrame = CreateFrame("frame", "$parentIconFrame", spellBar, "BackdropTemplate")
+	local spellIconFrame = CreateFrame("frame", "$parentIconFrame", spellBar, nil)
 	spellIconFrame:SetSize(CONST_BAR_HEIGHT - 2, CONST_BAR_HEIGHT - 2)
 	spellIconFrame:SetScript("OnEnter", onEnterSpellIconFrame)
 	spellIconFrame:SetScript("OnLeave", onLeaveSpellIconFrame)
@@ -1569,7 +1569,7 @@ function spellsTab.CreateSpellBar(self, index) --~spellbar ~spellline ~spell ~cr
 
 	--create a square frame which is placed at the right side of the line to show which targets for damaged by the spell
 	---@type breakdowntargetframe
-	local targetsSquareFrame = CreateFrame("frame", "$parentTargetsFrame", statusBar, "BackdropTemplate")
+	local targetsSquareFrame = CreateFrame("frame", "$parentTargetsFrame", statusBar, nil)
 	targetsSquareFrame:SetSize(CONST_SPELLSCROLL_LINEHEIGHT, CONST_SPELLSCROLL_LINEHEIGHT)
 	targetsSquareFrame:SetAlpha(.7)
 	targetsSquareFrame:SetScript("OnEnter", onEnterSpellTarget)

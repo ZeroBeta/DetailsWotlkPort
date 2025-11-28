@@ -2,7 +2,7 @@
 
 local DF = DetailsFramework
 
-local timelineFrame = TestTLFrame or CreateFrame("frame", "TestTLFrame", UIParent, "BackdropTemplate")
+local timelineFrame = TestTLFrame or CreateFrame("frame", "TestTLFrame", UIParent, nil)
 timelineFrame:SetPoint("center")
 timelineFrame:SetSize(900, 420)
 timelineFrame:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16,    insets = {left = 1, right = 1, top = 0, bottom = 1}})

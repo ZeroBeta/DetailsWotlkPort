@@ -129,15 +129,15 @@ Details222.BreakdownWindow.BackdropSettings = {
 }
 
 --create a base frame which will hold the scrollbox and plugin buttons
-local breakdownSideMenu = CreateFrame("frame", "DetailsBreakdownLeftMenuFrame", breakdownWindowFrame, "BackdropTemplate")
+local breakdownSideMenu = CreateFrame("frame", "DetailsBreakdownLeftMenuFrame", breakdownWindowFrame, nil)
 breakdownWindowFrame.BreakdownSideMenuFrame = breakdownSideMenu
 
 --create a frame to hold plugin buttons
-local pluginsFrame = CreateFrame("frame", "DetailsBreakdownLeftMenuPluginsFrame", breakdownSideMenu, "BackdropTemplate")
+local pluginsFrame = CreateFrame("frame", "DetailsBreakdownLeftMenuPluginsFrame", breakdownSideMenu, nil)
 breakdownWindowFrame.BreakdownPluginSelectionFrame = pluginsFrame
 
 --create the frame to hold tab buttons
-local tabButtonsFrame = CreateFrame("frame", "DetailsBreakdownTabsFrame", breakdownWindowFrame, "BackdropTemplate")
+local tabButtonsFrame = CreateFrame("frame", "DetailsBreakdownTabsFrame", breakdownWindowFrame, nil)
 breakdownWindowFrame.BreakdownTabsFrame = tabButtonsFrame
 
 local summaryWidgets = {}
@@ -650,7 +650,7 @@ end
 
 function Details.PlayerBreakdown.CreateDumpDataFrame()
 	local playerSelectionScrollFrame = DetailsBreakdownWindowPlayerScrollBox
-	breakdownWindowFrame.dumpDataFrame = CreateFrame("frame", "$parentDumpTableFrame", playerSelectionScrollFrame, "BackdropTemplate")
+	breakdownWindowFrame.dumpDataFrame = CreateFrame("frame", "$parentDumpTableFrame", playerSelectionScrollFrame, nil)
 	breakdownWindowFrame.dumpDataFrame:SetPoint("topleft", playerSelectionScrollFrame, "topleft", 0, 0)
 	breakdownWindowFrame.dumpDataFrame:SetPoint("bottomright", playerSelectionScrollFrame, "bottomright", 0, 0)
 	breakdownWindowFrame.dumpDataFrame:SetFrameLevel(playerSelectionScrollFrame:GetFrameLevel() + 10)
@@ -669,7 +669,7 @@ function Details.PlayerBreakdown.CreateDumpDataFrame()
 end
 
 function breakdownWindowFrame:CreateRightSideBar() --not enabled
-	breakdownWindowFrame.RightSideBar = CreateFrame("frame", nil, breakdownWindowFrame, "BackdropTemplate")
+	breakdownWindowFrame.RightSideBar = CreateFrame("frame", nil, breakdownWindowFrame, nil)
 	breakdownWindowFrame.RightSideBar:SetWidth(20)
 	breakdownWindowFrame.RightSideBar:SetPoint("topleft", breakdownWindowFrame, "topright", 1, 0)
 	breakdownWindowFrame.RightSideBar:SetPoint("bottomleft", breakdownWindowFrame, "bottomright", 1, 0)
@@ -831,7 +831,7 @@ function Details:CreateBreakdownWindow()
 
 	--host the textures and fontstring of the default frame of the player breakdown window
 	--what is the summary window: is the frame where all the widgets for the summary tab are created
-	breakdownWindowFrame.SummaryWindowWidgets = CreateFrame("frame", "DetailsBreakdownWindowSummaryWidgets", breakdownWindowFrame, "BackdropTemplate")
+	breakdownWindowFrame.SummaryWindowWidgets = CreateFrame("frame", "DetailsBreakdownWindowSummaryWidgets", breakdownWindowFrame, nil)
 	local SWW = breakdownWindowFrame.SummaryWindowWidgets
 	SWW:SetAllPoints()
 	table.insert(summaryWidgets, SWW) --where SummaryWidgets is declared: at the header of the file, what is the purpose of this table?
@@ -889,7 +889,7 @@ function Details:CreateBreakdownWindow()
 	end
 
 	--statusbar
-	local statusBar = CreateFrame("frame", nil, breakdownWindowFrame, "BackdropTemplate")
+	local statusBar = CreateFrame("frame", nil, breakdownWindowFrame, nil)
 	statusBar:SetPoint("bottomleft", breakdownWindowFrame, "bottomleft")
 	statusBar:SetPoint("bottomright", breakdownWindowFrame, "bottomright")
 	statusBar:SetHeight(PLAYER_DETAILS_STATUSBAR_HEIGHT)
@@ -1040,7 +1040,7 @@ function Details:CreatePlayerDetailsTab(tabName, locName, conditionFunc, fillFun
 	tabButton.last_actor = {} --need to double check is this getting cleared
 
 	---@type tabframe
-	local tabFrame = CreateFrame("frame", breakdownWindowFrame:GetName() .. "TabFrame" .. tabName .. math.random(1, 10000), breakdownWindowFrame, "BackdropTemplate")
+	local tabFrame = CreateFrame("frame", breakdownWindowFrame:GetName() .. "TabFrame" .. tabName .. math.random(1, 10000), breakdownWindowFrame, nil)
 	tabFrame:SetFrameLevel(breakdownWindowFrame:GetFrameLevel()+1)
 	tabFrame:SetPoint("topleft", breakdownWindowFrame, "topleft", 1, -70)
 	tabFrame:SetPoint("bottomright", breakdownWindowFrame, "bottomright", -1, 20)

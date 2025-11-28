@@ -24,45 +24,6 @@ if not CombatLogGetCurrentEventInfo then
     end
 end
 
--- WotLK doesn't have BackdropTemplate; ignore it in CreateFrame to prevent nil frames.
--- CreateFrame compatibility:
--- Retail templates like BackdropTemplate or mixins don't exist on 3.3.5; retry without them if creation fails.
-do
-	local originalCreateFrame = CreateFrame
-	local warnedBackdrop = false
-
-	CreateFrame = function(frameType, name, parent, template, ...)
-		-- First attempt: as requested (but strip retail-only BackdropTemplate on old clients)
-		if template == "BackdropTemplate" or (type(template) == "table" and _G.BackdropTemplateMixin and template.mixin == _G.BackdropTemplateMixin) then
-			template = nil
-			if not warnedBackdrop then
-				warnedBackdrop = true
-				-- Uncomment for debugging: print("Details: BackdropTemplate stripped for", tostring(name) or "frame")
-			end
-		end
-
-		local ok, frame = pcall(originalCreateFrame, frameType, name, parent, template, ...)
-		if ok and frame then
-			return frame
-		end
-
-		-- Retry with a capitalized frame type and no template
-		local safeType = type(frameType) == "string" and (frameType:sub(1,1):upper() .. frameType:sub(2):lower()) or frameType
-		ok, frame = pcall(originalCreateFrame, safeType, name, parent, nil, ...)
-		if ok and frame then
-			return frame
-		end
-
-		-- Final fallback: plain Frame
-		ok, frame = pcall(originalCreateFrame, "Frame", name, parent, nil, ...)
-		if ok then
-			return frame
-		end
-
-		return nil
-	end
-end
-
 -- RegisterAddonMessagePrefix polyfill - make it global if it doesn't exist
 if not RegisterAddonMessagePrefix then
     if C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then

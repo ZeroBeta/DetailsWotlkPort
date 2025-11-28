@@ -967,7 +967,7 @@
 
 --cria o frame de wait for plugin
 	function Details:CreateWaitForPlugin()
-		local WaitForPluginFrame = CreateFrame("frame", "DetailsWaitForPluginFrame" .. self.meu_id, UIParent,"BackdropTemplate")
+		local WaitForPluginFrame = CreateFrame("frame", "DetailsWaitForPluginFrame" .. self.meu_id, UIParent,nil)
 		local WaitTexture = WaitForPluginFrame:CreateTexture(nil, "overlay")
 		WaitTexture:SetTexture("Interface\\CHARACTERFRAME\\Disconnect-Icon")
 		WaitTexture:SetWidth(64/2)
@@ -1053,7 +1053,7 @@
 	end
 
 	do
-		local WaitForPluginFrame = CreateFrame("frame", "DetailsWaitForPluginFrame", UIParent,"BackdropTemplate")
+		local WaitForPluginFrame = CreateFrame("frame", "DetailsWaitForPluginFrame", UIParent,nil)
 		local WaitTexture = WaitForPluginFrame:CreateTexture(nil, "overlay")
 		WaitTexture:SetTexture("Interface\\UNITPOWERBARALT\\Mechanical_Circular_Frame")
 		WaitTexture:SetPoint("center", WaitForPluginFrame)
@@ -1211,7 +1211,7 @@
 	end
 
 	--interface menu
-	local f = CreateFrame("frame", "DetailsInterfaceOptionsPanel", UIParent,"BackdropTemplate")
+	local f = CreateFrame("frame", "DetailsInterfaceOptionsPanel", UIParent,nil)
 	f.name = "Details"
 	f.logo = f:CreateTexture(nil, "overlay")
 	f.logo:SetPoint("center", f, "center", 0, 0)

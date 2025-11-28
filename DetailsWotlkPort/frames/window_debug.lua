@@ -349,7 +349,7 @@ function Details:ShowCleuDebugWindow(filterFunction)
 
         local createLineFunc = function(self, index)
             --create the line for a scrollbox
-            local line = CreateFrame("frame", "$parentLine" .. index, self, "BackdropTemplate")
+            local line = CreateFrame("frame", "$parentLine" .. index, self, nil)
             --set the point using the line index, line height and scrollbox width
 			line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(lineHeight+1)) - 1)
 			line:SetSize(scrollWidth - 2, lineHeight)

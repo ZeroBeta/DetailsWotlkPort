@@ -676,7 +676,7 @@ function detailsFramework:NewPanel(parent, container, name, member, w, h, backdr
 		PanelObject.container = container
 		PanelObject.rightButtonClose = false
 
-	PanelObject.frame = CreateFrame("frame", name, parent,"BackdropTemplate")
+	PanelObject.frame = CreateFrame("frame", name, parent,nil)
 	PanelObject.frame:SetSize(100, 100)
 	PanelObject.frame.Gradient = {
 					["OnEnter"] = {0.3, 0.3, 0.3, 0.5},
@@ -1425,7 +1425,7 @@ function detailsFramework:NewFillPanel(parent, rows, name, member, w, h, total_l
 		panel.scrollframe:Show()
 	end
 
-	local scrollframe = CreateFrame("scrollframe", name .. "Scroll", panel.widget, "FauxScrollFrameTemplate", "BackdropTemplate")
+	local scrollframe = CreateFrame("scrollframe", name .. "Scroll", panel.widget, "FauxScrollFrameTemplate", nil)
 	scrollframe:SetScript("OnVerticalScroll", function(self, offset) FauxScrollFrame_OnVerticalScroll (self, offset, 20, panel.Refresh) end)
 	scrollframe:SetPoint("topleft", panel.widget, "topleft", 0, -21)
 	scrollframe:SetPoint("topright", panel.widget, "topright", -23, -21)
@@ -1443,7 +1443,7 @@ function detailsFramework:NewFillPanel(parent, rows, name, member, w, h, total_l
 		local amount = math.floor(((panel._height-21) / size))
 
 		for i = #scrollframe.lines+1, amount do
-			local row = CreateFrame("frame", panel:GetName() .. "Row_" .. i, panel.widget,"BackdropTemplate")
+			local row = CreateFrame("frame", panel:GetName() .. "Row_" .. i, panel.widget,nil)
 			row:SetSize(1, size)
 			row.color = {1, 1, 1, .2}
 
@@ -1593,7 +1593,7 @@ function detailsFramework:IconPick (callback, close_when_select, param1, param2)
 
 		local string_lower = string.lower
 
-		detailsFramework.IconPickFrame = CreateFrame("frame", "DetailsFrameworkIconPickFrame", UIParent, "BackdropTemplate")
+		detailsFramework.IconPickFrame = CreateFrame("frame", "DetailsFrameworkIconPickFrame", UIParent, nil)
 		table.insert(UISpecialFrames, "DetailsFrameworkIconPickFrame")
 		detailsFramework.IconPickFrame:SetFrameStrata("FULLSCREEN")
 
@@ -1627,7 +1627,7 @@ function detailsFramework:IconPick (callback, close_when_select, param1, param2)
 		detailsFramework.IconPickFrame.emptyFunction = function() end
 		detailsFramework.IconPickFrame.callback = detailsFramework.IconPickFrame.emptyFunction
 
-		detailsFramework.IconPickFrame.preview =  CreateFrame("frame", nil, UIParent, "BackdropTemplate")
+		detailsFramework.IconPickFrame.preview =  CreateFrame("frame", nil, UIParent, nil)
 		detailsFramework.IconPickFrame.preview:SetFrameStrata("tooltip")
 		detailsFramework.IconPickFrame.preview:SetFrameLevel(6001)
 		detailsFramework.IconPickFrame.preview:SetSize(76, 76)
@@ -1688,7 +1688,7 @@ function detailsFramework:IconPick (callback, close_when_select, param1, param2)
 		end)
 
 		--close button
-		local close_button = CreateFrame("button", nil, detailsFramework.IconPickFrame, "UIPanelCloseButton", "BackdropTemplate")
+		local close_button = CreateFrame("button", nil, detailsFramework.IconPickFrame, "UIPanelCloseButton", nil)
 		close_button:SetWidth(32)
 		close_button:SetHeight(32)
 		close_button:SetPoint("TOPRIGHT", detailsFramework.IconPickFrame, "TOPRIGHT", -8, -7)
@@ -1918,7 +1918,7 @@ function detailsFramework:IconPick (callback, close_when_select, param1, param2)
 		--create the lines and button of the scroll box
 		for i = 1, linesAmount do
 			scroll:CreateLine(function(self, index)
-				local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+				local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 				line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(lineHeight+1)) - 1)
 				line:SetSize(width - 2, lineHeight)
 				line:SetBackdrop({bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -1967,7 +1967,7 @@ end
 
 function detailsFramework:ShowPanicWarning (text)
 	if (not detailsFramework.PanicWarningWindow) then
-		detailsFramework.PanicWarningWindow = CreateFrame("frame", "DetailsFrameworkPanicWarningWindow", UIParent, "BackdropTemplate")
+		detailsFramework.PanicWarningWindow = CreateFrame("frame", "DetailsFrameworkPanicWarningWindow", UIParent, nil)
 		detailsFramework.PanicWarningWindow:SetHeight(80)
 		detailsFramework.PanicWarningWindow:SetBackdrop({bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
 		detailsFramework.PanicWarningWindow:SetBackdropColor(1, 0, 0, 0.2)
@@ -2059,7 +2059,7 @@ function detailsFramework:CreateScaleBar(frame, config, bNoRightClick) --~scale
 	rawset(scaleBar, "lockdown", true)
 
 	--create a custom editbox to enter the scale from text
-	local editbox = CreateFrame("editbox", nil, scaleBar.widget, "BackdropTemplate")
+	local editbox = CreateFrame("editbox", nil, scaleBar.widget, nil)
 	editbox:SetSize(40, 20)
 	editbox:SetJustifyH("center")
 	editbox:SetBackdrop({bgFile = [[Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated]],
@@ -2191,7 +2191,7 @@ function detailsFramework:CreateSimplePanel(parent, width, height, title, frameN
 	panelOptions = panelOptions or no_options
 
 	--create the frame
-	local simplePanel = CreateFrame("frame", frameName, _G["UIParent"],"BackdropTemplate")
+	local simplePanel = CreateFrame("frame", frameName, _G["UIParent"],nil)
 	simplePanel:SetSize(width or 400, height or 250)
 	simplePanel:SetPoint("center", _G["UIParent"], "center", 0, 0)
 	simplePanel:SetFrameStrata("FULLSCREEN")
@@ -2225,7 +2225,7 @@ function detailsFramework:CreateSimplePanel(parent, width, height, title, frameN
 		simplePanel.StatusBar = statusBar
 	end
 
-	local titleBar = CreateFrame("frame", frameName .. "TitleBar", simplePanel, "BackdropTemplate")
+	local titleBar = CreateFrame("frame", frameName .. "TitleBar", simplePanel, nil)
 
 	if (panelOptions.RoundedCorners) then
 		--a key named "TitleBar" is created by the rounded corners function
@@ -2405,7 +2405,7 @@ local Panel1PxHasPosition = function(self)
 end
 
 function detailsFramework:Create1PxPanel(parent, width, height, title, name, config, titleAnchor, noSpecialFrame)
-	local newFrame = CreateFrame("frame", name, parent or UIParent, "BackdropTemplate")
+	local newFrame = CreateFrame("frame", name, parent or UIParent, nil)
 	newFrame:SetSize(width or 100, height or 75)
 	newFrame:SetPoint("center", UIParent, "center", 0, 0)
 
@@ -2427,7 +2427,7 @@ function detailsFramework:Create1PxPanel(parent, width, height, title, name, con
 	newFrame.db = config
 	Panel1PxReadConfig(newFrame)
 
-	local closeButton = CreateFrame("button", name and name .. "CloseButton", newFrame, "BackdropTemplate")
+	local closeButton = CreateFrame("button", name and name .. "CloseButton", newFrame, nil)
 	closeButton:SetSize(16, 16)
 	closeButton:SetNormalTexture([[Interface\GLUES\LOGIN\Glues-CheckBox-Check]])
 	closeButton:SetHighlightTexture([[Interface\GLUES\LOGIN\Glues-CheckBox-Check]])
@@ -2437,7 +2437,7 @@ function detailsFramework:Create1PxPanel(parent, width, height, title, name, con
 	closeButton:GetPushedTexture():SetDesaturated(true)
 	closeButton:SetAlpha(0.7)
 
-	local lockButton = CreateFrame("button", name and name .. "LockButton", newFrame, "BackdropTemplate")
+	local lockButton = CreateFrame("button", name and name .. "LockButton", newFrame, nil)
 	lockButton:SetSize(16, 16)
 	lockButton:SetNormalTexture([[Interface\GLUES\CharacterSelect\Glues-AddOn-Icons]])
 	lockButton:SetHighlightTexture([[Interface\GLUES\CharacterSelect\Glues-AddOn-Icons]])
@@ -2508,7 +2508,7 @@ end
 ---@param promptName string|nil set a name to the prompt, used on HidePromptPanel(promptName)
 function detailsFramework:ShowPromptPanel(message, trueCallback, falseCallback, dontOverride, width, promptName)
 	if (not DetailsFrameworkPromptSimple) then
-		local promptFrame = CreateFrame("frame", "DetailsFrameworkPromptSimple", UIParent, "BackdropTemplate")
+		local promptFrame = CreateFrame("frame", "DetailsFrameworkPromptSimple", UIParent, nil)
 		promptFrame:SetSize(400, 80)
 		promptFrame:SetFrameStrata("FULLSCREEN")
 		promptFrame:SetPoint("center", UIParent, "center", 0, 300)
@@ -2609,7 +2609,7 @@ end
 
 function detailsFramework:ShowTextPromptPanel(message, callback)
 	if (not detailsFramework.text_prompt_panel) then
-		local promptFrame = CreateFrame("frame", "DetailsFrameworkPrompt", UIParent, "BackdropTemplate")
+		local promptFrame = CreateFrame("frame", "DetailsFrameworkPrompt", UIParent, nil)
 		promptFrame:SetSize(400, 120)
 		promptFrame:SetFrameStrata("FULLSCREEN")
 		promptFrame:SetPoint("center", UIParent, "center", 0, 100)
@@ -2849,7 +2849,7 @@ local create_box = function(self, next_box)
 	thisbox.check = checktexture
 	thisbox.enabled = true
 
-	local button = CreateFrame("button", nil, self.Graphic, "BackdropTemplate")
+	local button = CreateFrame("button", nil, self.Graphic, nil)
 	button:SetSize(20, 20)
 	button:SetScript("OnClick", function()
 		chart_panel_enable_line (self, thisbox)
@@ -3319,7 +3319,7 @@ function detailsFramework:CreateChartPanel(parent, width, height, name)
 	width = width or 800
 	height = height or 500
 
-	local chartFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local chartFrame = CreateFrame("frame", name, parent, nil)
 	chartFrame:SetSize(width or 500, height or 400)
 	chartFrame:EnableMouse(true)
 	chartFrame:SetMovable(true)
@@ -3330,7 +3330,7 @@ function detailsFramework:CreateChartPanel(parent, width, height, name)
 	chartFrame:SetBackdrop(chart_panel_backdrop)
 	chartFrame:SetBackdropColor(.3, .3, .3, .3)
 
-	local closeButton = CreateFrame("Button", nil, chartFrame, "UIPanelCloseButton", "BackdropTemplate")
+	local closeButton = CreateFrame("Button", nil, chartFrame, "UIPanelCloseButton", nil)
 	closeButton:SetWidth(32)
 	closeButton:SetHeight(32)
 	closeButton:SetPoint("TOPRIGHT",  chartFrame, "TOPRIGHT", -3, -7)
@@ -3469,7 +3469,7 @@ end
 local gframe_create_line = function(self)
 	local index = #self._lines+1
 
-	local f = CreateFrame("frame", nil, self, "BackdropTemplate")
+	local f = CreateFrame("frame", nil, self, nil)
 	self._lines [index] = f
 	f.id = index
 	f:SetScript("OnEnter", gframe_on_enter_line)
@@ -3497,7 +3497,7 @@ local gframe_create_line = function(self)
 	b:SetTexture([[Interface\COMMON\Indicator-Yellow]])
 	b:SetSize(16, 16)
 	f.ball = b
-	local anchor = CreateFrame("frame", nil, f, "BackdropTemplate")
+	local anchor = CreateFrame("frame", nil, f, nil)
 	anchor:SetAllPoints(b)
 	b.tooltip_anchor = anchor
 
@@ -3602,7 +3602,7 @@ local gframe_update = function(self, lines)
 end
 
 function detailsFramework:CreateGFrame(parent, width, height, lineWidth, onEnter, onLeave, member, name)
-	local newGraphicFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local newGraphicFrame = CreateFrame("frame", name, parent, nil)
 	newGraphicFrame:SetSize(width or 450, height or 150)
 
 	if (member) then
@@ -3818,7 +3818,7 @@ local simple_list_box_SetData = function(self, t)
 end
 
 function detailsFramework:CreateSimpleListBox(parent, name, title, emptyText, listTable, onClick, options)
-	local scroll = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local scroll = CreateFrame("frame", name, parent, nil)
 
 	scroll.ResetWidgets = simple_list_box_ResetWidgets
 	scroll.GetOrCreateWidget = simple_list_box_GetOrCreateWidget
@@ -3973,9 +3973,9 @@ function detailsFramework:CreateResizeGrips(parent, options, leftResizerName, ri
 	local parentName = parent:GetName()
 
 	---@type df_resizergrip
-	local leftResizer = _G.CreateFrame("button", leftResizerName or (parentName and "$parentLeftResizer"), parent, "BackdropTemplate")
+	local leftResizer = _G.CreateFrame("button", leftResizerName or (parentName and "$parentLeftResizer"), parent, nil)
 	---@type df_resizergrip
-	local rightResizer = _G.CreateFrame("button", rightResizerName or (parentName and "$parentRightResizer"), parent, "BackdropTemplate")
+	local rightResizer = _G.CreateFrame("button", rightResizerName or (parentName and "$parentRightResizer"), parent, nil)
 
 	leftResizer:SetFrameLevel(parent:GetFrameLevel() + 20)
 	rightResizer:SetFrameLevel(parent:GetFrameLevel() + 20)
@@ -4113,7 +4113,7 @@ detailsFramework.BossScrollSelectorMixin = {
 	---@return frame
 	CreateLine = function(self, index)
 		---@type df_bossscrollselector_line
-		local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 
 		line:SetPoint("topleft", self, "topleft", 1, -((index-1) * (self.options.line_height+1)) - 1)
 		line:SetSize(self.options.width - 2, self.options.line_height)
@@ -4292,7 +4292,7 @@ detailsFramework.TitleFunctions = {
 ---@param titleText string
 ---@return df_titlebar
 function detailsFramework:CreateTitleBar(parent, titleText)
-	local titleBar = CreateFrame("frame", parent:GetName() and parent:GetName() .. "TitleBar" or nil, parent, "BackdropTemplate")
+	local titleBar = CreateFrame("frame", parent:GetName() and parent:GetName() .. "TitleBar" or nil, parent, nil)
 	titleBar:SetPoint("topleft", parent, "topleft", 2, -3)
 	titleBar:SetPoint("topright", parent, "topright", -2, -3)
 	titleBar:SetHeight(20)
@@ -4300,7 +4300,7 @@ function detailsFramework:CreateTitleBar(parent, titleText)
 	titleBar:SetBackdropColor(.2, .2, .2, 1)
 	titleBar:SetBackdropBorderColor(0, 0, 0, 1)
 
-	local closeButton = CreateFrame("button", titleBar:GetName() and titleBar:GetName() .. "CloseButton" or nil, titleBar, "BackdropTemplate")
+	local closeButton = CreateFrame("button", titleBar:GetName() and titleBar:GetName() .. "CloseButton" or nil, titleBar, nil)
 	closeButton:SetSize(16, 16)
 
 	closeButton:SetNormalTexture([[Interface\GLUES\LOGIN\Glues-CheckBox-Check]])
@@ -4700,7 +4700,7 @@ detailsFramework.RadioGroupCoreFunctions = {
 ---@param anchorOptions table?
 ---@return df_checkboxgroup
 function detailsFramework:CreateCheckboxGroup(parent, radioOptions, name, options, anchorOptions)
-	local newCheckboxGroup = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local newCheckboxGroup = CreateFrame("frame", name, parent, nil)
 
 	detailsFramework:Mixin(newCheckboxGroup, detailsFramework.OptionsFunctions)
 	detailsFramework:Mixin(newCheckboxGroup, detailsFramework.RadioGroupCoreFunctions)
@@ -4779,7 +4779,7 @@ detailsFramework.DataScrollFunctions = {
 
 	CreateLine = function(self, index)
 		--create a new line
-		local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 		line.Update = self.options.update_line_func
 
 		--set its parameters
@@ -5044,7 +5044,7 @@ local statusbar_default_options = {
 }
 
 function detailsFramework:CreateStatusBar(f, options)
-	local statusBar = CreateFrame("frame", nil, f, "BackdropTemplate")
+	local statusBar = CreateFrame("frame", nil, f, nil)
 
 	detailsFramework:Mixin(statusBar, detailsFramework.OptionsFunctions)
 	detailsFramework:Mixin(statusBar, detailsFramework.LayoutFrame)
@@ -5100,7 +5100,7 @@ detailsFramework.BorderFunctions = {
 function detailsFramework:CreateBorderFrame(parent, name)
 	local parentName = name or ("DetailsFrameworkBorderFrame" .. tostring(math.random(1, 100000000)))
 
-	local f = CreateFrame("frame", parentName, parent, "BackdropTemplate")
+	local f = CreateFrame("frame", parentName, parent, nil)
 	detailsFramework:Mixin(f, detailsFramework.FrameFunctions)
 	f:SetFrameLevel(f:GetFrameLevel()+1)
 	f:SetAllPoints()
@@ -5158,7 +5158,7 @@ end
 function detailsFramework:ShowErrorMessage (errorMessage, titleText)
 
 	if (not detailsFramework.ErrorMessagePanel) then
-		local f = CreateFrame("frame", "DetailsFrameworkErrorMessagePanel", UIParent, "BackdropTemplate")
+		local f = CreateFrame("frame", "DetailsFrameworkErrorMessagePanel", UIParent, nil)
 		f:SetSize(400, 120)
 		f:SetFrameStrata("FULLSCREEN")
 		f:SetPoint("center", UIParent, "center", 0, 100)
@@ -5301,7 +5301,7 @@ detailsFramework.ListboxFunctions = {
 
 	createScrollLine = function(self, index)
 		local listBox = self:GetParent()
-		local line = CreateFrame("frame", self:GetName().. "line_" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("frame", self:GetName().. "line_" .. index, self, nil)
 
 		line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(self.lineHeight+1)) - 1)
 		line:SetSize(self:GetWidth() - 28, self.lineHeight) -- -28 space for the scrollbar
@@ -5384,7 +5384,7 @@ function detailsFramework:CreateListBox(parent, name, data, options, headerTable
 	name = name or "ListboxUnamed_" .. (math.random(100000, 1000000))
 
 	--canvas
-	local frameCanvas = CreateFrame("scrollframe", name, parent, "BackdropTemplate")
+	local frameCanvas = CreateFrame("scrollframe", name, parent, nil)
 	detailsFramework:Mixin(frameCanvas, detailsFramework.ListboxFunctions)
 	detailsFramework:Mixin(frameCanvas, detailsFramework.OptionsFunctions)
 	detailsFramework:Mixin(frameCanvas, detailsFramework.LayoutFrame)
@@ -5530,7 +5530,7 @@ function detailsFramework:ShowData(data)
 		end
 
 		local createLineFunc = function(self, index)
-			local line = CreateFrame("button", "$parentLine" .. index, self,"BackdropTemplate")
+			local line = CreateFrame("button", "$parentLine" .. index, self,nil)
 			line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(scroll_line_height+1)) - 1)
 			line:SetSize(scroll_width - 2, scroll_line_height)
 

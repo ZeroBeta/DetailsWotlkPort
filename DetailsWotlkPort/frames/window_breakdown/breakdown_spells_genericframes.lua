@@ -420,7 +420,7 @@ local createGenericBar = function(self, index) --~create ~generic ~creategeneric
 
 	--frame which will allow showing the spell tooltip
 	---@type frame
-	local iconFrame = CreateFrame("frame", "$parentIconFrame", genericBar, "BackdropTemplate")
+	local iconFrame = CreateFrame("frame", "$parentIconFrame", genericBar, nil)
 	iconFrame:SetPoint("left", statusBar, "left", 0, 0)
 	iconFrame:SetSize(CONST_SPELLSCROLL_LINEHEIGHT-2, CONST_SPELLSCROLL_LINEHEIGHT-2)
 	genericBar.IconFrame = iconFrame

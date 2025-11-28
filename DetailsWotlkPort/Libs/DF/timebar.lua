@@ -502,7 +502,7 @@ function detailsFramework:CreateTimeBar(parent, texture, width, height, value, m
 	height = height or 20
 	timeBar.locked = false
 
-    timeBar.statusBar = CreateFrame("statusbar", name, parent, "BackdropTemplate")
+    timeBar.statusBar = CreateFrame("statusbar", name, parent, nil)
     timeBar.widget = timeBar.statusBar
     detailsFramework:Mixin(timeBar.statusBar, detailsFramework.WidgetFunctions)
     timeBar.statusBar.MyObject = timeBar

@@ -18,7 +18,7 @@ local difficultyNames = {
 }
 
 function Details:InitializeRaidHistoryWindow()
-    local DetailsRaidHistoryWindow = CreateFrame("frame", "DetailsRaidHistoryWindow", UIParent,"BackdropTemplate")
+    local DetailsRaidHistoryWindow = CreateFrame("frame", "DetailsRaidHistoryWindow", UIParent,nil)
     DetailsRaidHistoryWindow.Frame = DetailsRaidHistoryWindow
     DetailsRaidHistoryWindow.__name = Loc ["STRING_STATISTICS"]
     DetailsRaidHistoryWindow.real_name = "DETAILS_STATISTICS"
@@ -47,7 +47,7 @@ function Details:OpenRaidHistoryWindow(raidName, bossEncounterId, difficultyId, 
 
         DetailsRaidHistoryWindow.Initialized = true
 
-        local statisticsFrame = DetailsRaidHistoryWindow or CreateFrame("frame", "DetailsRaidHistoryWindow", UIParent, "BackdropTemplate")
+        local statisticsFrame = DetailsRaidHistoryWindow or CreateFrame("frame", "DetailsRaidHistoryWindow", UIParent, nil)
         statisticsFrame:SetPoint("center", UIParent, "center")
         statisticsFrame:SetFrameStrata("HIGH")
         statisticsFrame:SetToplevel(true)
@@ -147,7 +147,7 @@ function Details:OpenRaidHistoryWindow(raidName, bossEncounterId, difficultyId, 
             statisticsFrame.GuildSyncButton:Disable()
 
             if (not statisticsFrame.SyncTexture) then
-                local workingFrame = CreateFrame("frame", nil, statisticsFrame, "BackdropTemplate")
+                local workingFrame = CreateFrame("frame", nil, statisticsFrame, nil)
                 statisticsFrame.WorkingFrame = workingFrame
                 workingFrame:SetSize(1, 1)
                 statisticsFrame.SyncTextureBackground = workingFrame:CreateTexture(nil, "border")

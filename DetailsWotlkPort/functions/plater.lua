@@ -6,7 +6,7 @@ local addonName, Details222 = ...
 ---@type detailsframework
 local detailsFramework = DetailsFramework
 
-local plater_integration_frame = CreateFrame("frame", "DetailsPlaterFrame", UIParent, "BackdropTemplate")
+local plater_integration_frame = CreateFrame("frame", "DetailsPlaterFrame", UIParent, nil)
 plater_integration_frame.DamageTaken = {}
 
 --aprox. 6 updates per second
@@ -17,7 +17,7 @@ local CONST_BUFFER_SIZE = 30
 PLATER_DPS_SAMPLE_SIZE = CONST_BUFFER_SIZE * CONST_REALTIME_UPDATE_TIME
 
 --separate CLEU events from the Tick event for performance
-plater_integration_frame.OnTickFrame = CreateFrame("frame", "DetailsPlaterFrameOnTicker", UIParent, "BackdropTemplate")
+plater_integration_frame.OnTickFrame = CreateFrame("frame", "DetailsPlaterFrameOnTicker", UIParent, nil)
 
 --on tick function
 plater_integration_frame.OnTickFrameFunc = function(self, deltaTime)

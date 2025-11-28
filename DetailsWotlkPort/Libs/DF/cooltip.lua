@@ -368,7 +368,7 @@ function DF:CreateCoolTip()
 	--main frame
 		local frame1 = GameCooltipFrame1
 		if (not GameCooltipFrame1) then
-			frame1 = CreateFrame("Frame", "GameCooltipFrame1", UIParent, "BackdropTemplate")
+			frame1 = CreateFrame("Frame", "GameCooltipFrame1", UIParent, nil)
 		end
 
 		DF.table.addunique(UISpecialFrames, "GameCooltipFrame1")
@@ -382,7 +382,7 @@ function DF:CreateCoolTip()
 	--secondary frame
 		local frame2 = GameCooltipFrame2
 		if (not GameCooltipFrame2) then
-			frame2 = CreateFrame("Frame", "GameCooltipFrame2", UIParent, "BackdropTemplate")
+			frame2 = CreateFrame("Frame", "GameCooltipFrame2", UIParent, nil)
 		end
 
 		frame2:SetClampedToScreen(true)

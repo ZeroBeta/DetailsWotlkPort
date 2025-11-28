@@ -1834,7 +1834,7 @@
 	function Details:AutoEraseConfirm()
 		local dataEraseConfirmationFrame = _G.DetailsEraseDataConfirmation
 		if (not dataEraseConfirmationFrame) then
-			dataEraseConfirmationFrame = CreateFrame("frame", "DetailsEraseDataConfirmation", UIParent, "BackdropTemplate")
+			dataEraseConfirmationFrame = CreateFrame("frame", "DetailsEraseDataConfirmation", UIParent, nil)
 			dataEraseConfirmationFrame:SetSize(400, 85)
 			dataEraseConfirmationFrame:SetPoint("center", UIParent)
 

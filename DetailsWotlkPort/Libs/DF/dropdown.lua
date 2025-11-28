@@ -1741,7 +1741,7 @@ local borderBackdrop = {edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1,
 local childBackdrop = {bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 256, insets = {left = 0, right = 0, top = 0, bottom = 0}}
 
 function DF:CreateNewDropdownFrame(parent, name)
-	local newDropdownFrame = CreateFrame("button", name, parent, "BackdropTemplate")
+	local newDropdownFrame = CreateFrame("button", name, parent, nil)
 	newDropdownFrame:SetBackdrop(defaultBackdrop)
 	newDropdownFrame:SetBackdropColor(1, 1, 1, .5)
 	newDropdownFrame:SetSize(150, 20)
@@ -1796,7 +1796,7 @@ function DF:CreateNewDropdownFrame(parent, name)
 	newDropdownFrame:SetScript("OnMouseDown", DetailsFrameworkDropDownOnMouseDown)
 
 	--dropdown
-	local border = CreateFrame("frame", "$Parent_Border", newDropdownFrame, "BackdropTemplate")
+	local border = CreateFrame("frame", "$Parent_Border", newDropdownFrame, nil)
 	border:Hide()
 	border:SetFrameStrata("FULLSCREEN")
 	border:SetSize(150, 300)
@@ -1807,14 +1807,14 @@ function DF:CreateNewDropdownFrame(parent, name)
 	border:SetBackdropBorderColor(.2, .2, .2, 0.8)
 	newDropdownFrame.dropdownborder = border
 
-	local scroll = CreateFrame("ScrollFrame", "$Parent_ScrollFrame", newDropdownFrame, "BackdropTemplate")
+	local scroll = CreateFrame("ScrollFrame", "$Parent_ScrollFrame", newDropdownFrame, nil)
 	scroll:SetFrameStrata("FULLSCREEN")
 	scroll:SetSize(150, 300)
 	scroll:SetPoint("topleft", newDropdownFrame, "bottomleft", 0, 0)
 	scroll:Hide()
 	newDropdownFrame.dropdownframe = scroll
 
-	local child = CreateFrame("frame", "$Parent_ScrollChild", scroll, "BackdropTemplate")
+	local child = CreateFrame("frame", "$Parent_ScrollChild", scroll, nil)
 	--child:SetAllPoints()
 	child:SetSize(150, 300)
 	child:SetPoint("topleft", scroll, "topleft", 0, 0)
@@ -1847,7 +1847,7 @@ function DF:CreateNewDropdownFrame(parent, name)
 end
 
 function DF:CreateDropdownButton(parent, name)
-	local newButton = CreateFrame("button", name, parent, "BackdropTemplate")
+	local newButton = CreateFrame("button", name, parent, nil)
 	newButton:SetSize(150, 20)
 
 	local statusbar = newButton:CreateTexture("$parent_StatusBarTexture", "ARTWORK")

@@ -6,7 +6,7 @@ local addonName, Details222 = ...
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --extra buttons at the death options (release, death recap)
 
-local detailsOnDeathMenu = CreateFrame("frame", "DetailsOnDeathMenu", UIParent, "BackdropTemplate")
+local detailsOnDeathMenu = CreateFrame("frame", "DetailsOnDeathMenu", UIParent, nil)
 detailsOnDeathMenu:SetHeight(30)
 detailsOnDeathMenu.Debug = false
 

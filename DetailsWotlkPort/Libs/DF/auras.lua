@@ -211,15 +211,15 @@ local aura_panel_defaultoptions = {
 function DF:CreateAuraConfigPanel(parent, name, db, changeCallback, options, texts)
 	local options_dropdown_template = DF:GetTemplate("dropdown", "OPTIONS_DROPDOWN_TEMPLATE")
 
-	local newAuraPanel = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local newAuraPanel = CreateFrame("frame", name, parent, nil)
 	newAuraPanel.db = db
 	newAuraPanel.OnProfileChanged = onProfileChangedCallback
 	newAuraPanel.LocTexts = texts
 	options = options or {}
 	self.table.deploy(options, aura_panel_defaultoptions)
 
-	local auraPanel_Auto = CreateFrame("frame", "$parent_Automatic", newAuraPanel, "BackdropTemplate")
-	local auraPanel_Manual = CreateFrame("frame", "$parent_Manual", newAuraPanel, "BackdropTemplate")
+	local auraPanel_Auto = CreateFrame("frame", "$parent_Automatic", newAuraPanel, nil)
+	local auraPanel_Manual = CreateFrame("frame", "$parent_Manual", newAuraPanel, nil)
 	auraPanel_Auto:SetPoint("topleft", newAuraPanel, "topleft", 0, -24)
 	auraPanel_Manual:SetPoint("topleft", newAuraPanel, "topleft", 0, -24)
 	auraPanel_Auto:SetSize(600, 600)
@@ -255,7 +255,7 @@ function DF:CreateAuraConfigPanel(parent, name, db, changeCallback, options, tex
 		end
 	end
 
-	local methodSelectionBackground = CreateFrame("frame", nil, newAuraPanel, "BackdropTemplate")
+	local methodSelectionBackground = CreateFrame("frame", nil, newAuraPanel, nil)
 	methodSelectionBackground:SetHeight(82)
 	methodSelectionBackground:SetPoint("topleft", newAuraPanel, "topleft", 0, 0)
 	methodSelectionBackground:SetPoint("topright", newAuraPanel, "topright", 0, 0)
@@ -328,12 +328,12 @@ function DF:CreateAuraConfigPanel(parent, name, db, changeCallback, options, tex
 	local textEntryWidth = 120
 
 	--create the background
-		local blacklistAddBackground = CreateFrame("frame", nil, auraPanel_Auto, "BackdropTemplate")
+		local blacklistAddBackground = CreateFrame("frame", nil, auraPanel_Auto, nil)
 		blacklistAddBackground:SetSize(textEntryWidth + 10, 135)
 		DF:ApplyStandardBackdrop(blacklistAddBackground)
 		blacklistAddBackground.__background:SetVertexColor(0.47, 0.27, 0.27)
 
-		local tracklistAddBackground = CreateFrame("frame", nil, auraPanel_Auto, "BackdropTemplate")
+		local tracklistAddBackground = CreateFrame("frame", nil, auraPanel_Auto, nil)
 		tracklistAddBackground:SetSize(textEntryWidth + 10, 135)
 		DF:ApplyStandardBackdrop(tracklistAddBackground)
 		tracklistAddBackground.__background:SetVertexColor(0.27, 0.27, 0.47)
@@ -825,7 +825,7 @@ function DF:CreateAuraConfigPanel(parent, name, db, changeCallback, options, tex
 	end
 
 	local scroll_createline = function(self, index)
-		local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 		line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(scroll_line_height+1)) - 1)
 		line:SetSize(scroll_width - 2, scroll_line_height)
 		line:SetScript("OnEnter", line_onenter)

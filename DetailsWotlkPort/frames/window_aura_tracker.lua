@@ -323,7 +323,7 @@ function Details.AuraTracker.OnUnitAuraEvent(self, event, unit, unitAuraUpdateIn
 end
 
 function Details.AuraTracker.CreateScrollLine(self, lineId)
-    local line = CreateFrame("frame", "$parentLine" .. lineId, self, "BackdropTemplate")
+    local line = CreateFrame("frame", "$parentLine" .. lineId, self, nil)
     line.lineId = lineId
 
     line:SetPoint("topleft", self, "topleft", 2, (scrollLineHeight * (lineId - 1) * -1) - 2)

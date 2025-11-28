@@ -148,7 +148,7 @@ end
 ---@param self df_chartmulti|df_chart
 ---@return frame
 local createPlotFrame = function(self)
-    local plotFrame = CreateFrame("frame", "$parentPlotFrame", self, "BackdropTemplate")
+    local plotFrame = CreateFrame("frame", "$parentPlotFrame", self, nil)
     plotFrame:SetAllPoints()
     self.plotFrame = plotFrame
     return plotFrame
@@ -1182,7 +1182,7 @@ end
 ---@return df_chart
 local createChartFrame = function(parent, name)
     ---@type df_chart
-    local chartFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+    local chartFrame = CreateFrame("frame", name, parent, nil)
 
     detailsFramework:Mixin(chartFrame, detailsFramework.DataMixin)
     detailsFramework:Mixin(chartFrame, detailsFramework.ValueMixin)
@@ -1507,7 +1507,7 @@ function detailsFramework:CreateGraphicMultiLineFrame(parent, name)
     name = name or ("DetailsMultiChartFrameID" .. math.random(1, 10000000))
 
     ---@type df_chartmulti
-    local chartFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+    local chartFrame = CreateFrame("frame", name, parent, nil)
 
     detailsFramework:Mixin(chartFrame, detailsFramework.ValueMixin)
     detailsFramework:Mixin(chartFrame, detailsFramework.MultiChartFrameMixin)

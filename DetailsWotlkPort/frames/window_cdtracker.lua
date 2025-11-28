@@ -223,7 +223,7 @@ end
     --create the screen panel, goes into the UIParent and show cooldowns
     function Details222.CooldownTracking.CreateCooldownFrame(filterName)
         if (not Details222.CooldownTracking.AnchorFrame) then
-            local anchorFrame = CreateFrame("frame", "DetailsOnlineCDTrackerAnchorFrame", UIParent, "BackdropTemplate")
+            local anchorFrame = CreateFrame("frame", "DetailsOnlineCDTrackerAnchorFrame", UIParent, nil)
             Details222.CooldownTracking.AnchorFrame = anchorFrame
             anchorFrame:SetPoint("center", 0, 0)
             anchorFrame:SetSize(20, 20)
@@ -242,7 +242,7 @@ end
 
         filterName = filterName or "main"
         local frameName = "DetailsOnlineCDTrackerScreenPanel" .. filterName
-        local cooldownFrame = CreateFrame("frame", frameName, UIParent, "BackdropTemplate")
+        local cooldownFrame = CreateFrame("frame", frameName, UIParent, nil)
         cooldownFrame:Hide()
         cooldownFrame.filterName = filterName
         cooldownFrame:SetSize(Details.ocd_tracker.width, Details.ocd_tracker.height)
@@ -505,7 +505,7 @@ end
             return
         end
 
-        local DetailsCDTrackerWindow = CreateFrame("frame", "DetailsCDTrackerWindow", UIParent, "BackdropTemplate")
+        local DetailsCDTrackerWindow = CreateFrame("frame", "DetailsCDTrackerWindow", UIParent, nil)
         DetailsCDTrackerWindow:SetSize(700, 480)
         DetailsCDTrackerWindow.Frame = DetailsCDTrackerWindow
         DetailsCDTrackerWindow.__name = "Cooldown Tracker"
@@ -782,7 +782,7 @@ end
             --cooldown selection
             local cooldownProfile = Details.ocd_tracker.cooldowns
 
-            local cooldownSelectionFrame = CreateFrame("frame", "$parentCooldownSelectionFrame", f, "BackdropTemplate")
+            local cooldownSelectionFrame = CreateFrame("frame", "$parentCooldownSelectionFrame", f, nil)
             cooldownSelectionFrame:SetPoint("topleft", f, "topleft", 0, -150)
             cooldownSelectionFrame:SetPoint("bottomright", f, "bottomright", 0, 10)
             DF:ApplyStandardBackdrop(cooldownSelectionFrame)
@@ -801,7 +801,7 @@ end
             cooldownSelectionFrame.ClassCDsAnchorFrames = {}
 
             for i = 1, maxClasses do
-                local anchorFrame = CreateFrame("frame", "$parentAnchorFrame"..i, cooldownSelectionFrame, "BackdropTemplate")
+                local anchorFrame = CreateFrame("frame", "$parentAnchorFrame"..i, cooldownSelectionFrame, nil)
                 anchorFrame:SetSize(1, 1)
                 if (i == 1) then
                     anchorFrame:SetPoint("topleft", cooldownSelectionFrame, "topleft", 5, -5)

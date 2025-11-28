@@ -6,7 +6,7 @@ local addonName, Details222 = ...
 function Details:WipeConfig()
 	local Loc = LibStub("AceLocale-3.0"):GetLocale ( "Details" )
 
-	local wipeButton = CreateFrame("button", "DetailsResetConfigButton", UIParent, "BackdropTemplate")
+	local wipeButton = CreateFrame("button", "DetailsResetConfigButton", UIParent, nil)
 	wipeButton:SetSize(270, 40)
 	wipeButton:SetScript("OnClick", function() Details.wipe_full_config = true; ReloadUI(); end)
 	wipeButton:SetPoint("center", UIParent, "center", 0, 0)

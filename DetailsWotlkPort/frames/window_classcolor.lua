@@ -13,7 +13,7 @@ function Details:OpenClassColorsConfig()
         DF:ApplyStandardBackdrop(panel)
         panel:SetBackdropColor(.1, .1, .1, .9)
 
-        local upper_panel = CreateFrame("frame", nil, panel,"BackdropTemplate")
+        local upper_panel = CreateFrame("frame", nil, panel,nil)
         upper_panel:SetAllPoints(panel)
         upper_panel:SetFrameLevel(panel:GetFrameLevel()+3)
 

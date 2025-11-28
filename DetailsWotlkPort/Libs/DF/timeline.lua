@@ -452,7 +452,7 @@ detailsFramework.TimeLine_LineMixin = {
 
 	CreateBlock = function(self, index)
 		---@type df_timeline_line_block
-		local block = CreateFrame("button", nil, self, "BackdropTemplate")
+		local block = CreateFrame("button", nil, self, nil)
 		block:SetMouseClickEnabled(false)
 		self.blocks[index] = block
 
@@ -758,7 +758,7 @@ detailsFramework.TimeLineMixin = {
 		if (not line) then
 			--create a new line
 			---@type df_timeline_line
-			line = CreateFrame("button", "$parentLine" .. index, self.body, "BackdropTemplate")
+			line = CreateFrame("button", "$parentLine" .. index, self.body, nil)
 			detailsFramework:Mixin(line, detailsFramework.TimeLine_LineMixin)
 			self.lines[index] = line
 
@@ -788,7 +788,7 @@ detailsFramework.TimeLineMixin = {
 			local lineHeader
 
 			if (detachedHeaderFrame) then
-				lineHeader = CreateFrame("frame", "$parentHeader", self.headerBody, "BackdropTemplate")
+				lineHeader = CreateFrame("frame", "$parentHeader", self.headerBody, nil)
 				lineHeader.type = "header"
 				lineHeader:SetSize(detachedHeaderFrame:GetWidth(), self.options.line_height)
 				if (index == 1) then
@@ -807,7 +807,7 @@ detailsFramework.TimeLineMixin = {
 
 				lineHeader.Line = line
 			else
-				lineHeader = CreateFrame("frame", "$parentHeader", line, "BackdropTemplate")
+				lineHeader = CreateFrame("frame", "$parentHeader", line, nil)
 				lineHeader.type = "header"
 				lineHeader:SetPoint("topleft", line, "topleft", 0, 0)
 				lineHeader:SetPoint("bottomleft", line, "bottomleft", 0, 0)
@@ -864,7 +864,7 @@ detailsFramework.TimeLineMixin = {
 		for i = 1, amountOfButtons do
 			local button = self.body.Buttons[i]
 			if (not button) then
-				button = CreateFrame("button", "$parentButton" .. i, self.body, "BackdropTemplate")
+				button = CreateFrame("button", "$parentButton" .. i, self.body, nil)
 				local overlayTexture = button:CreateTexture(nil, "overlay")
 				local r, g, b, a = detailsFramework:GetDefaultBackdropColor()
 				overlayTexture:SetColorTexture(1, 1, 1)
@@ -1157,12 +1157,12 @@ local timelineHeader = {
 	---@param self df_timeline
 	CreateDetachedHeader = function(self)
 		---@type df_timeline_header
-		local headerFrame = CreateFrame("scrollframe", nil, self, "BackdropTemplate")
+		local headerFrame = CreateFrame("scrollframe", nil, self, nil)
 		headerFrame:SetWidth(self.options.header_width)
 		self.headerFrame = headerFrame
 
 		---@type df_timeline_header_body
-		local headerBody = CreateFrame("frame", nil, headerFrame, "BackdropTemplate")
+		local headerBody = CreateFrame("frame", nil, headerFrame, nil)
 		headerBody:SetSize(headerFrame:GetSize())
 		headerBody.Lines = {}
 		headerFrame.body = headerBody
@@ -1204,7 +1204,7 @@ function detailsFramework:CreateTimeLineFrame(parent, name, timelineOptions, ela
 	local scrollHeight = 800 --placeholder until the timeline receives data
 
 	---@type df_timeline
-	local frameCanvas = CreateFrame("scrollframe", name, parent, "BackdropTemplate")
+	local frameCanvas = CreateFrame("scrollframe", name, parent, nil)
 
 	frameCanvas.type = "timeline"
 
@@ -1227,7 +1227,7 @@ function detailsFramework:CreateTimeLineFrame(parent, name, timelineOptions, ela
 
 	detailsFramework:ApplyStandardBackdrop(frameCanvas)
 
-	local frameBody = CreateFrame("frame", nil, frameCanvas, "BackdropTemplate")
+	local frameBody = CreateFrame("frame", nil, frameCanvas, nil)
 	frameBody:SetSize(scrollWidth, scrollHeight)
 	frameCanvas:LineIndicatorSetTarget(frameBody)
 
@@ -1249,7 +1249,7 @@ function detailsFramework:CreateTimeLineFrame(parent, name, timelineOptions, ela
 	local scrollBackgroudColor = {0.05, 0.05, 0.05, 0.7}
 
 	--create horizontal slider
-		local horizontalSlider = CreateFrame("slider", frameCanvas:GetName() .. "HorizontalSlider", parent, "BackdropTemplate")
+		local horizontalSlider = CreateFrame("slider", frameCanvas:GetName() .. "HorizontalSlider", parent, nil)
 		horizontalSlider.bg = horizontalSlider:CreateTexture(nil, "background")
 		horizontalSlider.bg:SetAllPoints(true)
 		horizontalSlider.bg:SetColorTexture(unpack(scrollBackgroudColor))
@@ -1277,7 +1277,7 @@ function detailsFramework:CreateTimeLineFrame(parent, name, timelineOptions, ela
 		end)
 
 	--create scale slider
-		local scaleSlider = CreateFrame("slider", frameCanvas:GetName() .. "ScaleSlider", parent, "BackdropTemplate")
+		local scaleSlider = CreateFrame("slider", frameCanvas:GetName() .. "ScaleSlider", parent, nil)
 		scaleSlider.bg = scaleSlider:CreateTexture(nil, "background")
 		scaleSlider.bg:SetAllPoints(true)
 		scaleSlider.bg:SetColorTexture(unpack(scrollBackgroudColor))
@@ -1310,7 +1310,7 @@ function detailsFramework:CreateTimeLineFrame(parent, name, timelineOptions, ela
 		end)
 
 	--create vertical slider
-		local verticalSlider = CreateFrame("slider", frameCanvas:GetName() .. "VerticalSlider", parent, "BackdropTemplate")
+		local verticalSlider = CreateFrame("slider", frameCanvas:GetName() .. "VerticalSlider", parent, nil)
 		verticalSlider.bg = verticalSlider:CreateTexture(nil, "background")
 		verticalSlider.bg:SetAllPoints(true)
 		verticalSlider.bg:SetColorTexture(unpack(scrollBackgroudColor))

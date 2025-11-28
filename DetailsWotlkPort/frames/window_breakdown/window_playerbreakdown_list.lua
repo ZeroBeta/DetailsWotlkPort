@@ -336,7 +336,7 @@ local createPlayerScrollBox = function(breakdownWindowFrame, breakdownSideMenu, 
 
 	local createPlayerLine = function(self, index)
 		--create a new line
-		local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 		detailsFramework:SetTemplate(line, "STANDARD_GRAY")
 
 		detailsFramework:Mixin(line, detailsFramework.HeaderFunctions)
@@ -560,7 +560,7 @@ local createSegmentsScrollBox = function(breakdownWindowFrame, breakdownSideMenu
 
 	local createSegmentLine = function(self, index)
 		--create a new line
-		local line = CreateFrame("button", "$parentLine" .. index, self, "BackdropTemplate")
+		local line = CreateFrame("button", "$parentLine" .. index, self, nil)
 		detailsFramework:Mixin(line, detailsFramework.HeaderFunctions)
 		detailsFramework:SetTemplate(line, "STANDARD_GRAY")
 
@@ -636,7 +636,7 @@ function breakdownWindowPlayerList.CreatePlayerListFrame()
 	--> create headers
 		local sectionHeaderHeight = 20
 		--plugins header frame
-		local pluginHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, "BackdropTemplate")
+		local pluginHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, nil)
 		PixelUtil.SetPoint(pluginHeaderFrame, "topleft", breakdownSideMenu, "topleft", 2, -0)
 		PixelUtil.SetPoint(pluginHeaderFrame, "topright", breakdownSideMenu, "topright", -2, -0)
 		pluginHeaderFrame:SetHeight(sectionHeaderHeight)
@@ -646,7 +646,7 @@ function breakdownWindowPlayerList.CreatePlayerListFrame()
 			PixelUtil.SetPoint(titleBarPlugins_TitleLabel, "top", pluginHeaderFrame , "top", 0, -5)
 
 		--player selection header frame
-		local playerSelectionHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, "BackdropTemplate")
+		local playerSelectionHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, nil)
 		playerSelectionHeaderFrame:SetHeight(sectionHeaderHeight)
 		playerSelectionHeaderFrame:SetPoint("topleft", pluginsFrame, "bottomleft", 0, -1)
 		playerSelectionHeaderFrame:SetPoint("topright", pluginsFrame, "bottomright", 0, -1)
@@ -658,7 +658,7 @@ function breakdownWindowPlayerList.CreatePlayerListFrame()
 			PixelUtil.SetPoint(titleBarTools_TitleLabel, "top", playerSelectionHeaderFrame , "top", 0, -5)
 
 		--segment selection header frame
-		local segmentSelectionHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, "BackdropTemplate")
+		local segmentSelectionHeaderFrame = CreateFrame("frame", nil, breakdownSideMenu, nil)
 		segmentSelectionHeaderFrame:SetHeight(sectionHeaderHeight)
 			--segment selection header label
 			local titleBarSegment_TitleLabel = detailsFramework:CreateLabel(segmentSelectionHeaderFrame, "Select Segment", 12, "DETAILS_HEADER_YELLOW", "GameFontHighlightLeft", "segmentsLabel", nil, "overlay")

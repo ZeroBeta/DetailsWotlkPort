@@ -379,7 +379,7 @@ DF:Mixin(DFSliderMetaFunctions, DF.ScriptHookMixin)
 
 
 	--parent frame for the plus and minus buttons which shows when the slider is hovered over
-	local sliderButtonsParentFrame = DetailsFrameworkSliderButtons1 or CreateFrame("frame", "DetailsFrameworkSliderButtons1", UIParent, "BackdropTemplate")
+	local sliderButtonsParentFrame = DetailsFrameworkSliderButtons1 or CreateFrame("frame", "DetailsFrameworkSliderButtons1", UIParent, nil)
 	sliderButtonsParentFrame:Hide()
 	sliderButtonsParentFrame:SetHeight(18) --width is set by setpoint
 
@@ -442,8 +442,8 @@ DF:Mixin(DFSliderMetaFunctions, DF.ScriptHookMixin)
 		sliderButtonsParentFrame:SetScript("OnUpdate", onUpdateTimeToHide)
 	end
 
-	local buttonPlus = DetailsFrameworkSliderButtonsPlusButton or CreateFrame("button", "DetailsFrameworkSliderButtonsPlusButton", sliderButtonsParentFrame, "BackdropTemplate")
-	local buttonMinor = DetailsFrameworkSliderButtonsMinorButton or CreateFrame("button", "DetailsFrameworkSliderButtonsMinorButton", sliderButtonsParentFrame, "BackdropTemplate")
+	local buttonPlus = DetailsFrameworkSliderButtonsPlusButton or CreateFrame("button", "DetailsFrameworkSliderButtonsPlusButton", sliderButtonsParentFrame, nil)
+	local buttonMinor = DetailsFrameworkSliderButtonsMinorButton or CreateFrame("button", "DetailsFrameworkSliderButtonsMinorButton", sliderButtonsParentFrame, nil)
 	buttonPlus:SetFrameStrata(sliderButtonsParentFrame:GetFrameStrata())
 	buttonMinor:SetFrameStrata(sliderButtonsParentFrame:GetFrameStrata())
 	sliderButtonsParentFrame.buttonPlus = buttonPlus
@@ -630,7 +630,7 @@ DF:Mixin(DFSliderMetaFunctions, DF.ScriptHookMixin)
 	function DFSliderMetaFunctions:TypeValue()
 		if (not self.isSwitch) then
 			if (not DFSliderMetaFunctions.editbox_typevalue) then
-				local editbox = CreateFrame("EditBox", "DetailsFrameworkSliderEditBox", UIParent, "BackdropTemplate")
+				local editbox = CreateFrame("EditBox", "DetailsFrameworkSliderEditBox", UIParent, nil)
 				editbox:SetSize(40, 20)
 				editbox:SetJustifyH("center")
 				DF:ApplyStandardBackdrop(editbox)
@@ -1323,7 +1323,7 @@ function DF:NewSlider (parent, container, name, member, width, height, minValue,
 	SliderObject.lockdown = false
 	SliderObject.container = container
 
-	SliderObject.slider = CreateFrame("slider", name, parent,"BackdropTemplate")
+	SliderObject.slider = CreateFrame("slider", name, parent,nil)
 	SliderObject.widget = SliderObject.slider
 
 	SliderObject.useDecimals = isDecemal or false
@@ -1600,7 +1600,7 @@ DF.AdjustmentSliderFunctions = {
 
 local createAdjustmentSliderFrames = function(parent, options, name)
 	--frame it self
-	local adjustmentSlider = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local adjustmentSlider = CreateFrame("frame", name, parent, nil)
 
 	DF:Mixin(adjustmentSlider, DF.OptionsFunctions)
 	DF:Mixin(adjustmentSlider, DF.AdjustmentSliderFunctions)

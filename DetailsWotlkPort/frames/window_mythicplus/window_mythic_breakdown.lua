@@ -16,7 +16,7 @@ function mPlus.ShowSummary()
 end
 
 function mPlus.CreateMainFrame()
-    local mPlusFrame = CreateFrame("frame", "DetailsMythicPlusBreakdownFrame", UIParent, "BackdropTemplate")
+    local mPlusFrame = CreateFrame("frame", "DetailsMythicPlusBreakdownFrame", UIParent, nil)
     detailsFramework:AddRoundedCornersToFrame(mPlusFrame, Details.PlayerBreakdown.RoundedCornerPreset)
     mPlus.MainFrame = mPlusFrame
 

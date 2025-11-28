@@ -103,7 +103,7 @@ function Details:CreateCallbackListeners()
     local current_table_dbm = {}
     local current_table_bigwigs = {}
 
-    local event_frame = CreateFrame("frame", nil, UIParent, "BackdropTemplate")
+    local event_frame = CreateFrame("frame", nil, UIParent, nil)
     event_frame:SetScript("OnEvent", function(self, event, ...)
         if (event == "ENCOUNTER_START") then
             local encounterID, encounterName, difficultyID, raidSize = select(1, ...)

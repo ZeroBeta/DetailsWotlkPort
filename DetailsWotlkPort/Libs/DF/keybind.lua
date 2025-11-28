@@ -357,7 +357,7 @@ detailsFramework.KeybindMixin = {
 
 	---keybind listener is the frame which reads the key pressed by the player when setting a keybind for an ability
     CreateKeybindListener = function(self)
-        local keybindListener = CreateFrame ("frame", nil, self, "BackdropTemplate")
+        local keybindListener = CreateFrame ("frame", nil, self, nil)
         keybindListener:SetFrameStrata("tooltip")
         keybindListener:SetSize(200, 60)
         detailsFramework:ApplyStandardBackdrop(keybindListener)
@@ -1322,7 +1322,7 @@ detailsFramework.KeybindMixin = {
         local options_button_template = detailsFramework:GetTemplate("button", "OPTIONS_BUTTON_TEMPLATE")
 
 		---@type df_editkeybindframe
-		local editFrame = CreateFrame("frame", "$parentEditPanel", self, "BackdropTemplate")
+		local editFrame = CreateFrame("frame", "$parentEditPanel", self, nil)
 		editFrame:SetSize(self.options.edit_width, self.options.edit_height)
 		editFrame:SetPoint("topleft", self, "topright", 28, 0) --give space for the scrollbar
 		self.editKeybindFrame = editFrame
@@ -1499,7 +1499,7 @@ detailsFramework.KeybindMixin = {
 ---@param keybindData table?
 function detailsFramework:CreateKeybindFrame(parent, name, options, setKeybindCallback, keybindData)
     ---@type df_keybindframe
-    local keyBindFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+    local keyBindFrame = CreateFrame("frame", name, parent, nil)
     keyBindFrame.bIsKeybindFrame = true
 
     detailsFramework:Mixin(keyBindFrame, detailsFramework.OptionsFunctions)

@@ -3573,7 +3573,7 @@ do
     
         for absName, pluginObject in pairs(allplugins_toolbar) do
         
-            local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame, "BackdropTemplate")
+            local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame, nil)
             bframe:SetSize(640, 20)
             bframe:SetPoint("topleft", anchorFrame, "topleft", 10, y)
             bframe:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16, insets = {left = 1, right = 1, top = 0, bottom = 1}})
@@ -3642,7 +3642,7 @@ do
                     OpenOptionsPanel = false,
                 }
     
-                local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame,"BackdropTemplate")
+                local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame,nil)
                 bframe:SetSize(640, 20)
                 bframe:SetPoint("topleft", anchorFrame, "topleft", 10, y)
                 bframe:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16, insets = {left = 1, right = 1, top = 0, bottom = 1}})
@@ -3708,7 +3708,7 @@ do
         local allplugins_raid = Details.RaidTables.NameTable
         for absName, pluginObject in pairs(allplugins_raid) do 
     
-            local bframe = CreateFrame("frame", "OptionsPluginRaidBG", anchorFrame, "BackdropTemplate")
+            local bframe = CreateFrame("frame", "OptionsPluginRaidBG", anchorFrame, nil)
             bframe:SetSize(640, 20)
             bframe:SetPoint("topleft", anchorFrame, "topleft", 10, y)
             bframe:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16, insets = {left = 1, right = 1, top = 0, bottom = 1}})
@@ -3780,7 +3780,7 @@ do
                     OpenOptionsPanel = false,
                 }
     
-                local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame,"BackdropTemplate")
+                local bframe = CreateFrame("frame", "OptionsPluginToolbarBG", anchorFrame,nil)
                 bframe:SetSize(640, 20)
                 bframe:SetPoint("topleft", anchorFrame, "topleft", 10, y)
                 bframe:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16, insets = {left = 1, right = 1, top = 0, bottom = 1}})
@@ -3846,7 +3846,7 @@ do
         local allplugins_solo = Details.SoloTables.NameTable
         for absName, pluginObject in pairs(allplugins_solo) do 
         
-            local bframe = CreateFrame("frame", "OptionsPluginSoloBG", anchorFrame,"BackdropTemplate")
+            local bframe = CreateFrame("frame", "OptionsPluginSoloBG", anchorFrame,nil)
             bframe:SetSize(640, 20)
             bframe:SetPoint("topleft", anchorFrame, "topleft", 10, y)
             bframe:SetBackdrop({bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 16, insets = {left = 1, right = 1, top = 0, bottom = 1}})
@@ -5018,7 +5018,7 @@ do
             local loadImage = function()
                 if (not DetailsLoadWallpaperImage) then
                     
-                    local f = CreateFrame("frame", "DetailsLoadWallpaperImage", UIParent, "BackdropTemplate")
+                    local f = CreateFrame("frame", "DetailsLoadWallpaperImage", UIParent, nil)
                     f:SetPoint("center", UIParent, "center")
                     f:SetFrameStrata("FULLSCREEN")
                     f:SetSize(550, 170)
@@ -5582,7 +5582,7 @@ do
 		sectionFrame.AutoHideOptions = {}
 
 		for id, i in ipairs(optionsOrder) do
-			local line = _G.CreateFrame("frame", nil, sectionFrame,"BackdropTemplate")
+			local line = _G.CreateFrame("frame", nil, sectionFrame,nil)
 			line:SetSize(322, 22)
 			line:SetPoint("topleft", sectionFrame, "topleft", right_start_at, yyy + ((id) * -23) + 4)
 			DetailsFramework:ApplyStandardBackdrop(line)
@@ -5720,7 +5720,7 @@ do --raid tools
         
         local openCooldownIgnoreWindow = function()
 			if (not DetailsAnnounceSelectCooldownIgnored) then
-				DetailsAnnounceSelectCooldownIgnored = CreateFrame("frame", "DetailsAnnounceSelectCooldownIgnored", UIParent, "BackdropTemplate")
+				DetailsAnnounceSelectCooldownIgnored = CreateFrame("frame", "DetailsAnnounceSelectCooldownIgnored", UIParent, nil)
 				local f = DetailsAnnounceSelectCooldownIgnored
 				f:SetSize(400, 500)
 				f:SetPoint("center", UIParent, "center", 0, 0)

@@ -19,7 +19,7 @@
             percent_desc:SetTextColor(.5, .5, .5, 1)
 
         --SUMMARY
-            local summaryBox = CreateFrame("frame", nil, frame, "BackdropTemplate")
+            local summaryBox = CreateFrame("frame", nil, frame, nil)
             Details.gump:ApplyStandardBackdrop(summaryBox)
             summaryBox:SetPoint("topleft", frame, "topleft", 10, -15)
             summaryBox:SetSize(200, 160)
@@ -86,7 +86,7 @@
 
             y = -5
 
-            local meleeBox = CreateFrame("frame", nil, frame, "BackdropTemplate")
+            local meleeBox = CreateFrame("frame", nil, frame, nil)
             Details.gump:ApplyStandardBackdrop(meleeBox)
             meleeBox:SetPoint("topleft", summaryBox, "bottomleft", 0, -5)
             meleeBox:SetSize(200, 160)
@@ -175,7 +175,7 @@
         --ABSORBS
             y = -5
 
-            local absorbsBox = CreateFrame("frame", nil, frame, "BackdropTemplate")
+            local absorbsBox = CreateFrame("frame", nil, frame, nil)
             Details.gump:ApplyStandardBackdrop(absorbsBox)
             absorbsBox:SetPoint("topleft", summaryBox, "topright", 10, 0)
             absorbsBox:SetSize(200, 160)
@@ -234,7 +234,7 @@
         --HEALING
 
             y = -5
-            local healingBox = CreateFrame("frame", nil, frame,"BackdropTemplate")
+            local healingBox = CreateFrame("frame", nil, frame,nil)
             Details.gump:ApplyStandardBackdrop(healingBox)
             healingBox:SetPoint("topleft", absorbsBox, "bottomleft", 0, -5)
             healingBox:SetSize(200, 160)
@@ -283,7 +283,7 @@
 
             y = -5
 
-            local spellsBox = CreateFrame("frame", nil, frame,"BackdropTemplate")
+            local spellsBox = CreateFrame("frame", nil, frame,nil)
             Details.gump:ApplyStandardBackdrop(spellsBox)
             spellsBox:SetPoint("topleft", absorbsBox, "topright", 10, 0)
             spellsBox:SetSize(346, 160 * 2 + 5)
@@ -311,7 +311,7 @@
             y = y - padding
 
             for i = 1, 40 do
-                local frame_tooltip = CreateFrame("frame", nil, spellsBox,"BackdropTemplate")
+                local frame_tooltip = CreateFrame("frame", nil, spellsBox,nil)
                 frame_tooltip:SetPoint("topleft", spellsBox, "topleft", 5, y + ((i-1)*17)*-1)
                 frame_tooltip:SetSize(spellsBox:GetWidth()-10, 16)
                 frame_tooltip:SetScript("OnEnter", frame_tooltip_onenter)

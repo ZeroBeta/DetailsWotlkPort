@@ -403,7 +403,7 @@ function Details.OpenPlaterIntegrationWindow()
         local options_slider_template = DF:GetTemplate("slider", "OPTIONS_SLIDER_TEMPLATE")
         local options_button_template = DF:GetTemplate("button", "OPTIONS_BUTTON_TEMPLATE")
         
-        local titleBackground = CreateFrame("frame", nil, f,"BackdropTemplate")
+        local titleBackground = CreateFrame("frame", nil, f,nil)
         titleBackground:SetPoint("topleft", f, "topleft", 10, -30)
         titleBackground:SetPoint("topright", f, "topright", -10, -30)
         titleBackground:SetHeight(80)

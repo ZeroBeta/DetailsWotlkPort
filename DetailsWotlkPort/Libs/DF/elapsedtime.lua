@@ -142,7 +142,7 @@ detailsFramework.TimeLineElapsedTimeFunctions = {
 ---@return df_elapsedtime
 function detailsFramework:CreateElapsedTimeFrame(parent, name, options)
 	---@type df_elapsedtime
-	local elapsedTimeFrame = CreateFrame("frame", name, parent, "BackdropTemplate")
+	local elapsedTimeFrame = CreateFrame("frame", name, parent, nil)
 
 	detailsFramework:Mixin(elapsedTimeFrame, detailsFramework.OptionsFunctions)
 	detailsFramework:Mixin(elapsedTimeFrame, detailsFramework.LayoutFrame)

@@ -61,7 +61,7 @@ local createAuraTabOnBreakdownWindow = function(tab, frame)
     end
 
     local createLineScroll = function(self, index)
-        local line = CreateFrame("button", "$parentLine" .. index, self,"BackdropTemplate")
+        local line = CreateFrame("button", "$parentLine" .. index, self,nil)
         line:SetPoint("topleft", self, "topleft", 1, -((index-1)*(scroll_line_height+1)))
         line:SetSize(scroll_width -2, scroll_line_height)
         line:SetScript("OnEnter", onEnterLine)

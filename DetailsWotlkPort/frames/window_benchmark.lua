@@ -16,7 +16,7 @@ local libwindow = LibStub("LibWindow-1.1")
             local _ = nil
             
             --declaration
-            local f = CreateFrame("frame", "DetailsBenchmark", UIParent,"BackdropTemplate")
+            local f = CreateFrame("frame", "DetailsBenchmark", UIParent,nil)
             f:SetSize(800, 600)
             f:SetPoint("left", UIParent, "left")
             f:SetFrameStrata("LOW")
@@ -34,7 +34,7 @@ local libwindow = LibStub("LibWindow-1.1")
             LibWindow.SavePosition(f)
             
             --titlebar
-            f.TitleBar = CreateFrame("frame", "$parentTitleBar", f,"BackdropTemplate")
+            f.TitleBar = CreateFrame("frame", "$parentTitleBar", f,nil)
             f.TitleBar:SetPoint("topleft", f, "topleft", 2, -3)
             f.TitleBar:SetPoint("topright", f, "topright", -2, -3)
             f.TitleBar:SetHeight(20)
@@ -43,7 +43,7 @@ local libwindow = LibStub("LibWindow-1.1")
             f.TitleBar:SetBackdropBorderColor(0, 0, 0, 1)
             
             --close button
-            f.Close = CreateFrame("button", "$parentCloseButton", f,"BackdropTemplate")
+            f.Close = CreateFrame("button", "$parentCloseButton", f,nil)
             f.Close:SetPoint("right", f.TitleBar, "right", -2, 0)
             f.Close:SetSize(16, 16)
             f.Close:SetNormalTexture(Details.gump.folder .. "icons")
@@ -126,7 +126,7 @@ local libwindow = LibStub("LibWindow-1.1")
         --summary block
         
             --declaration
-                local summaryFrame = CreateFrame("frame", "$parentSummaryFrame", f,"BackdropTemplate")
+                local summaryFrame = CreateFrame("frame", "$parentSummaryFrame", f,nil)
                 summaryFrame:SetPoint("topleft", f, "topleft", unpack(f.FrameLocations.summary))
                 summaryFrame:SetSize(unpack(f.FrameSizes.default))
                 summaryFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -170,7 +170,7 @@ local libwindow = LibStub("LibWindow-1.1")
                 summaryFrame.BossSimulationDropdown = DF:CreateDropDown (summaryFrame, build_bosssimulation_list, default, 150, 20, _, _, options_dropdown_template)
                 
             --boss records line with a tooltip importing data from the storage
-                summaryFrame.BossRecordsFrame = CreateFrame("frame", nil, summaryFrame,"BackdropTemplate")
+                summaryFrame.BossRecordsFrame = CreateFrame("frame", nil, summaryFrame,nil)
                 summaryFrame.BossRecordsFrame:SetSize(f.FrameSizes.default[1]-20, 20)
                 summaryFrame.BossRecordsFrame:SetBackdropColor(0, 0, 0, 0.3)
                 summaryFrame.BossRecordsFrame:SetScript("OnEnter", function()
@@ -208,7 +208,7 @@ local libwindow = LibStub("LibWindow-1.1")
         --spells block
             
             --declaration
-                local spellsFrame = CreateFrame("frame", "$parentSpellsFrame", f,"BackdropTemplate")
+                local spellsFrame = CreateFrame("frame", "$parentSpellsFrame", f,nil)
                 spellsFrame:SetPoint("topleft", f, "topleft", unpack(f.FrameLocations.spells))
                 spellsFrame:SetSize(unpack(f.FrameSizes.default))
                 spellsFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -227,7 +227,7 @@ local libwindow = LibStub("LibWindow-1.1")
         --auras block
             
             --declaration
-                local aurasFrame = CreateFrame("frame", "$parentAurasFrame", f,"BackdropTemplate")
+                local aurasFrame = CreateFrame("frame", "$parentAurasFrame", f,nil)
                 aurasFrame:SetPoint("topleft", f, "topleft", unpack(f.FrameLocations.auras))
                 aurasFrame:SetSize(unpack(f.FrameSizes.default))
                 aurasFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})
@@ -244,7 +244,7 @@ local libwindow = LibStub("LibWindow-1.1")
         --history block
                 
             --declaration
-                local historyFrame = CreateFrame("frame", "$parentHistoryFrame", f,"BackdropTemplate")
+                local historyFrame = CreateFrame("frame", "$parentHistoryFrame", f,nil)
                 historyFrame:SetPoint("topleft", f, "topleft", unpack(f.FrameLocations.history))
                 historyFrame:SetSize(unpack(f.FrameSizes.default))
                 historyFrame:SetBackdrop({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1, bgFile = [[Interface\Tooltips\UI-Tooltip-Background]], tileSize = 64, tile = true})

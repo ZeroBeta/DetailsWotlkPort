@@ -75,7 +75,7 @@ gridScrollBox:Refresh()
 --------Start of the Canvas Scroll Box Example--------
 
 --display frame is the frame which will be shown within the canvas, this frame can have any size and if it is bigger than the canvas, it will be scrollable
-local displayFrame = CreateFrame("frame", "CanvasScrollBoxDisplayFrameExample", nil, "BackdropTemplate")
+local displayFrame = CreateFrame("frame", "CanvasScrollBoxDisplayFrameExample", nil, nil)
 displayFrame:SetSize(800, 1200)
 displayFrame:SetBackdrop({bgFile = "Interface\\FrameGeneral\\UI-Background-Marble", tile = true, tileSize = 32})
 

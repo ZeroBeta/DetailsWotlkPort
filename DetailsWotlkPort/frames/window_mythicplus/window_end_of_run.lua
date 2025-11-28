@@ -1008,7 +1008,7 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 		local textSize = 11
 
 		---@type details_mplus_endframe
-		mythicDungeonFrames.ReadyFrame = CreateFrame("frame", readyFrameName, UIParent, "BackdropTemplate")
+		mythicDungeonFrames.ReadyFrame = CreateFrame("frame", readyFrameName, UIParent, nil)
 		local readyFrame = mythicDungeonFrames.ReadyFrame
 		readyFrame:SetSize(355, 390)
 		readyFrame:SetPoint("right", UIParent, "right", 0, 0)
@@ -1201,7 +1201,7 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 		readyFrame.RantingLabel = rantingLabel
 
 		--this frame is required due to the animation, the readyFrame and the contentFrame has their own animations
-		mythicDungeonFrames.ReadyFrameTop = CreateFrame("frame", "DetailsMythicDungeonReadyTopFrame", UIParent, "BackdropTemplate")
+		mythicDungeonFrames.ReadyFrameTop = CreateFrame("frame", "DetailsMythicDungeonReadyTopFrame", UIParent, nil)
 		mythicDungeonFrames.ReadyFrameTop:SetPoint("bottomleft", readyFrame, "topleft", 0, 0)
 		mythicDungeonFrames.ReadyFrameTop:SetPoint("bottomright", readyFrame, "topright", 0, 0)
 		mythicDungeonFrames.ReadyFrameTop:SetHeight(1)

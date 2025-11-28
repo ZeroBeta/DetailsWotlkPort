@@ -590,7 +590,7 @@ local defaultPreset = {
 ---@param optionsTable table|nil
 function detailsFramework:CreateRoundedPanel(parent, name, optionsTable)
     ---@type df_roundedpanel
-    local newRoundedPanel = CreateFrame("frame", name, parent, "BackdropTemplate")
+    local newRoundedPanel = CreateFrame("frame", name, parent, nil)
     newRoundedPanel:EnableMouse(true)
     newRoundedPanel.__dftype = "df_roundedpanel"
     newRoundedPanel.__rcorners = true

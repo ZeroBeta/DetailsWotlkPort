@@ -108,7 +108,7 @@
 	end
 
 	function _detalhes:InitializeCustomDisplayWindow()
-		local DetailsCustomPanel = CreateFrame("frame", "DetailsCustomPanel", UIParent,"BackdropTemplate")
+		local DetailsCustomPanel = CreateFrame("frame", "DetailsCustomPanel", UIParent,nil)
 		DetailsCustomPanel.Frame = DetailsCustomPanel
 		DetailsCustomPanel.__name = Loc ["STRING_SCRIPTS_TITLE"]
 		DetailsCustomPanel.real_name = "DETAILS_CUSTOMDISPLAY"
@@ -132,7 +132,7 @@
 			DetailsCustomPanel.Initialized = true
 
 			--main frame
-			local customWindow = DetailsCustomPanel or CreateFrame("frame", "DetailsCustomPanel", UIParent, "BackdropTemplate")
+			local customWindow = DetailsCustomPanel or CreateFrame("frame", "DetailsCustomPanel", UIParent, nil)
 			customWindow:SetPoint("center", UIParent, "center")
 			customWindow:SetSize(850, 500)
 			customWindow:EnableMouse(true)
@@ -164,7 +164,7 @@
 			tinsert(UISpecialFrames, "DetailsCustomPanel")
 
 			--menu title bar
-				local titlebar = CreateFrame("frame", nil, customWindow,"BackdropTemplate")
+				local titlebar = CreateFrame("frame", nil, customWindow,nil)
 				titlebar:SetPoint("topleft", customWindow, "topleft", 2, -3)
 				titlebar:SetPoint("topright", customWindow, "topright", -2, -3)
 				titlebar:SetHeight(20)
@@ -958,7 +958,7 @@
 
 				if (attributes [i]) then
 
-					local button = CreateFrame("button", "DetailsCustomPanelAttributeMenu" .. i, attribute_box, "BackdropTemplate")
+					local button = CreateFrame("button", "DetailsCustomPanelAttributeMenu" .. i, attribute_box, nil)
 					button:SetPoint("topleft", attribute_box, "topleft", 2, ((i-1)*23*-1) + (-26))
 					button:SetPoint("topright", attribute_box, "topright", 2, ((i-1)*23*-1) + (-26))
 					button:SetHeight(20)

@@ -558,7 +558,7 @@ function detailsFramework:OpenLoadConditionsPanel(optionsTable, callback, frameO
 				do
 					if (false) then --disabled, isn't in use
 						--create a frame to show talents selected in other specs or characters
-						local otherTalents = CreateFrame("frame", nil, loadConditionsFrame, "BackdropTemplate")
+						local otherTalents = CreateFrame("frame", nil, loadConditionsFrame, nil)
 						otherTalents:SetSize(26, 26)
 						otherTalents:SetPoint("left", talentGroup.Title.widget, "right", 10, -2)
 						otherTalents.Texture = detailsFramework:CreateImage(otherTalents, [[Interface\BUTTONS\AdventureGuideMicrobuttonAlert]], 24, 24)
@@ -662,7 +662,7 @@ function detailsFramework:OpenLoadConditionsPanel(optionsTable, callback, frameO
 				do
 					if (false) then
 						--create a frame to show talents selected in other specs or characters
-						local otherTalents = CreateFrame("frame", nil, loadConditionsFrame, "BackdropTemplate")
+						local otherTalents = CreateFrame("frame", nil, loadConditionsFrame, nil)
 						otherTalents:SetSize(26, 26)
 						otherTalents:SetPoint("left", pvpTalentGroup.Title.widget, "right", 10, -2)
 						otherTalents.Texture = detailsFramework:CreateImage(otherTalents, [[Interface\BUTTONS\AdventureGuideMicrobuttonAlert]], 24, 24)

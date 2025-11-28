@@ -379,7 +379,7 @@ function Details222.OptionsPanel.InitializeOptionsWindow(instance)
     --create frames for sections
     for index, sectionId in ipairs(optionsSectionsOrder) do
         if (type(sectionId) == "number") then
-            local sectionFrame = CreateFrame("frame", "$parentTab" .. sectionId, optionsFrame, "BackdropTemplate")
+            local sectionFrame = CreateFrame("frame", "$parentTab" .. sectionId, optionsFrame, nil)
             sectionFrame:SetPoint("topleft", optionsFrame, "topleft", -40, 22)
             sectionFrame:SetSize(optionsFrame:GetSize())
             sectionFrame:EnableMouse(false)

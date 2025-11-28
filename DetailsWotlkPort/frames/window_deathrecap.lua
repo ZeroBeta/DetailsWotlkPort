@@ -33,7 +33,7 @@ local on_deathrecap_line_leave = function(self)
 end
 
 local create_deathrecap_line = function(parent, n)
-	local line = CreateFrame("frame", "DetailsDeathRecapLine" .. n, parent, "BackdropTemplate")
+	local line = CreateFrame("frame", "DetailsDeathRecapLine" .. n, parent, nil)
 	line:SetPoint("topleft", parent, "topleft", 10,(-24 * n) - 17)
 	line:SetPoint("topright", parent, "topright", -10,(-24 * n) - 17)
 	line:SetScript("OnEnter", on_deathrecap_line_enter)
@@ -258,7 +258,7 @@ function Details.OpenDetailsDeathRecap(segment, RecapID, fromChat)
 
     --create details death recap if not existant
     if (not Details.DeathRecap) then
-        Details.DeathRecap = CreateFrame("frame", "DetailsDeathRecap", DeathRecapFrame, "BackdropTemplate")
+        Details.DeathRecap = CreateFrame("frame", "DetailsDeathRecap", DeathRecapFrame, nil)
         Details.DeathRecap:SetAllPoints()
 
         DeathRecapFrame.Title:SetText(DeathRecapFrame.Title:GetText() .. "(by Details!)")
@@ -272,7 +272,7 @@ function Details.OpenDetailsDeathRecap(segment, RecapID, fromChat)
         --segments
         Details.DeathRecap.Segments = {}
         for i = 5, 1, -1 do
-            local segmentButton = CreateFrame("button", "DetailsDeathRecapSegmentButton" .. i, Details.DeathRecap, "BackdropTemplate")
+            local segmentButton = CreateFrame("button", "DetailsDeathRecapSegmentButton" .. i, Details.DeathRecap, nil)
 
             segmentButton:SetSize(16, 20)
             segmentButton:SetPoint("topright", DeathRecapFrame, "topright",(-abs(i-6) * 22) - 10, -5)

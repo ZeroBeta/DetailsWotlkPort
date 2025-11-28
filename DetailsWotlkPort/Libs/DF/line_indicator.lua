@@ -146,7 +146,7 @@ detailsFramework.LineIndicatorMixin = {
 		local targetFrame = self:LineIndicatorGetTarget()
 
 		---@type df_lineindicator_line
-		local indicator = CreateFrame("button", indicatorName, targetFrame, "BackdropTemplate")
+		local indicator = CreateFrame("button", indicatorName, targetFrame, nil)
 		indicator:SetSize(3, targetFrame:GetParent():GetHeight())
 		indicator:SetFrameLevel(targetFrame:GetFrameLevel() + 10)
 
